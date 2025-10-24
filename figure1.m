@@ -1,5 +1,5 @@
 % 读取 CSV 文件
-data = readtable('D:\Desktop\motor-impedance-db-main\exp_20.csv');
+data = readtable('D:\Desktop\Data\exp_10.csv');
 
 % 提取列
 freq = data.Freq;
