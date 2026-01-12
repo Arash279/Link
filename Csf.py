@@ -1,7 +1,8 @@
 import sqlite3
 import numpy as np
+import matplotlib.pyplot as plt
 
-DB_PATH = r"D:\Desktop\motor-impedance-db-main\AP_1p5.db"
+DB_PATH = r"D:\Desktop\EE5003\data\AP_1p5.db"
 SINGLE_TABLES = [f"exp_{i}" for i in range(1, 7)]
 CM_TABLES = ["exp_13", "exp_17"]
 DELTA_TABLE = "exp_21"
@@ -24,10 +25,18 @@ def fetch_table(conn, table):
     return arr[:,0], arr[:,1], arr[:,2]
 
 def to_Cp(f, mag, th_deg):
+    """
+    【电路/等效定义：已修改为“串联等效电容”】
+    原版：Cp = Im(1/Z)/ω （并联等效）
+    现版：Cs = -1/(ω·Im(Z))（串联等效）
+
+    为保持其余流程/变量名不变，函数名仍沿用 to_Cp，
+    但其返回值现在是“串联等效电容曲线”（Cs）。
+    """
     th = np.deg2rad(th_deg)
     Z = mag*(np.cos(th)+1j*np.sin(th))
-    Y = 1/Z
-    return np.imag(Y)/(2*np.pi*f)
+    with np.errstate(divide='ignore', invalid='ignore'):
+        return -1.0/(2*np.pi*f*np.imag(Z))
 
 def iqr(x): q75,q25=np.percentile(x,[75,25]); return q75-q25
 def cv(x): med=np.median(x); return np.std(x,ddof=1)/abs(med) if med!=0 else np.inf
@@ -67,6 +76,62 @@ def print_window_info(label, f, slc):
     decade_span = np.log10(f1) - np.log10(f0)
     n_pts = slc.stop - slc.start
     print(f"  {label} 窗口：[{f0:.3g} Hz, {f1:.3g} Hz], span≈{decade_span:.3f} decade, 点数={n_pts}")
+
+def plot_z_phase_with_windows(f, mag, th_deg, table, sL=None, sH=None, title_suffix=""):
+    """
+    画 |Z| 与 Phase，并用阴影标出 LF 平台窗口(sL) 和 HF 平台窗口(sH)。
+    - sL / sH: slice 或 None
+    - 只展示，不保存
+    """
+    f = np.asarray(f, dtype=float)
+    mag = np.asarray(mag, dtype=float)
+    th_deg = np.asarray(th_deg, dtype=float)
+
+    fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True, figsize=(10, 6))
+
+    ax1.semilogx(f, mag)
+    ax1.set_ylabel("|Z| (Ω)")
+    ax1.grid(True, which="both", linestyle="--", linewidth=0.5)
+
+    ax2.semilogx(f, th_deg)
+    ax2.set_ylabel("Phase (deg)")
+    ax2.set_xlabel("Frequency (Hz)")
+    ax2.grid(True, which="both", linestyle="--", linewidth=0.5)
+
+    def shade(ax, slc, label):
+        if slc is None:
+            return
+        i0, i1 = slc.start, slc.stop - 1
+        f_lo, f_hi = float(f[i0]), float(f[i1])
+        ax.axvspan(f_lo, f_hi, alpha=0.20)
+        ax.axvline(f_lo, linewidth=1.0)
+        ax.axvline(f_hi, linewidth=1.0)
+        # 在相位图上加个文本标注（避免多色图例）
+        ax2.text(f_lo, ax2.get_ylim()[1]*0.85, label, fontsize=10, va="top")
+
+    # LF / HF 阴影（两条子图都标）
+    if sL is not None:
+        i0, i1 = sL.start, sL.stop - 1
+        f_lo, f_hi = float(f[i0]), float(f[i1])
+        ax1.axvspan(f_lo, f_hi, alpha=0.20)
+        ax2.axvspan(f_lo, f_hi, alpha=0.20)
+        ax1.axvline(f_lo, linewidth=1.0); ax1.axvline(f_hi, linewidth=1.0)
+        ax2.axvline(f_lo, linewidth=1.0); ax2.axvline(f_hi, linewidth=1.0)
+        ax2.text(f_lo, ax2.get_ylim()[1]*0.85, "LF window", fontsize=10, va="top")
+
+    if sH is not None:
+        i0, i1 = sH.start, sH.stop - 1
+        f_lo, f_hi = float(f[i0]), float(f[i1])
+        ax1.axvspan(f_lo, f_hi, alpha=0.20)
+        ax2.axvspan(f_lo, f_hi, alpha=0.20)
+        ax1.axvline(f_lo, linewidth=1.0); ax1.axvline(f_hi, linewidth=1.0)
+        ax2.axvline(f_lo, linewidth=1.0); ax2.axvline(f_hi, linewidth=1.0)
+        ax2.text(f_lo, ax2.get_ylim()[1]*0.70, "HF window", fontsize=10, va="top")
+
+    fig.suptitle(f"{table} |Z| & Phase {title_suffix}".strip(), fontsize=13)
+    fig.tight_layout(rect=[0, 0.02, 1, 0.95])
+    plt.show(block=False)
+    plt.pause(0.1)  # 给 GUI 事件循环一点时间
 
 # —— 核心：用相位对数导数找“第一处谐振边沿”频率 f_res ——
 def first_resonance_freq(f, theta_deg):
@@ -172,6 +237,10 @@ def main():
         # ——— 用“谐振前/后”找 LF/HF 平台 ———
         sL = find_platform_segmented(f, Cp, th, kind="LF")
         sH = find_platform_segmented(f, Cp, th, kind="HF")
+
+        # 画 |Z|+相位，并标记 LF/HF 平台窗口
+        plot_z_phase_with_windows(f, m, th, tb, sL=sL, sH=sH, title_suffix="(LF/HF windows shaded)")
+
         cL, eL = summarize_Cp(Cp, sL)
         cH, eH = summarize_Cp(Cp, sH)
 
@@ -195,6 +264,7 @@ def main():
         f, m, th = fetch_table(conn, tb)
         Cp = to_Cp(f, m, th)
         s = find_platform_segmented(f, Cp, th, kind="HF")
+        plot_z_phase_with_windows(f, m, th, tb, sL=None, sH=s, title_suffix="(CM-HF window shaded)")
         c, e = summarize_Cp(Cp, s)
         print(f"[{tb}] C_CM^HF={c:.6e}F err={e:.3f}")
         print_window_info("CM-HF", f, s)
@@ -205,6 +275,7 @@ def main():
         f, m, th = fetch_table(conn, DELTA_TABLE)
         Cp = to_Cp(f, m, th)
         s = find_platform_segmented(f, Cp, th, kind="HF")
+        plot_z_phase_with_windows(f, m, th, DELTA_TABLE, sL=None, sH=s, title_suffix="(Δ-HF window shaded)")
         cd, ed = summarize_Cp(Cp, s)
         print(f"[{DELTA_TABLE}] C_CM,Δ^HF={cd:.6e}F err={ed:.3f}")
         print_window_info("Δ-HF", f, s)
@@ -221,6 +292,7 @@ def main():
     for (tb, (cH, cL, eH, eL)) in zip(SINGLE_TABLES, single):
         print(f"[{tb}] HFerr={eH:.3f}  LFerr={eL:.3f}")
 
+    plt.show()
     conn.close()
 
 if __name__ == "__main__":

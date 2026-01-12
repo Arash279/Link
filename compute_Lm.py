@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 
 # ====== 配置区 ======
-DB_PATH = r"D:\Desktop\data\AP_1p5.db"
+DB_PATH = r"D:\Desktop\EE5003\data\AP_1p5.db"
 ALL_TABLES = [f"exp_{i}" for i in range(1, 22)]
 # 主通道（星形短接 DM&CM）：10-12；校验通道（Δ）：18-20
 PRIMARY_GROUPS = ["exp_10", "exp_11", "exp_12"]
@@ -71,8 +71,8 @@ def derivative_loglog(y: np.ndarray, x: np.ndarray) -> np.ndarray:
     """
     计算 d log|y| / d log x 的局部导数（用中心差分），边界用一阶差分
     """
-    # 保护：去除非正/NaN
-    mask = (np.isfinite(y)) & (np.isfinite(x)) & (y > 0) & (x > 0)
+    # 保护：去除非正/NaN（对 |y| 做 log）
+    mask = (np.isfinite(y)) & (np.isfinite(x)) & (np.abs(y) > 0) & (x > 0)
     y = y.copy()
     x = x.copy()
     if mask.sum() < 3:
@@ -205,7 +205,7 @@ def compute_group_Lm(
         Ymag = 1.0 / Zmag
 
     # 在全频上计算 slope
-    slope = derivative_loglog(np.imag(Ymag), f)
+    slope = derivative_loglog(np.abs(np.imag(Ymag)), f)
 
     picked = pick_band_by_criteria(
         f=f,
@@ -245,9 +245,9 @@ def compute_group_Lm(
     Lm_iqr    = float(q3 - q1)
 
     # 找 |Z| 峰值和谷值（谐振、反谐振）
-    Zmag_abs = np.abs(Z_meas)
+    Zmag_abs = np.abs(Zmag)
     f_res = f[np.argmax(Zmag_abs)]  # 反谐振点
-    f_dip = f[np.argmin(Zmag_abs[100:])]  # 粗略谐振点，避开直流
+    f_dip = f[100 + np.argmin(Zmag_abs[100:])]    # 粗略谐振点，避开直流
     print(f"[INFO] {table}: resonance ≈ {f_dip:.1f} Hz, anti-resonance ≈ {f_res:.1f} Hz")
 
     return BandResult(

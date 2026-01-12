@@ -7,9 +7,10 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import sqlite3
+import matplotlib.pyplot as plt
 
 # ===================== 配置 =====================
-DB_PATH = r"D:\Desktop\motor-impedance-db-main\AP_1p5.db"
+DB_PATH = r"D:\Desktop\EE5003\data\AP_1p5.db"
 FILES_Y_SHORT = [f"exp_{i}" for i in (10, 11, 12)]
 FILES_Y_LONG  = [f"exp_{i}" for i in (14, 15, 16)]
 FILES_DELTA   = [f"exp_{i}" for i in (18, 19, 20)]
@@ -147,7 +148,7 @@ def find_inductive_window(freq, phase_deg, Leq,
         s = search_once(phi_th_2, max_cv_2)
     return s
 
-def process_table(conn, table, topology):
+def process_table(conn, table, topology, do_plot=False):
     df = read_table_one(conn, table)
     f  = df["freq_hz"].to_numpy()
     mag = df["mag_ohm"].to_numpy()
@@ -155,6 +156,10 @@ def process_table(conn, table, topology):
 
     Leq_curve = to_Leq(f, mag, th)
     win = find_inductive_window(f, th, Leq_curve)
+
+    if do_plot:
+        plot_impedance_with_window(f, mag, th, win, table)
+
     if win is None:
         return None, {"status": "NO_WINDOW", "file": table}
 
@@ -197,6 +202,46 @@ def median_safe(vals):
     vals = [v for v in vals if np.isfinite(v)]
     return float(np.median(vals)) if vals else np.nan
 
+import matplotlib.pyplot as plt
+
+def plot_impedance_with_window(f, mag, th_deg, win, table):
+    """
+    画阻抗幅值(|Z|)与相位(°)，并用阴影标记感性平台窗口 win=slice(start, stop)。
+    只展示，不保存。
+    """
+    f = np.asarray(f, dtype=float)
+    mag = np.asarray(mag, dtype=float)
+    th_deg = np.asarray(th_deg, dtype=float)
+
+    fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True, figsize=(9, 6))
+
+    # |Z|
+    ax1.semilogx(f, mag)
+    ax1.set_ylabel("|Z| (Ω)")
+    ax1.grid(True, which="both", linestyle="--", linewidth=0.5)
+
+    # Phase
+    ax2.semilogx(f, th_deg)
+    ax2.set_ylabel("Phase (deg)")
+    ax2.set_xlabel("Frequency (Hz)")
+    ax2.grid(True, which="both", linestyle="--", linewidth=0.5)
+
+    # 标记窗口
+    if win is not None:
+        i0, i1 = win.start, win.stop - 1
+        f_lo, f_hi = float(f[i0]), float(f[i1])
+        ax1.axvspan(f_lo, f_hi, alpha=0.2)
+        ax2.axvspan(f_lo, f_hi, alpha=0.2)
+        ax1.axvline(f_lo, linewidth=1.0)
+        ax1.axvline(f_hi, linewidth=1.0)
+        ax2.axvline(f_lo, linewidth=1.0)
+        ax2.axvline(f_hi, linewidth=1.0)
+
+    fig.suptitle(f"{table} |Z| & Phase (inductive window shaded)", fontsize=12)
+    fig.tight_layout(rect=[0, 0.02, 1, 0.95])
+    plt.show(block=False)
+    plt.pause(0.1)  # 给 GUI 事件循环一点时间
+
 # =================================================
 # 主流程
 # =================================================
@@ -205,13 +250,15 @@ def main():
     # 1) 逐文件处理
     rows_Ys, rows_Yl, rows_D = [], [], []
     for fn in FILES_Y_SHORT:
-        rec, err = process_table(conn, fn, "Y")
+        rec, err = process_table(conn, fn, "Y", do_plot=True)
         rows_Ys.append(rec if rec else err)
+
     for fn in FILES_Y_LONG:
-        rec, err = process_table(conn, fn, "Y")
+        rec, err = process_table(conn, fn, "Y", do_plot=True)
         rows_Yl.append(rec if rec else err)
+
     for fn in FILES_DELTA:
-        rec, err = process_table(conn, fn, "Delta")
+        rec, err = process_table(conn, fn, "Delta", do_plot=True)
         rows_D.append(rec if rec else err)
 
     # 2) 质量过滤
@@ -258,6 +305,7 @@ def main():
     print(f"\nL_sigma_final  = {L_sigma_final:.6e} H")
     print(f"L_ls = L_lr    = {L_ls:.6e} H")
 
+    plt.show()
     conn.close()
 
 

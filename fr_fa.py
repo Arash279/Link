@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 
 # ===================== 配置 =====================
-DB_PATH = r"D:\Desktop\motor-impedance-db-main\AP_1p5.db"
+DB_PATH = r"D:\Desktop\EE5003\data\AP_1p5.db"
 
 # 只用 DM 接线三组
 TABLES_Y_SHORT = [f"exp_{i}" for i in (10, 11, 12)]   # 训练/定参
@@ -311,7 +311,7 @@ def main():
 
     # 导出明细（可选）
     df = pd.DataFrame(all_rows)
-    out_path = r"D:\Desktop\motor-impedance-db-main\resonance_report.csv"
+    out_path = r"D:\Desktop\EE5003\data\resonance_report.csv"
     df.to_csv(out_path, index=False, encoding="utf-8-sig")
     print(f"\n已导出: {out_path}")
 

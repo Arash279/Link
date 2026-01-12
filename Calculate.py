@@ -21,7 +21,7 @@ Csf0_reported = 7.38e-10  # F, reported neutral-to-frame capacitance for compari
 
 Lls = 2.55e-2           # H, stator leakage inductance
 Llr = 2.55e-2           # H, rotor leakage inductance (referred to stator)
-Lm  = 2.55e-1           # H, magnetizing inductance (for completeness, not used in HF calc)
+Lm  = 5.5e-2           # H, magnetizing inductance (for completeness, not used in HF calc)
 Rcore = 4751.342        # Ω, core-loss resistance from empirical hp relation
 
 fr_hz = 27.49e3         # Hz, first resonance frequency
