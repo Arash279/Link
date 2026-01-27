@@ -24,9 +24,9 @@ Llr = 2.55e-2           # H, rotor leakage inductance (referred to stator)
 Lm  = 5.5e-2           # H, magnetizing inductance (for completeness, not used in HF calc)
 Rcore = 4751.342        # Ω, core-loss resistance from empirical hp relation
 
-fr_hz = 27.49e3         # Hz, first resonance frequency
+fr_hz = 36311.2         # Hz, first resonance frequency #exp_1
 Zmax  = 2.50e4          # Ω, impedance magnitude at resonance peak
-fa_hz = 76.03e3         # Hz, antiresonance frequency
+fa_hz = 66734.6         # Hz, antiresonance frequency #exp_1
 Zanti = 4.11e3          # Ω, impedance magnitude at antiresonance
 
 connection: Literal["Y", "Delta"] = "Y"  # winding connection type
