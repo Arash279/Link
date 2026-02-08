@@ -1,17 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-compare_no_fit.py
-
 【功能】
-- 取消拟合环节：不再做 least_squares / 参数优化
 - 直接使用一套“固定电路参数”进行仿真
 - 从 SQLite DB 读取实验数据（Freq, Zabs, Phase）
 - 输出对比图（log10|Z| 与 phase）与误差指标（RMSE / MAE 等）
 
 【电路结构】
-保持与你当前 exp_10_fit.py 一致的阻抗模型：
-Z_total = (Z6 + 1/2 Z1) || (Z5 + 1/2 Z2) + Z4
-以及 Zmid/Zmr/Zmin/Zbra/Zcsf0、Y-Δ / Δ-Y 变换等定义一致。
+- 自定义
 """
 
 from __future__ import annotations
@@ -312,20 +307,19 @@ def main():
     DB_PATH = r"D:\Desktop\EE5003\data\AP_1p5.db"
     TABLE = "exp_10"   # 例如: exp_1 / exp_10 / exp_13 / exp_17 / exp_21 ...
 
-    # 你要“固定使用”的那套参数：直接在这里填！
-    # （下面这一套是你 exp_10_fit.py 里 make_initial_params 的数值，仅作占位示例）
+    # 要"固定使用"的那套参数：直接在这里填！
     PARAMS_FIXED: Dict[str, float] = dict(
-        Lls=2.55e-2,
-        Csw=1.012e-9,
-        Rsw=1.3437e4,
-        Llr=2.55e-2,
-        Rrs=28.0,
-        Rcore=4.751e3,
-        Lm=5.5e-2,
-        nLls=1.7806e-10,
-        Csf=2.461e-10,
-        Rsf=2.74e3,
-        Csf0=7.38e-10,
+        Lls=0.0261536,
+        Csw=8.68416e-10,
+        Rsw=14776.8,
+        Llr=0.0699247,
+        Rrs=283.057,
+        Rcore=4129.66,
+        Lm=0.0457641,
+        nLls=1.7806e-11,
+        Csf=3.12877e-10,
+        Rsf=27.4,
+        Csf0=7.38e-09,
     )
 
     # 误差统计频段：None 表示全频
