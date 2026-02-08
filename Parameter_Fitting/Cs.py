@@ -1,6 +1,8 @@
 import sqlite3
 import numpy as np
 
+# 计算串联等效电容；意义不明，先留着
+
 DB_PATH = r"D:\Desktop\EE5003\data\AP_1p5.db"
 SINGLE_TABLES = [f"exp_{i}" for i in range(1, 7)]
 CM_TABLES = ["exp_13", "exp_17"]

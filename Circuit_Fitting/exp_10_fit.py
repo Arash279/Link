@@ -2,7 +2,7 @@
 """
 【中文说明】
 本程序实现了一个用于感应电机高频等效电路的阻抗建模与参数拟合框架，
-其中所有电路参数被统一视为一个 12 维可调参数向量。
+其中所有电路参数被统一视为一个 11 维可调参数向量。
 
 程序整体采用模块化结构，主要分为以下几个部分：
 
@@ -11,7 +11,7 @@
     用于保证数值计算的稳定性与拟合过程中相位误差的连续性。
 
 (1) 参数管理（Parameter handling）：
-    使用 dataclass 定义 12 个物理参数及其向量表示，
+    使用 dataclass 定义 11 个物理参数及其向量表示，
     实现参数向量与具名物理量之间的双向映射，
     以提高可读性并方便数值优化。
 
@@ -46,7 +46,7 @@
 [English Description]
 This script implements a high-frequency impedance modeling and parameter
 fitting framework for an induction machine equivalent circuit, where all
-circuit elements are treated as a single 12-dimensional tunable parameter vector.
+circuit elements are treated as a single 11-dimensional tunable parameter vector.
 
 The program is organized in a modular manner with the following main components:
 
@@ -56,7 +56,7 @@ The program is organized in a modular manner with the following main components:
     during optimization.
 
 (1) Parameter handling:
-    A dataclass-based definition of the 12 physical parameters,
+    A dataclass-based definition of the 11 physical parameters,
     providing bidirectional mapping between a parameter vector and
     named circuit elements for readability and optimization convenience.
 
@@ -126,13 +126,15 @@ def phase_diff_deg(phi_sim: np.ndarray, phi_exp: np.ndarray) -> np.ndarray:
 
 
 # ============================================================
-# 1) Parameter vector (12D) + mapping
+# 1) Parameter vector (11D) + mapping
 # ============================================================
 
 PARAM_NAMES: List[str] = [
     "Lls", "Csw", "Rsw", "Llr", "Rrs", "Rcore",
     "Lm", "nLls", "Csf", "Rsf", "Csf0"
 ]
+
+N_PARAMS: int = len(PARAM_NAMES)
 
 @dataclass
 class Params:
@@ -151,8 +153,8 @@ class Params:
     @staticmethod
     def from_vector(x: np.ndarray) -> "Params":
         x = np.asarray(x, dtype=float).reshape(-1)
-        if x.size != 12:
-            raise ValueError(f"Expected 12 params, got {x.size}")
+        if x.size != N_PARAMS:
+            raise ValueError(f"Expected {N_PARAMS} params, got {x.size}")
         d = dict(zip(PARAM_NAMES, x.tolist()))
         return Params(**d)
 
@@ -165,15 +167,18 @@ class Params:
 
 # ============================================================
 # 2) Impedance model definition (vectorized)
-#    (structure consistent with your existing test.py)
+#    (structure consistent with your existing Cs.py)
 # ============================================================
 
+Rs = 8.703  # stator resistance (Ohm), added in series with Zmid parallel branch
+
 def Zmid(omega: np.ndarray, p: Params) -> np.ndarray:
-    """Zmid = (jωLls) || (1/jωCsw) || Rsw"""
+    """Zmid = (jωLls) || (1/jωCsw) || Rsw  + Rs"""
     Z_L = 1j * omega * p.Lls
     Z_C = 1.0 / (1j * omega * p.Csw)
     Z_R = p.Rsw + 0j
-    return 1.0 / (1.0/Z_L + 1.0/Z_C + 1.0/Z_R)
+    Z_par = 1.0 / (1.0 / Z_L + 1.0 / Z_C + 1.0 / Z_R)
+    return Z_par + Rs
 
 def Zmr(omega: np.ndarray, p: Params) -> np.ndarray:
     """Zmr = (jωLlr + Rrs) || Rcore || (jωLm)"""
@@ -221,35 +226,46 @@ def delta_to_Y(Zab: np.ndarray, Zbc: np.ndarray, Zca: np.ndarray) -> Tuple[np.nd
     return Za, Zb, Zc
 
 def Z1_to_Z9(omega: np.ndarray, p: Params):
-    # --- Y arms ---
+    # --- Y arms (same as before) ---
     Za = Z_nLls(omega, p)       # a
     Zb = Zmin(omega, p)         # b
     Zc = Zbra(omega, p)         # c
 
-    # --- Y -> Δ (Z1,Z2,Z3) ---
+    # --- Y -> Δ (same as before) ---
     Z1, Z2, Z3 = Y_to_Delta(Za, Zb, Zc)
 
-    # --- Z4_0 = Z3 || (1/2 Z3) || Zcsf0 ---
+    # --- Z4_0 = Z3 || (1/2 Z3) || Zcsf0 (same as before) ---
     Z4_0 = par3(Z3, 0.5 * Z3, Zcsf0(omega, p))
 
-    # --- Δ -> Y #1 : Δ edges (Z1, Z4_0, Z2) ---
-    Za1, Zb1, Zc1 = delta_to_Y(Zab=Z1, Zbc=Z4_0, Zca=Z2)
+    # ============================================================
+    # UPDATED: redefine Δ edges and do ONE Δ -> Y
+    #
+    # Your mapping:
+    #   Z2 : a-b edge
+    #   Z1 : a-c edge
+    #   Z4_0 : b-c edge
+    #
+    # delta_to_Y expects edges: (Zab, Zbc, Zca) = (a-b, b-c, c-a)
+    # so we pass: Zab=Z2, Zbc=Z4_0, Zca=Z1
+    # ============================================================
+    Za1, Zb1, Zc1 = delta_to_Y(Zab=Z2, Zbc=Z4_0, Zca=Z1)
+
+    # Star arms:
     Z4, Z5, Z6 = Za1, Zb1, Zc1
 
-    # --- Δ -> Y #2 : Δ edges (1/2 Z1), (1/2 Z2), Z4_0 ---
-    Za2, Zb2, Zc2 = delta_to_Y(Zab=0.5*Z1, Zbc=Z4_0, Zca=0.5*Z2)
-    Z8, Z7, Z9 = Za2, Zb2, Zc2
-
+    # Keep return signature compatible (unused items set to None)
+    Z7 = Z8 = Z9 = None
     return Z1, Z2, Z3, Z4_0, Z4, Z5, Z6, Z7, Z8, Z9
+
 
 def Z_total(omega: np.ndarray, p: Params) -> np.ndarray:
     """
-    Z_total = Z4 + (Z5+Z7)||(Z6+Z9) + Z8
+    UPDATED:
+    Z_total = (Z6 + 1/2 Z1) || (Z5 + 1/2 Z2) + Z4
     """
-    _, _, _, _, Z4, Z5, Z6, Z7, Z8, Z9 = Z1_to_Z9(omega, p)
-    Z_parallel = par(Z5 + Z7, Z6 + Z9)
-    return Z4 + Z_parallel + Z8
-
+    Z1, Z2, _, _, Z4, Z5, Z6, _, _, _ = Z1_to_Z9(omega, p)
+    Z_parallel = par(Z6 + 0.5 * Z1, Z5 + 0.5 * Z2)
+    return Z_parallel + Z4
 
 # ============================================================
 # 3) Load experiment data from SQLite
@@ -341,8 +357,8 @@ def make_initial_params() -> Params:
         Llr=2.55e-2,
         Rrs=28.0,
         Rcore=4.751e3,
-        Lm=3.2e-2,
-        nLls=1.7806e-2,
+        Lm=5.5e-2,
+        nLls=1.7806e-10,
         Csf=2.461e-10,
         Rsf=2.74e3,
         Csf0=7.38e-10,
@@ -356,8 +372,8 @@ def default_bounds(p0: Params) -> Tuple[np.ndarray, np.ndarray]:
     x0 = p0.to_vector()
 
     # lower/upper as multipliers (for positive params)
-    lo_mul = np.array([0.1]*12, dtype=float)
-    hi_mul = np.array([10.0]*12, dtype=float)
+    lo_mul = np.full(N_PARAMS, 0.1, dtype=float)
+    hi_mul = np.full(N_PARAMS, 10.0, dtype=float)
 
     # resistances often vary wider
     for name in ["Rsw", "Rrs", "Rcore", "Rsf"]:
@@ -543,4 +559,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
