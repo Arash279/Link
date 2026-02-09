@@ -503,6 +503,9 @@ def gp_residual_analysis(
     Z_sim = simulate_complex(f_hz, p_opt)
     res_re = (Z_data.real - Z_sim.real)
     res_im = (Z_data.imag - Z_sim.imag)
+    phase_sim = wrap_phase_deg(np.angle(Z_sim, deg=True))
+    phase_dat = wrap_phase_deg(np.angle(Z_data, deg=True))
+    res_phase = phase_diff_deg(phase_sim, phase_dat)
 
     logf = np.log10(f_hz)
     x = (logf - logf.mean()) / (logf.std() + 1e-12)
@@ -524,19 +527,23 @@ def gp_residual_analysis(
     x_gp = x[keep]
     res_re_gp = res_re[keep]
     res_im_gp = res_im[keep]
+    res_phase_gp = res_phase[keep]
 
     kernel = RBF(length_scale=0.5, length_scale_bounds=(1e-2, 1e2)) + WhiteKernel(noise_level=1e-6)
     gp_re = GaussianProcessRegressor(kernel=kernel, normalize_y=True, random_state=0)
     gp_im = GaussianProcessRegressor(kernel=kernel, normalize_y=True, random_state=0)
+    gp_ph = GaussianProcessRegressor(kernel=kernel, normalize_y=True, random_state=0)
 
     gp_re.fit(x_gp, res_re_gp)
     gp_im.fit(x_gp, res_im_gp)
+    gp_ph.fit(x_gp, res_phase_gp)
 
     logf_grid = np.linspace(logf.min(), logf.max(), 400)
     x_grid = (logf_grid - logf.mean()) / (logf.std() + 1e-12)
     f_grid = 10 ** logf_grid
     mean_re, std_re = gp_re.predict(x_grid.reshape(-1, 1), return_std=True)
     mean_im, std_im = gp_im.predict(x_grid.reshape(-1, 1), return_std=True)
+    mean_ph, std_ph = gp_ph.predict(x_grid.reshape(-1, 1), return_std=True)
 
     def top_freqs(mean_vec: np.ndarray) -> List[float]:
         order = np.argsort(np.abs(mean_vec))[::-1]
@@ -551,25 +558,47 @@ def gp_residual_analysis(
 
     top_re = top_freqs(mean_re)
     top_im = top_freqs(mean_im)
+    top_ph = top_freqs(mean_ph)
 
     print("GP structure peaks (Re):", ", ".join(f"{f0:.3g} Hz" for f0 in top_re))
     print("GP structure peaks (Im):", ", ".join(f"{f0:.3g} Hz" for f0 in top_im))
+    print("GP structure peaks (Phase):", ", ".join(f"{f0:.3g} Hz" for f0 in top_ph))
 
-    fig, axes = plt.subplots(2, 1, figsize=(12, 8), sharex=True)
-    axes[0].semilogx(f_hz, res_re, ".", alpha=0.4, label="Residual Re")
-    axes[0].semilogx(f_grid, mean_re, "r-", label="GP mean")
-    axes[0].fill_between(f_grid, mean_re - std_re, mean_re + std_re, color="r", alpha=0.2)
-    axes[0].set_ylabel("Re residual (Ohm)")
-    axes[0].grid(True)
+    fig, axes = plt.subplots(3, 1, figsize=(12, 12), sharex=True)
+    ax = axes[0]
+    ax.semilogx(f_hz, res_re, ".", color="tab:blue", alpha=0.4, label="raw")
+    ax.semilogx(f_grid, mean_re, "r-", label="GP mean")
+    ax.fill_between(f_grid, mean_re - 1.96 * std_re, mean_re + 1.96 * std_re, color="r", alpha=0.2, label="95% band")
+    for f0 in top_re:
+        ax.axvline(f0, linestyle="--", linewidth=1)
+    ax.set_title("Residual Re + GP")
+    ax.set_xlabel("Frequency (Hz)")
+    ax.set_ylabel("Ohm")
+    ax.grid(True)
+
+    ax = axes[1]
+    ax.semilogx(f_hz, res_im, ".", color="tab:blue", alpha=0.4, label="raw")
+    ax.semilogx(f_grid, mean_im, "r-", label="GP mean")
+    ax.fill_between(f_grid, mean_im - 1.96 * std_im, mean_im + 1.96 * std_im, color="r", alpha=0.2, label="95% band")
+    for f0 in top_im:
+        ax.axvline(f0, linestyle="--", linewidth=1)
+    ax.set_title("Residual Im + GP")
+    ax.set_xlabel("Frequency (Hz)")
+    ax.set_ylabel("Ohm")
+    ax.grid(True)
+
+    ax = axes[2]
+    ax.semilogx(f_hz, res_phase, ".", color="tab:blue", alpha=0.4, label="raw")
+    ax.semilogx(f_grid, mean_ph, "r-", label="GP mean")
+    ax.fill_between(f_grid, mean_ph - 1.96 * std_ph, mean_ph + 1.96 * std_ph, color="r", alpha=0.2, label="95% band")
+    for f0 in top_ph:
+        ax.axvline(f0, linestyle="--", linewidth=1)
+    ax.set_title("Residual Phase + GP")
+    ax.set_xlabel("Frequency (Hz)")
+    ax.set_ylabel("deg")
+    ax.grid(True)
+
     axes[0].legend()
-
-    axes[1].semilogx(f_hz, res_im, ".", alpha=0.4, label="Residual Im")
-    axes[1].semilogx(f_grid, mean_im, "r-", label="GP mean")
-    axes[1].fill_between(f_grid, mean_im - std_im, mean_im + std_im, color="r", alpha=0.2)
-    axes[1].set_ylabel("Im residual (Ohm)")
-    axes[1].set_xlabel("Frequency (Hz)")
-    axes[1].grid(True)
-    axes[1].legend()
 
     plt.tight_layout()
     plt.savefig(f"{out_prefix}.png", dpi=150)

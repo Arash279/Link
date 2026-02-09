@@ -20,6 +20,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
+
 # ============================================================
 # 0) Utilities
 # ============================================================
@@ -42,6 +43,16 @@ def phase_diff_deg(phi_sim: np.ndarray, phi_exp: np.ndarray) -> np.ndarray:
     """
     d = phi_sim - phi_exp
     return (d + 180.0) % 360.0 - 180.0
+
+def mad(x: np.ndarray) -> float:
+    """Median absolute deviation, scaled for robustness."""
+    x = np.asarray(x, float)
+    med = np.median(x)
+    return np.median(np.abs(x - med))
+
+def mag_phase_to_complex(mag: np.ndarray, phase_deg: np.ndarray) -> np.ndarray:
+    """Convert magnitude + phase(deg) to complex."""
+    return mag * np.exp(1j * np.deg2rad(phase_deg))
 
 
 # ============================================================
@@ -257,6 +268,16 @@ def compute_metrics(
         "phase_MAE_deg": mae(phase_err),
     }
 
+def compute_complex_residual(
+    Z_sim: np.ndarray,
+    zabs_exp: np.ndarray,
+    phase_exp_deg: np.ndarray,
+) -> np.ndarray:
+    """
+    根据实验数据 (|Z|, phase) 重建 Z_exp，并返回 complex residual: Z_exp - Z_sim
+    """
+    Z_exp = mag_phase_to_complex(zabs_exp, phase_exp_deg)
+    return Z_exp - Z_sim
 
 # ============================================================
 # 5) Plotting
@@ -295,6 +316,158 @@ def plot_compare(
     plt.tight_layout()
     plt.show()
 
+def plot_residuals(
+    f: np.ndarray,
+    res: np.ndarray,
+    title: str,
+    rel_to: np.ndarray | None = None,   # e.g. |Z_exp|
+):
+    """
+    画 residual: Re, Im, |res|（可选画相对误差）
+    """
+    f = np.asarray(f, float)
+    re = np.real(res)
+    im = np.imag(res)
+    mag = np.abs(res)
+
+    fig, axes = plt.subplots(3, 1, figsize=(12, 10), sharex=True)
+    fig.suptitle(title)
+
+    axes[0].semilogx(f, re, ".", alpha=0.4, label="Residual Re")
+    axes[0].set_ylabel("Re residual (Ohm)")
+    axes[0].grid(True)
+    axes[0].legend()
+
+    axes[1].semilogx(f, im, ".", alpha=0.4, label="Residual Im")
+    axes[1].set_ylabel("Im residual (Ohm)")
+    axes[1].grid(True)
+    axes[1].legend()
+
+    axes[2].semilogx(f, mag, ".", alpha=0.4, label="|res|")
+    if rel_to is not None:
+        rel = mag / (np.asarray(rel_to, float) + 1e-12)
+        axes[2].semilogx(f, rel, "r-", linewidth=1.5, label="|res| / |Z_exp|")
+    axes[2].set_xlabel("Frequency (Hz)")
+    axes[2].set_ylabel("Magnitude (Ohm/ratio)")
+    axes[2].grid(True)
+    axes[2].legend()
+
+    plt.tight_layout()
+    plt.show()
+
+# ============================================================
+# ADD ON (GP residual analysis, consistent with CurVer)
+# ============================================================
+
+def gp_residual_analysis(
+    f_hz: np.ndarray,
+    Z_exp: np.ndarray,
+    Z_sim: np.ndarray,
+    out_prefix: Optional[str] = None,
+    top_n: int = 3,
+):
+    try:
+        from sklearn.gaussian_process import GaussianProcessRegressor
+        from sklearn.gaussian_process.kernels import RBF, WhiteKernel
+        from scipy.signal import find_peaks
+    except ImportError:
+        print("scikit-learn or scipy not available; skip GP residual analysis.")
+        return
+
+    f_hz = np.asarray(f_hz, float)
+    Z_exp = np.asarray(Z_exp, complex)
+    Z_sim = np.asarray(Z_sim, complex)
+
+    res_re = (Z_exp.real - Z_sim.real)
+    res_im = (Z_exp.imag - Z_sim.imag)
+    phase_sim = wrap_phase_deg(np.angle(Z_sim, deg=True))
+    phase_dat = wrap_phase_deg(np.angle(Z_exp, deg=True))
+    res_phase = phase_diff_deg(phase_sim, phase_dat)
+
+    logf = np.log10(f_hz)
+    x = (logf - logf.mean()) / (logf.std() + 1e-12)
+    x = x.reshape(-1, 1)
+
+    def robust_zscore(v: np.ndarray) -> np.ndarray:
+        v = np.asarray(v, float)
+        med = np.median(v)
+        scale = mad(v)
+        scale = max(scale, 1e-12)
+        return 0.6745 * (v - med) / scale
+
+    z_re = np.abs(robust_zscore(res_re))
+    z_im = np.abs(robust_zscore(res_im))
+    keep = (z_re <= 5.0) & (z_im <= 5.0)
+    if np.sum(keep) < 10:
+        keep = np.ones_like(z_re, dtype=bool)
+
+    x_gp = x[keep]
+    res_re_gp = res_re[keep]
+    res_im_gp = res_im[keep]
+    res_phase_gp = res_phase[keep]
+
+    kernel = RBF(length_scale=0.5, length_scale_bounds=(1e-2, 1e2)) + WhiteKernel(noise_level=1e-6)
+    gp_re = GaussianProcessRegressor(kernel=kernel, normalize_y=True, random_state=0)
+    gp_im = GaussianProcessRegressor(kernel=kernel, normalize_y=True, random_state=0)
+    gp_ph = GaussianProcessRegressor(kernel=kernel, normalize_y=True, random_state=0)
+
+    gp_re.fit(x_gp, res_re_gp)
+    gp_im.fit(x_gp, res_im_gp)
+    gp_ph.fit(x_gp, res_phase_gp)
+
+    mu_re, std_re = gp_re.predict(x, return_std=True)
+    mu_im, std_im = gp_im.predict(x, return_std=True)
+    mu_ph, std_ph = gp_ph.predict(x, return_std=True)
+
+    peak_kwargs = {}
+    peaks_re = find_peaks(mu_re, **peak_kwargs)[0]
+    peaks_im = find_peaks(mu_im, **peak_kwargs)[0]
+    peaks_ph = find_peaks(mu_ph, **peak_kwargs)[0]
+
+    print("GP structure peaks (Re):", ", ".join([f"{f_hz[i]:.3g} Hz" for i in peaks_re]))
+    print("GP structure peaks (Im):", ", ".join([f"{f_hz[i]:.3g} Hz" for i in peaks_im]))
+    print("GP structure peaks (Phase):", ", ".join([f"{f_hz[i]:.3g} Hz" for i in peaks_ph]))
+
+    fig, axes = plt.subplots(1, 3, figsize=(18, 5), sharex=True)
+    ax = axes[0]
+    ax.semilogx(f_hz, res_re, linewidth=1, label="raw")
+    ax.semilogx(f_hz, mu_re, linewidth=2, label="GP mean")
+    ax.fill_between(f_hz, mu_re - 1.96 * std_re, mu_re + 1.96 * std_re, alpha=0.2, label="95% band")
+    for i in peaks_re:
+        ax.axvline(f_hz[i], linestyle="--", linewidth=1)
+    ax.set_title("Residual Re + GP")
+    ax.set_xlabel("Frequency (Hz)")
+    ax.set_ylabel("Ohm")
+    ax.grid(True)
+
+    ax = axes[1]
+    ax.semilogx(f_hz, res_im, linewidth=1, label="raw")
+    ax.semilogx(f_hz, mu_im, linewidth=2, label="GP mean")
+    ax.fill_between(f_hz, mu_im - 1.96 * std_im, mu_im + 1.96 * std_im, alpha=0.2, label="95% band")
+    for i in peaks_im:
+        ax.axvline(f_hz[i], linestyle="--", linewidth=1)
+    ax.set_title("Residual Im + GP")
+    ax.set_xlabel("Frequency (Hz)")
+    ax.set_ylabel("Ohm")
+    ax.grid(True)
+
+    ax = axes[2]
+    ax.semilogx(f_hz, res_phase, linewidth=1, label="raw")
+    ax.semilogx(f_hz, mu_ph, linewidth=2, label="GP mean")
+    ax.fill_between(f_hz, mu_ph - 1.96 * std_ph, mu_ph + 1.96 * std_ph, alpha=0.2, label="95% band")
+    for i in peaks_ph:
+        ax.axvline(f_hz[i], linestyle="--", linewidth=1)
+    ax.set_title("Residual Phase + GP")
+    ax.set_xlabel("Frequency (Hz)")
+    ax.set_ylabel("deg")
+    ax.grid(True)
+
+    axes[0].legend()
+
+    plt.tight_layout()
+    if out_prefix:
+        plt.savefig(f"{out_prefix}.png", dpi=150)
+    plt.show()
 
 # ============================================================
 # 6) Main (NO FIT)
@@ -309,17 +482,17 @@ def main():
 
     # 要"固定使用"的那套参数：直接在这里填！
     PARAMS_FIXED: Dict[str, float] = dict(
-        Lls=0.0261536,
-        Csw=8.68416e-10,
-        Rsw=14776.8,
-        Llr=0.0699247,
-        Rrs=283.057,
-        Rcore=4129.66,
-        Lm=0.0457641,
-        nLls=1.7806e-11,
-        Csf=3.12877e-10,
-        Rsf=27.4,
-        Csf0=7.38e-09,
+        Lls=2.55e-2,
+        Csw=1.012e-9,
+        Rsw=1.3437e4,
+        Llr=2.55e-2,
+        Rrs=28.0,
+        Rcore=4.751e3,
+        Lm=5.5e-2,
+        nLls=1.7806e-10,
+        Csf=2.461e-10,
+        Rsf=2.74e3,
+        Csf0=7.38e-10,
     )
 
     # 误差统计频段：None 表示全频
@@ -382,6 +555,33 @@ def main():
         zabs_sim=zabs_sim,
         phase_sim=phase_sim,
         title=f"Impedance Compare (NO FIT) - {TABLE}"
+    )
+
+    # ----------------------------
+    # Residual + GP (NO FIT)
+    # ----------------------------
+    res = compute_complex_residual(
+        Z_sim=Z,  # simulate_on_freq 返回的 complex Z
+        zabs_exp=zabs_exp,
+        phase_exp_deg=phase_exp,
+    )
+
+    # 残差图（建议给相对误差用 |Z_exp|）
+    plot_residuals(
+        f=f,
+        res=res,
+        title=f"Residuals (NO FIT) - {TABLE}",
+        rel_to=zabs_exp,
+    )
+
+    # GP residual analysis (full band)
+    Z_exp = mag_phase_to_complex(zabs_exp, phase_exp)
+    gp_residual_analysis(
+        f_hz=f,
+        Z_exp=Z_exp,
+        Z_sim=Z,
+        out_prefix=None,
+        top_n=3,
     )
 
 
