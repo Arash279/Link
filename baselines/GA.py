@@ -300,21 +300,29 @@ def simulate_complex(f_hz: np.ndarray, p: Params) -> np.ndarray:
     omega = 2.0 * np.pi * f_hz
     return Z_total(omega, p)
 
-def make_initial_params() -> Params:
-    # your given initial values
+def _log_uniform(rng: np.random.Generator, lo: float, hi: float) -> float:
+    """Sample log-uniform in [lo, hi], lo/hi > 0."""
+    return float(np.exp(rng.uniform(np.log(lo), np.log(hi))))
+
+def make_initial_params(seed: int = 0) -> Params:
+    """
+    Initialize parameters by sampling within reasonable ranges (log-uniform).
+    Ranges are centered around typical orders of magnitude for the circuit.
+    """
+    rng = np.random.default_rng(seed)
     return Params(
-        Lls=2.55e-2,
-        Csw=1.012e-9,
-        Rsw=1.3437e4,
-        Llr=2.55e-2,
-        Rrs=28.0,
-        Rcore=4.751e3,
-        Lm=5.5e-2,
-        nLls=1.7806e-10,
-        Csf=2.461e-10,
-        Rsf=2.74e3,
-        Csf0=7.38e-10,
-        Lad=1.3e-7,
+        Lls=_log_uniform(rng, 1e-3, 1e-1),
+        Csw=_log_uniform(rng, 1e-10, 1e-8),
+        Rsw=_log_uniform(rng, 1e3, 1e5),
+        Llr=_log_uniform(rng, 1e-3, 1e-1),
+        Rrs=_log_uniform(rng, 1.0, 1e2),
+        Rcore=_log_uniform(rng, 1e3, 1e5),
+        Lm=_log_uniform(rng, 1e-3, 1e-1),
+        nLls=_log_uniform(rng, 1e-12, 1e-9),
+        Csf=_log_uniform(rng, 1e-12, 1e-9),
+        Rsf=_log_uniform(rng, 1e2, 1e5),
+        Csf0=_log_uniform(rng, 1e-12, 1e-9),
+        Lad=_log_uniform(rng, 1e-9, 1e-6),
     )
 
 def default_bounds(p0: Params) -> Tuple[np.ndarray, np.ndarray]:
@@ -757,12 +765,12 @@ def main():
     SEED = 0
 
     # multi-start + global -> local
-    N_STARTS = 120
-    TOP_K = 10
+    N_STARTS = 300  # increased multi-starts for broader local search
+    TOP_K = 20      # keep more top candidates for local refinement
     GLOBAL_METHOD = "de"
-    MAX_NFEV = 200
-    DE_MAXITER = 60
-    DE_POPSIZE = 10
+    MAX_NFEV = 1000  # allow more evaluations in local solver
+    DE_MAXITER = 200  # increase DE generations for deeper global search
+    DE_POPSIZE = 20    # larger population for better exploration
 
     # residual settings (Re/Im + frequency weights)
     WEIGHT_MODE = "auto"   # "auto" or "none"
@@ -775,11 +783,11 @@ def main():
     LOSS = "soft_l1"       # "soft_l1" or "huber"
     F_SCALE = None         # None -> estimate from initial residuals
 
-    # ??????????????????????????????????????
     N_PLOT = 4000
     DO_VAL = False
     VAL_BLOCKS = 6
     VAL_HOLDOUT = 1
+    DO_GP = True
 
     # ---- load experiment ----
     exp = load_experiment_from_db(DB_PATH, TABLE)
@@ -799,7 +807,7 @@ def main():
     Z_fit = mag_phase_to_complex(zabs_fit, phase_fit)
 
     # ---- initial model ----
-    p0 = make_initial_params()
+    p0 = make_initial_params(seed=SEED)
 
     # quick plot (initial vs exp)
     logmag0, phase0 = simulate_on_freq(f_fit, p0)
@@ -934,13 +942,14 @@ def main():
         print(f"Validation RSS (block split): {rss_val:.6g} (n={residual_val.size})")
 
     # ---- GP residual analysis ----
-    gp_residual_analysis(
-        f_all,
-        Z_all,
-        p_opt,
-        out_prefix="exp_10_gp_residual",
-        csv_path=r"D:\Desktop\tmp\curver_gp_residual.csv",
-    )
+    if DO_GP:
+        gp_residual_analysis(
+            f_all,
+            Z_all,
+            p_opt,
+            out_prefix="exp_10_gp_residual",
+            csv_path=r"D:\Desktop\tmp\curver_gp_residual.csv",
+        )
 
 
 

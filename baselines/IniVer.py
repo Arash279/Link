@@ -1,93 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-【中文说明】
-本程序实现了一个用于感应电机高频等效电路的阻抗建模与参数拟合框架，
-其中所有电路参数被统一视为一个 11 维可调参数向量。
-
-程序整体采用模块化结构，主要分为以下几个部分：
-
-(0) 工具函数（Utilities）：
-    提供阻抗并联运算、相位包裹（phase wrapping）等基础数学工具，
-    用于保证数值计算的稳定性与拟合过程中相位误差的连续性。
-
-(1) 参数管理（Parameter handling）：
-    使用 dataclass 定义 11 个物理参数及其向量表示，
-    实现参数向量与具名物理量之间的双向映射，
-    以提高可读性并方便数值优化。
-
-(2) 阻抗模型定义（Impedance model definition）：
-    以向量化形式实现高频等效电路的各个子阻抗，
-    包括 Zmid、Zmr、Zbra 等基本模块，
-    并通过 Y–Δ / Δ–Y 变换构建完整网络，
-    最终得到总阻抗 Z_total(ω)。
-
-(3) 实验数据读取（Experimental data loading）：
-    从 SQLite 数据库中读取实验测得的阻抗幅值与相位数据，
-    并进行必要的预处理（排序、去除无效点等）。
-
-(4) 频率抽样（Frequency sampling）：
-    在拟合阶段对实验频点进行对数均匀或随机抽样，
-    以降低计算复杂度并加快参数优化过程。
-
-(5) 参数拟合（Parameter fitting）：
-    基于非线性最小二乘法，对模型阻抗与实验阻抗进行拟合，
-    以 log(|Z|) 与相位为目标量，
-    并通过对数域优化保证参数始终保持物理上的正值。
-
-(6) 结果可视化（Visualization）：
-    绘制拟合前后模型与实验阻抗在幅值与相位上的对比曲线，
-    用于直观评估拟合效果。
-
-(7) 主程序（Main routine）：
-    统一调度数据读取、频率抽样、初始仿真、参数拟合及最终绘图流程。
-
-------------------------------------------------------------
-
-[English Description]
-This script implements a high-frequency impedance modeling and parameter
-fitting framework for an induction machine equivalent circuit, where all
-circuit elements are treated as a single 11-dimensional tunable parameter vector.
-
-The program is organized in a modular manner with the following main components:
-
-(0) Utilities:
-    Basic mathematical helper functions for impedance parallel operations
-    and phase wrapping, ensuring numerical stability and phase continuity
-    during optimization.
-
-(1) Parameter handling:
-    A dataclass-based definition of the 11 physical parameters,
-    providing bidirectional mapping between a parameter vector and
-    named circuit elements for readability and optimization convenience.
-
-(2) Impedance model definition:
-    Vectorized implementations of the high-frequency equivalent circuit,
-    including elemental impedances (Zmid, Zmr, Zbra, etc.),
-    Y–Δ / Δ–Y transformations, and the final total impedance Z_total(ω).
-
-(3) Experimental data loading:
-    Functions to load measured impedance magnitude and phase data
-    from an SQLite database with basic preprocessing.
-
-(4) Frequency sampling:
-    Optional subsampling of experimental frequency points
-    (e.g., log-uniform or random sampling) to reduce computational cost
-    during parameter fitting.
-
-(5) Parameter fitting:
-    Nonlinear least-squares fitting of simulated impedance to experimental data
-    using log-magnitude and phase as fitting targets,
-    with positivity of parameters enforced via log-domain optimization.
-
-(6) Visualization:
-    Comparison plots of simulated and experimental impedance magnitude
-    and phase before and after fitting.
-
-(7) Main routine:
-    Coordinates data loading, sampling, initial simulation,
-    parameter optimization, and final visualization.
-"""
-
 
 from __future__ import annotations
 
@@ -486,12 +397,47 @@ def compute_aic_bic(rss: float, n: int, p: int) -> Tuple[float, float]:
     bic = n * np.log(rss / n) + p * np.log(n)
     return aic, bic
 
+def evaluate_raw_space_metrics(Z_sim: np.ndarray, Z_data: np.ndarray, p: int) -> Dict[str, float]:
+    # --- 原始误差 ---
+    err_re = Z_sim.real - Z_data.real
+    err_im = Z_sim.imag - Z_data.imag
+
+    # --- 原始空间 SSE ---
+    sse = float(np.sum(err_re**2 + err_im**2))
+
+    # 样本数（Re + Im 视为两个观测维度）
+    n = 2 * int(len(Z_data))
+
+    # --- RMSE（复平面）---
+    rmse = float(np.sqrt(sse / n))
+
+    # --- AIC / BIC ---
+    # 假设高斯误差，σ² 用 SSE/n 估计
+    sigma2 = sse / n
+
+    if sigma2 <= 0:
+        aic = float("inf")
+        bic = float("inf")
+    else:
+        aic = float(n * np.log(sigma2) + 2 * p)
+        bic = float(n * np.log(sigma2) + p * np.log(n))
+
+    return {
+        "SSE_raw": sse,
+        "RMSE_raw": rmse,
+        "AIC_raw": aic,
+        "BIC_raw": bic,
+        "n": float(n),
+        "p": float(p),
+    }
+
 def gp_residual_analysis(
     f_hz: np.ndarray,
     Z_data: np.ndarray,
     p_opt: Params,
     out_prefix: str = "gp_residual",
     top_n: int = 3,
+    csv_path: Optional[str] = None,
 ):
     try:
         from sklearn.gaussian_process import GaussianProcessRegressor
@@ -544,6 +490,34 @@ def gp_residual_analysis(
     mean_re, std_re = gp_re.predict(x_grid.reshape(-1, 1), return_std=True)
     mean_im, std_im = gp_im.predict(x_grid.reshape(-1, 1), return_std=True)
     mean_ph, std_ph = gp_ph.predict(x_grid.reshape(-1, 1), return_std=True)
+
+    if csv_path:
+        import os
+        os.makedirs(os.path.dirname(csv_path), exist_ok=True)
+        df = pd.DataFrame(
+            {
+                "f_hz": f_hz,
+                "res_re": res_re,
+                "res_im": res_im,
+                "res_phase_deg": res_phase,
+            }
+        )
+        df_gp = pd.DataFrame(
+            {
+                "f_grid_hz": f_grid,
+                "gp_mean_re": mean_re,
+                "gp_std_re": std_re,
+                "gp_mean_im": mean_im,
+                "gp_std_im": std_im,
+                "gp_mean_phase_deg": mean_ph,
+                "gp_std_phase_deg": std_ph,
+            }
+        )
+        out = pd.concat(
+            [df, df_gp.reindex(range(max(len(df), len(df_gp))))],
+            axis=1,
+        )
+        out.to_csv(csv_path, index=False)
 
     def top_freqs(mean_vec: np.ndarray) -> List[float]:
         order = np.argsort(np.abs(mean_vec))[::-1]
@@ -723,17 +697,16 @@ def main():
     print(f"residual_calls = {fit_res_calls}, objective_calls = {fit_obj_calls}")
     print(f"T_fit_total = {STATS.t_total_fit:.3f} s")
 
-    # ---- RSS/AIC/BIC on full data ----
-    logmag_all = np.log10(zabs_all)
-    phase_all_wrapped = wrap_phase_deg(phase_all)
-    logmag_sim_all, phase_sim_all = simulate_on_freq(f_all, p_opt)
-    r1 = (logmag_sim_all - logmag_all) * W_LOGMAG
-    r2 = phase_diff_deg(phase_sim_all, phase_all_wrapped) * W_PHASE
-    residual_all = np.concatenate([r1, r2])
-    rss = float(np.dot(residual_all, residual_all))
-    n = residual_all.size
-    aic, bic = compute_aic_bic(rss, n, N_PARAMS)
-    print(f"\nRSS = {rss:.6g}, n = {n}, AIC = {aic:.3f}, BIC = {bic:.3f}")
+    # ---- Raw-space metrics on full data ----
+    Z_sim_all = simulate_complex(f_all, p_opt)
+    raw_metrics = evaluate_raw_space_metrics(Z_sim_all, Z_all, N_PARAMS)
+    print(
+        f"\nSSE_raw = {raw_metrics['SSE_raw']:.6g}, "
+        f"RMSE_raw = {raw_metrics['RMSE_raw']:.6g}, "
+        f"AIC_raw = {raw_metrics['AIC_raw']:.3f}, "
+        f"BIC_raw = {raw_metrics['BIC_raw']:.3f}, "
+        f"n = {int(raw_metrics['n'])}"
+    )
 
     # ---- plot final on a denser grid for readability ----
     # Use log-spaced points across experiment range
@@ -748,7 +721,13 @@ def main():
     )
 
     # ---- GP residual analysis ----
-    gp_residual_analysis(f_all, Z_all, p_opt, out_prefix="tmp_gp_residual")
+    gp_residual_analysis(
+        f_all,
+        Z_all,
+        p_opt,
+        out_prefix="tmp_gp_residual",
+        csv_path=r"D:\Desktop\tmp\iniver_gp_residual.csv",
+    )
 
 
 if __name__ == "__main__":

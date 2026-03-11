@@ -366,6 +366,7 @@ def gp_residual_analysis(
     Z_sim: np.ndarray,
     out_prefix: Optional[str] = None,
     top_n: int = 3,
+    csv_path: Optional[str] = None,
 ):
     try:
         from sklearn.gaussian_process import GaussianProcessRegressor
@@ -421,6 +422,34 @@ def gp_residual_analysis(
     mean_re, std_re = gp_re.predict(x_grid.reshape(-1, 1), return_std=True)
     mean_im, std_im = gp_im.predict(x_grid.reshape(-1, 1), return_std=True)
     mean_ph, std_ph = gp_ph.predict(x_grid.reshape(-1, 1), return_std=True)
+
+    if csv_path:
+        import os
+        os.makedirs(os.path.dirname(csv_path), exist_ok=True)
+        df = pd.DataFrame(
+            {
+                "f_hz": f_hz,
+                "res_re": res_re,
+                "res_im": res_im,
+                "res_phase_deg": res_phase,
+            }
+        )
+        df_gp = pd.DataFrame(
+            {
+                "f_grid_hz": f_grid,
+                "gp_mean_re": mean_re,
+                "gp_std_re": std_re,
+                "gp_mean_im": mean_im,
+                "gp_std_im": std_im,
+                "gp_mean_phase_deg": mean_ph,
+                "gp_std_phase_deg": std_ph,
+            }
+        )
+        out = pd.concat(
+            [df, df_gp.reindex(range(max(len(df), len(df_gp))))],
+            axis=1,
+        )
+        out.to_csv(csv_path, index=False)
 
     def top_freqs(mean_vec: np.ndarray) -> List[float]:
         order = np.argsort(np.abs(mean_vec))[::-1]
@@ -596,6 +625,7 @@ def main():
         Z_sim=Z,
         out_prefix=None,
         top_n=3,
+        csv_path=r"D:\Desktop\tmp\anly_meth_gp_residual.csv",
     )
 
 

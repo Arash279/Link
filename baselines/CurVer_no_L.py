@@ -69,7 +69,7 @@ def mag_phase_to_complex(mag: np.ndarray, phase_deg: np.ndarray) -> np.ndarray:
 
 PARAM_NAMES: List[str] = [
     "Lls", "Csw", "Rsw", "Llr", "Rrs", "Rcore",
-    "Lm", "nLls", "Csf", "Rsf", "Csf0", "Lad"   # 添加 Lad
+    "Lm", "nLls", "Csf", "Rsf", "Csf0"
 ]
 
 N_PARAMS: int = len(PARAM_NAMES)
@@ -87,7 +87,6 @@ class Params:
     Csf: float
     Rsf: float
     Csf0: float
-    Lad: float   # 新增 Lad
 
     @staticmethod
     def from_vector(x: np.ndarray) -> "Params":
@@ -141,10 +140,6 @@ def Zbra(omega: np.ndarray, p: Params) -> np.ndarray:
 def Zcsf0(omega: np.ndarray, p: Params) -> np.ndarray:
     """Zcsf0 = 1/(jωCsf0)"""
     return 1.0/(1j*omega*p.Csf0)
-
-def Zlad(omega: np.ndarray, p: Params) -> np.ndarray:
-    """Zlad = jωLad"""
-    return 1j * omega * p.Lad
 
 def Y_to_Delta(Za: np.ndarray, Zb: np.ndarray, Zc: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
@@ -203,13 +198,12 @@ def Z1_to_Z9(omega: np.ndarray, p: Params):
 
 def Z_total(omega: np.ndarray, p: Params) -> np.ndarray:
     """
-    UPDATED:
-    Z_total = Lad (series) + [ (Z6 + 1/2 Z1) || (Z5 + 1/2 Z2) + Z4 ] + Lad (series)
+    Z_total = [ (Z6 + 1/2 Z1) || (Z5 + 1/2 Z2) + Z4 ]
     """
     Z1, Z2, _, _, Z4, Z5, Z6, _, _, _ = Z1_to_Z9(omega, p)
     Z_parallel = par(Z6 + 0.5 * Z1, Z5 + 0.5 * Z2)
     Z_core_total = Z_parallel + Z4
-    return Zlad(omega, p) + Z_core_total + 0.5 * Zlad(omega, p)  # 首尾加1.5个 Lad（BC端口的两个短接）
+    return Z_core_total
 
 # ============================================================
 # 3) Load experiment data from SQLite
@@ -314,7 +308,6 @@ def make_initial_params() -> Params:
         Csf=2.461e-10,
         Rsf=2.74e3,
         Csf0=7.38e-10,
-        Lad=1.3e-7,
     )
 
 def default_bounds(p0: Params) -> Tuple[np.ndarray, np.ndarray]:
@@ -939,7 +932,7 @@ def main():
         Z_all,
         p_opt,
         out_prefix="exp_10_gp_residual",
-        csv_path=r"D:\Desktop\tmp\curver_gp_residual.csv",
+        csv_path=r"D:\Desktop\tmp\curver_no_l_gp_residual.csv",
     )
 
 

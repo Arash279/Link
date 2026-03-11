@@ -10,6 +10,7 @@ from typing import Dict, Tuple, List, Optional
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from pytensor.tensor import true_div
 
 
 @dataclass
@@ -301,7 +302,6 @@ def simulate_complex(f_hz: np.ndarray, p: Params) -> np.ndarray:
     return Z_total(omega, p)
 
 def make_initial_params() -> Params:
-    # your given initial values
     return Params(
         Lls=2.55e-2,
         Csw=1.012e-9,
@@ -757,12 +757,12 @@ def main():
     SEED = 0
 
     # multi-start + global -> local
-    N_STARTS = 120
-    TOP_K = 10
+    N_STARTS = 300  # increased multi-starts for broader local search
+    TOP_K = 20      # keep more top candidates for local refinement
     GLOBAL_METHOD = "de"
-    MAX_NFEV = 200
-    DE_MAXITER = 60
-    DE_POPSIZE = 10
+    MAX_NFEV = 1000  # allow more evaluations in local solver
+    DE_MAXITER = 200  # increase DE generations for deeper global search
+    DE_POPSIZE = 20    # larger population for better exploration
 
     # residual settings (Re/Im + frequency weights)
     WEIGHT_MODE = "auto"   # "auto" or "none"
@@ -775,11 +775,11 @@ def main():
     LOSS = "soft_l1"       # "soft_l1" or "huber"
     F_SCALE = None         # None -> estimate from initial residuals
 
-    # ??????????????????????????????????????
     N_PLOT = 4000
     DO_VAL = False
     VAL_BLOCKS = 6
     VAL_HOLDOUT = 1
+    DO_GP = True
 
     # ---- load experiment ----
     exp = load_experiment_from_db(DB_PATH, TABLE)
@@ -934,13 +934,14 @@ def main():
         print(f"Validation RSS (block split): {rss_val:.6g} (n={residual_val.size})")
 
     # ---- GP residual analysis ----
-    gp_residual_analysis(
-        f_all,
-        Z_all,
-        p_opt,
-        out_prefix="exp_10_gp_residual",
-        csv_path=r"D:\Desktop\tmp\curver_gp_residual.csv",
-    )
+    if DO_GP:
+        gp_residual_analysis(
+            f_all,
+            Z_all,
+            p_opt,
+            out_prefix="exp_10_gp_residual",
+            csv_path=r"D:\Desktop\tmp\curver_gp_residual.csv",
+        )
 
 
 

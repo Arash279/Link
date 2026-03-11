@@ -300,21 +300,29 @@ def simulate_complex(f_hz: np.ndarray, p: Params) -> np.ndarray:
     omega = 2.0 * np.pi * f_hz
     return Z_total(omega, p)
 
-def make_initial_params() -> Params:
-    # your given initial values
+def _log_uniform(rng: np.random.Generator, lo: float, hi: float) -> float:
+    """Sample log-uniform in [lo, hi], lo/hi > 0."""
+    return float(np.exp(rng.uniform(np.log(lo), np.log(hi))))
+
+def make_initial_params(seed: int = 0) -> Params:
+    """
+    Initialize parameters by sampling within reasonable ranges (log-uniform).
+    Ranges are centered around typical orders of magnitude for the circuit.
+    """
+    rng = np.random.default_rng(seed)
     return Params(
-        Lls=2.55e-2,
-        Csw=1.012e-9,
-        Rsw=1.3437e4,
-        Llr=2.55e-2,
-        Rrs=28.0,
-        Rcore=4.751e3,
-        Lm=5.5e-2,
-        nLls=1.7806e-10,
-        Csf=2.461e-10,
-        Rsf=2.74e3,
-        Csf0=7.38e-10,
-        Lad=1.3e-7,
+        Lls=_log_uniform(rng, 1e-3, 1e-1),
+        Csw=_log_uniform(rng, 1e-10, 1e-8),
+        Rsw=_log_uniform(rng, 1e3, 1e5),
+        Llr=_log_uniform(rng, 1e-3, 1e-1),
+        Rrs=_log_uniform(rng, 1.0, 1e2),
+        Rcore=_log_uniform(rng, 1e3, 1e5),
+        Lm=_log_uniform(rng, 1e-3, 1e-1),
+        nLls=_log_uniform(rng, 1e-12, 1e-9),
+        Csf=_log_uniform(rng, 1e-12, 1e-9),
+        Rsf=_log_uniform(rng, 1e2, 1e5),
+        Csf0=_log_uniform(rng, 1e-12, 1e-9),
+        Lad=_log_uniform(rng, 1e-9, 1e-6),
     )
 
 def default_bounds(p0: Params) -> Tuple[np.ndarray, np.ndarray]:
@@ -501,6 +509,111 @@ def fit_params_global_local(
     best = results[0]
     p_best = Params.from_vector(np.exp(best["x"]))
     return p_best, results
+
+def fit_params_ga_only(
+    f_fit: np.ndarray,
+    Z_fit: np.ndarray,
+    p0: Params,
+    weights: np.ndarray,
+    s_re: float,
+    s_im: float,
+    seed: int = 0,
+    pop_size: Optional[int] = None,
+    max_gen: int = 150,
+    crossover_prob: float = 0.9,
+    mutation_prob: Optional[float] = None,
+    sigma_u: float = 0.1,
+    elitism_frac: float = 0.02,
+) -> Tuple[Params, List[dict]]:
+    """
+    Genetic Algorithm in log-parameter space.
+    Returns best params and per-generation history.
+    """
+    x0 = p0.to_vector()
+    lo, hi = default_bounds(p0)
+    u0 = np.log(x0)
+    u_lo = np.log(lo)
+    u_hi = np.log(hi)
+
+    D = u0.size
+    if pop_size is None:
+        pop_size = int(12 * D)
+    pop_size = max(pop_size, 4)
+    if mutation_prob is None:
+        mutation_prob = 1.0 / D
+    elitism = max(1, int(round(elitism_frac * pop_size)))
+
+    residual = make_residual_fn(f_fit, Z_fit, weights, s_re, s_im)
+
+    def objective(u: np.ndarray) -> float:
+        STATS.objective_calls += 1
+        r = residual(u)
+        val = 0.5 * float(np.dot(r, r))
+        if not np.isfinite(val):
+            return 1e30
+        return val
+
+    rng = np.random.default_rng(seed)
+
+    # initialize population (log-uniform within bounds)
+    pop = rng.uniform(u_lo, u_hi, size=(pop_size, D))
+    fitness = np.array([objective(u) for u in pop], dtype=float)
+
+    history: List[dict] = []
+
+    def tournament_select(k: int = 3) -> int:
+        idx = rng.integers(0, pop_size, size=k)
+        best = idx[np.argmin(fitness[idx])]
+        return int(best)
+
+    for gen in range(max_gen):
+        order = np.argsort(fitness)
+        pop = pop[order]
+        fitness = fitness[order]
+
+        history.append(
+            {
+                "gen": gen,
+                "best": float(fitness[0]),
+                "median": float(np.median(fitness)),
+                "mean": float(np.mean(fitness)),
+                "std": float(np.std(fitness)),
+            }
+        )
+
+        # elitism
+        new_pop = [pop[i].copy() for i in range(elitism)]
+
+        # generate offspring
+        while len(new_pop) < pop_size:
+            p1 = pop[tournament_select()]
+            p2 = pop[tournament_select()]
+
+            c1 = p1.copy()
+            c2 = p2.copy()
+
+            # crossover: uniform
+            if rng.random() < crossover_prob:
+                mask = rng.random(D) < 0.5
+                c1[mask] = p2[mask]
+                c2[mask] = p1[mask]
+
+            # mutation: Gaussian in u-space
+            for c in (c1, c2):
+                mut_mask = rng.random(D) < mutation_prob
+                if np.any(mut_mask):
+                    c[mut_mask] += rng.normal(0.0, sigma_u, size=np.sum(mut_mask))
+                np.clip(c, u_lo, u_hi, out=c)
+                new_pop.append(c)
+                if len(new_pop) >= pop_size:
+                    break
+
+        pop = np.vstack(new_pop[:pop_size])
+        fitness = np.array([objective(u) for u in pop], dtype=float)
+
+    best_idx = int(np.argmin(fitness))
+    p_best = Params.from_vector(np.exp(pop[best_idx]))
+    return p_best, history
 
 def compute_aic_bic(rss: float, n: int, p: int) -> Tuple[float, float]:
     rss = max(rss, 1e-24)
@@ -756,13 +869,13 @@ def main():
     SAMPLE_MODE = "log_uniform"  # "log_uniform" or "random"
     SEED = 0
 
-    # multi-start + global -> local
-    N_STARTS = 120
-    TOP_K = 10
-    GLOBAL_METHOD = "de"
-    MAX_NFEV = 200
-    DE_MAXITER = 60
-    DE_POPSIZE = 10
+    # GA settings
+    GA_SEEDS = [SEED]
+    GA_POP_SIZE = None    # None -> 12 * D
+    GA_MAX_GEN = 150
+    GA_CROSSOVER = 0.9
+    GA_MUTATION = None    # None -> 1 / D
+    GA_SIGMA_U = 0.1
 
     # residual settings (Re/Im + frequency weights)
     WEIGHT_MODE = "auto"   # "auto" or "none"
@@ -775,11 +888,11 @@ def main():
     LOSS = "soft_l1"       # "soft_l1" or "huber"
     F_SCALE = None         # None -> estimate from initial residuals
 
-    # ??????????????????????????????????????
     N_PLOT = 4000
     DO_VAL = False
     VAL_BLOCKS = 6
     VAL_HOLDOUT = 1
+    DO_GP = True
 
     # ---- load experiment ----
     exp = load_experiment_from_db(DB_PATH, TABLE)
@@ -799,7 +912,7 @@ def main():
     Z_fit = mag_phase_to_complex(zabs_fit, phase_fit)
 
     # ---- initial model ----
-    p0 = make_initial_params()
+    p0 = make_initial_params(seed=SEED)
 
     # quick plot (initial vs exp)
     logmag0, phase0 = simulate_on_freq(f_fit, p0)
@@ -833,45 +946,49 @@ def main():
         residual0 = make_residual_fn(f_fit, Z_fit, weights_fit, s_re, s_im)(np.log(p0.to_vector()))
         F_SCALE = max(mad(residual0), 1e-6)
 
-    p_opt, results = fit_params_global_local(
-        f_fit=f_fit,
-        Z_fit=Z_fit,
-        p0=p0,
-        weights=weights_fit,
-        s_re=s_re,
-        s_im=s_im,
-        n_starts=N_STARTS,
-        top_k=TOP_K,
-        seed=SEED,
-        global_method=GLOBAL_METHOD,
-        max_nfev=MAX_NFEV,
-        loss=LOSS,
-        f_scale=F_SCALE,
-        de_maxiter=DE_MAXITER,
-        de_popsize=DE_POPSIZE,
-    )
+    ga_runs = []
+    ga_bests = []
+    for s in GA_SEEDS:
+        p_ga, history = fit_params_ga_only(
+            f_fit=f_fit,
+            Z_fit=Z_fit,
+            p0=p0,
+            weights=weights_fit,
+            s_re=s_re,
+            s_im=s_im,
+            seed=s,
+            pop_size=GA_POP_SIZE,
+            max_gen=GA_MAX_GEN,
+            crossover_prob=GA_CROSSOVER,
+            mutation_prob=GA_MUTATION,
+            sigma_u=GA_SIGMA_U,
+        )
+        ga_runs.append({"seed": s, "history": history, "params": p_ga})
+        ga_bests.append(history[-1]["best"])
+
+    best_idx = int(np.argmin(ga_bests))
+    p_opt = ga_runs[best_idx]["params"]
     STATS.t_total_fit += time.perf_counter() - t_fit0
 
     fit_model_eval = STATS.model_eval - m0
     fit_res_calls = STATS.residual_calls - r0
     fit_obj_calls = STATS.objective_calls - o0
 
+    print("\n===== GA summary (best/median/std of best costs) =====")
+    print(f"seeds = {GA_SEEDS}")
+    print(f"best_cost = {float(np.min(ga_bests)):.6g}")
+    print(f"median_cost = {float(np.median(ga_bests)):.6g}")
+    print(f"std_cost = {float(np.std(ga_bests)):.6g}")
+
     print("\n===== Optimized parameters =====")
     for k, v in p_opt.as_dict().items():
         print(f"{k:8s} = {v:.6g}")
-    print("\n===== Top-5 candidates (by cost) =====")
-    for i, r in enumerate(results[:5], 1):
-        print(f"{i:2d}) cost={r['cost']:.6g}, nfev={r['nfev']}, status={r['status']}")
     print("\n===== Complexity stats (fit only) =====")
     print(f"p = {N_PARAMS}")
     print(f"N_freq_fit = {f_fit.size}, N_residual_dim = {2 * f_fit.size}")
     print(f"model_eval = {fit_model_eval}")
     print(f"residual_calls = {fit_res_calls}, objective_calls = {fit_obj_calls}")
     print(f"T_fit_total = {STATS.t_total_fit:.3f} s")
-    print(f"T_global = {STATS.t_global:.3f} s, T_local = {STATS.t_local:.3f} s")
-    print(
-        f"n_starts = {N_STARTS}, top_k = {TOP_K}, de_popsize = {DE_POPSIZE}, de_maxiter = {DE_MAXITER}"
-    )
 
     # ---- plot final on a denser grid for readability ----
     # Use log-spaced points across experiment range
@@ -909,22 +1026,19 @@ def main():
             s_re_tr = max(float(np.std(Z_train.real)), 1e-12)
             s_im_tr = max(float(np.std(Z_train.imag)), 1e-12)
 
-        p_train, _ = fit_params_global_local(
+        p_train, _ = fit_params_ga_only(
             f_fit=f_train,
             Z_fit=Z_train,
             p0=p0,
             weights=weights_train,
             s_re=s_re_tr,
             s_im=s_im_tr,
-            n_starts=N_STARTS,
-            top_k=TOP_K,
-            seed=SEED,
-            global_method=GLOBAL_METHOD,
-            max_nfev=MAX_NFEV,
-            loss=LOSS,
-            f_scale=F_SCALE,
-            de_maxiter=DE_MAXITER,
-            de_popsize=DE_POPSIZE,
+            seed=GA_SEEDS[0],
+            pop_size=GA_POP_SIZE,
+            max_gen=GA_MAX_GEN,
+            crossover_prob=GA_CROSSOVER,
+            mutation_prob=GA_MUTATION,
+            sigma_u=GA_SIGMA_U,
         )
         f_val = f_fit[val_idx]
         Z_val = Z_fit[val_idx]
@@ -934,13 +1048,14 @@ def main():
         print(f"Validation RSS (block split): {rss_val:.6g} (n={residual_val.size})")
 
     # ---- GP residual analysis ----
-    gp_residual_analysis(
-        f_all,
-        Z_all,
-        p_opt,
-        out_prefix="exp_10_gp_residual",
-        csv_path=r"D:\Desktop\tmp\curver_gp_residual.csv",
-    )
+    if DO_GP:
+        gp_residual_analysis(
+            f_all,
+            Z_all,
+            p_opt,
+            out_prefix="exp_10_gp_residual",
+            csv_path=r"D:\Desktop\tmp\curver_gp_residual.csv",
+        )
 
 
 
