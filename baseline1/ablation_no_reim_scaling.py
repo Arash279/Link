@@ -1,7 +1,8 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 from __future__ import annotations
 
+import argparse
 import sqlite3
 import time
 from dataclasses import dataclass
@@ -26,6 +27,7 @@ class RunStats:
 
 
 STATS = RunStats()
+ABLATION_NAME = "No Re/Im separate scaling"
 
 
 # ============================================================
@@ -34,7 +36,7 @@ STATS = RunStats()
 
 def par(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     """Parallel of two impedances (vectorized)."""
-    return 1.0 / (1.0 / a + 1.0 / b)
+    return a * b / (a + b)
 
 def par3(a: np.ndarray, b: np.ndarray, c: np.ndarray) -> np.ndarray:
     """Parallel of three impedances (vectorized)."""
@@ -64,12 +66,12 @@ def mag_phase_to_complex(mag: np.ndarray, phase_deg: np.ndarray) -> np.ndarray:
 
 
 # ============================================================
-# 1) Parameter vector (14D) + mapping
+# 1) Parameter vector (11D) + mapping
 # ============================================================
 
 PARAM_NAMES: List[str] = [
     "Lls", "Csw", "Rsw", "Llr", "Rrs", "Rcore",
-    "Lm", "nLls", "Csf", "Rsf", "Csf0", "Lad", "Cad", "Rad"   # 娣诲姞 Lad, Cad, Rad
+    "Lm", "nLls", "Csf", "Rsf", "Csf0", "Lad"   # 添加 Lad
 ]
 
 N_PARAMS: int = len(PARAM_NAMES)
@@ -87,9 +89,7 @@ class Params:
     Csf: float
     Rsf: float
     Csf0: float
-    Lad: float   # 鏂板 Lad
-    Cad: float   # shunt capacitance across measurement terminals
-    Rad: float   # series resistance with Cad
+    Lad: float   # 新增 Lad
 
     @staticmethod
     def from_vector(x: np.ndarray) -> "Params":
@@ -114,7 +114,7 @@ class Params:
 Rs = 8.703  # stator resistance (Ohm), added in series with Zmid parallel branch
 
 def Zmid(omega: np.ndarray, p: Params) -> np.ndarray:
-    """Zmid = (j蠅Lls) || (1/j蠅Csw) || Rsw  + Rs"""
+    """Zmid = (jωLls) || (1/jωCsw) || Rsw  + Rs"""
     Z_L = 1j * omega * p.Lls
     Z_C = 1.0 / (1j * omega * p.Csw)
     Z_R = p.Rsw + 0j
@@ -122,7 +122,7 @@ def Zmid(omega: np.ndarray, p: Params) -> np.ndarray:
     return Z_par + Rs
 
 def Zmr(omega: np.ndarray, p: Params) -> np.ndarray:
-    """Zmr = (j蠅Llr + Rrs) || Rcore || (j蠅Lm)"""
+    """Zmr = (jωLlr + Rrs) || Rcore || (jωLm)"""
     Z_series = 1j * omega * p.Llr + p.Rrs
     Z_core   = p.Rcore + 0j
     Z_Lm     = 1j * omega * p.Lm
@@ -133,32 +133,24 @@ def Zmin(omega: np.ndarray, p: Params) -> np.ndarray:
     return Zmid(omega, p) + Zmr(omega, p)
 
 def Z_nLls(omega: np.ndarray, p: Params) -> np.ndarray:
-    """Z_nLls = j蠅 nLls"""
+    """Z_nLls = jω nLls"""
     return 1j * omega * p.nLls
 
 def Zbra(omega: np.ndarray, p: Params) -> np.ndarray:
-    """Zbra = 1/(j蠅Csf) + Rsf  (Csf series Rsf)"""
+    """Zbra = 1/(jωCsf) + Rsf  (Csf series Rsf)"""
     return 1.0/(1j*omega*p.Csf) + p.Rsf
 
 def Zcsf0(omega: np.ndarray, p: Params) -> np.ndarray:
-    """Zcsf0 = 1/(j蠅Csf0)"""
+    """Zcsf0 = 1/(jωCsf0)"""
     return 1.0/(1j*omega*p.Csf0)
 
 def Zlad(omega: np.ndarray, p: Params) -> np.ndarray:
-    """Zlad = j蠅Lad"""
+    """Zlad = jωLad"""
     return 1j * omega * p.Lad
-
-def Zcad(omega: np.ndarray, p: Params) -> np.ndarray:
-    """Zcad = 1/(j蠅Cad)"""
-    return 1.0 / (1j * omega * p.Cad)
-
-def Zrad(omega: np.ndarray, p: Params) -> np.ndarray:
-    """Zrad = Rad"""
-    return p.Rad + 0j
 
 def Y_to_Delta(Za: np.ndarray, Zb: np.ndarray, Zc: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
-    Y -> 螖, vectorized.
+    Y -> Δ, vectorized.
     Returns edges Z1(a-b), Z2(a-c), Z3(b-c)
     """
     S = Za*Zb + Zb*Zc + Zc*Za
@@ -169,7 +161,7 @@ def Y_to_Delta(Za: np.ndarray, Zb: np.ndarray, Zc: np.ndarray) -> Tuple[np.ndarr
 
 def delta_to_Y(Zab: np.ndarray, Zbc: np.ndarray, Zca: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
-    螖 -> Y, vectorized.
+    Δ -> Y, vectorized.
     Returns star arms Za(node a), Zb(node b), Zc(node c)
     """
     S = Zab + Zbc + Zca
@@ -184,14 +176,14 @@ def Z1_to_Z9(omega: np.ndarray, p: Params):
     Zb = Zmin(omega, p)         # b
     Zc = Zbra(omega, p)         # c
 
-    # --- Y -> 螖 (same as before) ---
+    # --- Y -> Δ (same as before) ---
     Z1, Z2, Z3 = Y_to_Delta(Za, Zb, Zc)
 
     # --- Z4_0 = Z3 || (1/2 Z3) || Zcsf0 (same as before) ---
     Z4_0 = par3(Z3, 0.5 * Z3, Zcsf0(omega, p))
 
     # ============================================================
-    # UPDATED: redefine 螖 edges and do ONE 螖 -> Y
+    # UPDATED: redefine Δ edges and do ONE Δ -> Y
     #
     # Your mapping:
     #   Z2 : a-b edge
@@ -219,9 +211,7 @@ def Z_total(omega: np.ndarray, p: Params) -> np.ndarray:
     Z1, Z2, _, _, Z4, Z5, Z6, _, _, _ = Z1_to_Z9(omega, p)
     Z_parallel = par(Z6 + 0.5 * Z1, Z5 + 0.5 * Z2)
     Z_core_total = Z_parallel + Z4
-    Zlad_par = Zrad(omega, p) + par(Zlad(omega, p), Zcad(omega, p))
-    Z_meas = Zlad_par + Z_core_total + 0.5 * Zlad_par
-    return Z_meas
+    return Zlad(omega, p) + Z_core_total + 0.5 * Zlad(omega, p)  # 首尾加1.5个 Lad（BC端口的两个短接）
 
 # ============================================================
 # 3) Load experiment data from SQLite
@@ -230,7 +220,7 @@ def Z_total(omega: np.ndarray, p: Params) -> np.ndarray:
 def load_experiment_from_db(db_path: str, table: str = "exp_10", max_freq: float = 1e8) -> pd.DataFrame:
     """
     Expect columns: Freq, Zabs, Phase (deg)
-    榛樿鍙鍙栭鐜囧尯闂?(0, max_freq]锛宮ax_freq 榛樿 1e8 Hz
+    默认只读取频率区间 (0, max_freq]，max_freq 默认 1e8 Hz
     """
     conn = sqlite3.connect(db_path)
     try:
@@ -242,7 +232,7 @@ def load_experiment_from_db(db_path: str, table: str = "exp_10", max_freq: float
     df = df.dropna().copy()
     df = df.sort_values("Freq")
     df = df[df["Freq"] > 0]
-    df = df[df["Freq"] <= max_freq]
+    df = df[df["Freq"] <= max_freq]  # 限制上限到 1e8 Hz（默认）
     return df
 
 
@@ -275,7 +265,7 @@ def sample_freq_points(
         idx = np.searchsorted(logf, grid)
         idx = np.clip(idx, 0, N - 1)
         idx = np.unique(idx)
-        # 濡傛灉 unique 涔嬪悗鐐规暟灏戯紝鍐嶈ˉ涓€鐐?
+        # 如果 unique 之后点数少，再补一点
         if idx.size < n_samples:
             rng = np.random.default_rng(seed)
             extra = rng.choice(np.setdiff1d(np.arange(N), idx), size=min(n_samples-idx.size, N-idx.size), replace=False)
@@ -327,8 +317,6 @@ def make_initial_params() -> Params:
         Rsf=2.74e3,
         Csf0=7.38e-10,
         Lad=1.3e-7,
-        Cad=1e-12,
-        Rad=1.0,
     )
 
 def default_bounds(p0: Params) -> Tuple[np.ndarray, np.ndarray]:
@@ -343,7 +331,7 @@ def default_bounds(p0: Params) -> Tuple[np.ndarray, np.ndarray]:
     hi_mul = np.full(N_PARAMS, 10.0, dtype=float)
 
     # resistances often vary wider
-    for name in ["Rsw", "Rrs", "Rcore", "Rsf", "Rad"]:
+    for name in ["Rsw", "Rrs", "Rcore", "Rsf"]:
         i = PARAM_NAMES.index(name)
         lo_mul[i] = 0.01
         hi_mul[i] = 100.0
@@ -354,11 +342,6 @@ def default_bounds(p0: Params) -> Tuple[np.ndarray, np.ndarray]:
     # ensure strictly positive
     lo = np.maximum(lo, 1e-18)
     hi = np.maximum(hi, lo * 1.001)
-
-    # Cad bounds (F): 1e-12 ~ 2e-10
-    i_cad = PARAM_NAMES.index("Cad")
-    lo[i_cad] = 1e-12
-    hi[i_cad] = 2e-10
     return lo, hi
 
 def compute_freq_weights(
@@ -401,19 +384,13 @@ def make_residual_fn(
     weights: np.ndarray,
     s_re: float,
     s_im: float,
-    u_lo: np.ndarray,
-    u_hi: np.ndarray,
 ):
     f_hz = np.asarray(f_hz, float)
     Z_data = np.asarray(Z_data, complex)
     weights = np.asarray(weights, float)
-    u_lo = np.asarray(u_lo, float)
-    u_hi = np.asarray(u_hi, float)
-    u_scale = u_hi - u_lo
 
-    def residual(v: np.ndarray) -> np.ndarray:
+    def residual(u: np.ndarray) -> np.ndarray:
         STATS.residual_calls += 1
-        u = u_lo + v * u_scale
         x = np.exp(u)
         p = Params.from_vector(x)
         Z_sim = simulate_complex(f_hz, p)
@@ -424,15 +401,15 @@ def make_residual_fn(
     return residual
 
 def sample_initials(
-    v_lo: np.ndarray,
-    v_hi: np.ndarray,
+    u_lo: np.ndarray,
+    u_hi: np.ndarray,
     n_samples: int,
     seed: int = 0,
 ) -> np.ndarray:
     rng = np.random.default_rng(seed)
-    v_lo = np.asarray(v_lo, float)
-    v_hi = np.asarray(v_hi, float)
-    return rng.uniform(v_lo, v_hi, size=(n_samples, v_lo.size))
+    u_lo = np.asarray(u_lo, float)
+    u_hi = np.asarray(u_hi, float)
+    return rng.uniform(u_lo, u_hi, size=(n_samples, u_lo.size))
 
 def fit_params_global_local(
     f_fit: np.ndarray,
@@ -468,22 +445,18 @@ def fit_params_global_local(
     u0 = np.log(x0)
     u_lo = np.log(lo)
     u_hi = np.log(hi)
-    u_scale = u_hi - u_lo
-    v0 = (u0 - u_lo) / u_scale
-    v_lo = np.zeros_like(u_lo)
-    v_hi = np.ones_like(u_hi)
 
-    residual = make_residual_fn(f_fit, Z_fit, weights, s_re, s_im, u_lo, u_hi)
+    residual = make_residual_fn(f_fit, Z_fit, weights, s_re, s_im)
 
-    def objective(v: np.ndarray) -> float:
+    def objective(u: np.ndarray) -> float:
         STATS.objective_calls += 1
-        r = residual(v)
+        r = residual(u)
         return 0.5 * float(np.dot(r, r))
 
     candidates = []
 
     if global_method == "de":
-        bounds = list(zip(v_lo.tolist(), v_hi.tolist()))
+        bounds = list(zip(u_lo.tolist(), u_hi.tolist()))
         t = time.perf_counter()
         de_res = differential_evolution(
             objective,
@@ -498,18 +471,18 @@ def fit_params_global_local(
     else:
         raise ValueError(f"Unknown global method: {global_method}")
 
-    v_samples = sample_initials(v_lo, v_hi, n_starts, seed=seed + 1)
-    scores = np.array([objective(v) for v in v_samples], dtype=float)
+    u_samples = sample_initials(u_lo, u_hi, n_starts, seed=seed + 1)
+    scores = np.array([objective(u) for u in u_samples], dtype=float)
     top_idx = np.argsort(scores)[:max(top_k, 1)]
-    candidates.extend([v_samples[i] for i in top_idx])
+    candidates.extend([u_samples[i] for i in top_idx])
 
     results = []
-    for v_start in candidates:
+    for u_start in candidates:
         t = time.perf_counter()
         res = least_squares(
             residual,
-            v_start,
-            bounds=(v_lo, v_hi),
+            u_start,
+            bounds=(u_lo, u_hi),
             max_nfev=max_nfev,
             loss=loss,
             f_scale=f_scale,
@@ -528,8 +501,7 @@ def fit_params_global_local(
 
     results.sort(key=lambda d: d["cost"])
     best = results[0]
-    u_best = u_lo + best["x"] * u_scale
-    p_best = Params.from_vector(np.exp(u_best))
+    p_best = Params.from_vector(np.exp(best["x"]))
     return p_best, results
 
 def compute_aic_bic(rss: float, n: int, p: int) -> Tuple[float, float]:
@@ -539,21 +511,21 @@ def compute_aic_bic(rss: float, n: int, p: int) -> Tuple[float, float]:
     return aic, bic
 
 def evaluate_raw_space_metrics(Z_sim: np.ndarray, Z_data: np.ndarray, p: int) -> Dict[str, float]:
-    # --- 鍘熷璇樊 ---
+    # --- 原始误差 ---
     err_re = Z_sim.real - Z_data.real
     err_im = Z_sim.imag - Z_data.imag
 
-    # --- 鍘熷绌洪棿 SSE ---
+    # --- 原始空间 SSE ---
     sse = float(np.sum(err_re**2 + err_im**2))
 
-    # 鏍锋湰鏁帮紙Re + Im 瑙嗕负涓や釜瑙傛祴缁村害锛?
+    # 样本数（Re + Im 视为两个观测维度）
     n = 2 * int(len(Z_data))
 
-    # --- RMSE锛堝骞抽潰锛?--
+    # --- RMSE（复平面）---
     rmse = float(np.sqrt(sse / n))
 
     # --- AIC / BIC ---
-    # 鍋囪楂樻柉璇樊锛屜兟?鐢?SSE/n 浼拌
+    # 假设高斯误差，σ² 用 SSE/n 估计
     sigma2 = sse / n
 
     if sigma2 <= 0:
@@ -778,13 +750,23 @@ def plot_compare(
 # 7) Main
 # ============================================================
 
-def main():
+def build_arg_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description="Run the no-Re/Im-scaling ablation experiment.")
+    parser.add_argument("--no-show", action="store_true", help="Disable matplotlib windows during execution.")
+    parser.add_argument("--seed", type=int, default=None, help="Override the random seed used by the experiment.")
+    return parser
+
+
+def main(show_plots: bool = True, seed: int | None = None):
+    if not show_plots:
+        plt.show = lambda *args, **kwargs: None
+
     # ---- user config ----
     DB_PATH = r"D:\Desktop\EE5003\data\AP_1p5.db"
     TABLE = "exp_10"          # ??? exp_13 / exp_17 / exp_21 ??????
     N_SAMPLES = 2000           # ????????????????????????
     SAMPLE_MODE = "log_uniform"  # "log_uniform" or "random"
-    SEED = 0
+    SEED = 0 if seed is None else seed
 
     # multi-start + global -> local
     N_STARTS = 120
@@ -799,7 +781,7 @@ def main():
     WEIGHT_MIN = 0.3
     WEIGHT_MAX = 4.0
     WEIGHT_POWER = 1.0
-    SCALE_MODE = "mad"     # "mad" or "std"
+    SCALE_MODE = "none"    # "mad", "std", or "none"
 
     # robust loss
     LOSS = "soft_l1"       # "soft_l1" or "huber"
@@ -810,7 +792,6 @@ def main():
     DO_VAL = False
     VAL_BLOCKS = 6
     VAL_HOLDOUT = 1
-    DO_RESIDUAL_ANALYSIS = False  # validation residuals / RSS + GP residual analysis
 
     # ---- load experiment ----
     exp = load_experiment_from_db(DB_PATH, TABLE)
@@ -831,11 +812,6 @@ def main():
 
     # ---- initial model ----
     p0 = make_initial_params()
-    lo, hi = default_bounds(p0)
-    u_lo = np.log(lo)
-    u_hi = np.log(hi)
-    u_scale = u_hi - u_lo
-    v0 = (np.log(p0.to_vector()) - u_lo) / u_scale
 
     # quick plot (initial vs exp)
     logmag0, phase0 = simulate_on_freq(f_fit, p0)
@@ -847,6 +823,7 @@ def main():
     )
 
     # ---- fit (global -> local) ----
+    print(f"Ablation = {ABLATION_NAME}")
     m0 = STATS.model_eval
     r0 = STATS.residual_calls
     o0 = STATS.objective_calls
@@ -860,13 +837,16 @@ def main():
     elif SCALE_MODE == "std":
         s_re = float(np.std(Z_fit.real))
         s_im = float(np.std(Z_fit.imag))
+    elif SCALE_MODE == "none":
+        s_re = 1.0
+        s_im = 1.0
     else:
         raise ValueError(f"Unknown SCALE_MODE: {SCALE_MODE}")
     s_re = max(s_re, 1e-12)
     s_im = max(s_im, 1e-12)
 
     if F_SCALE is None:
-        residual0 = make_residual_fn(f_fit, Z_fit, weights_fit, s_re, s_im, u_lo, u_hi)(v0)
+        residual0 = make_residual_fn(f_fit, Z_fit, weights_fit, s_re, s_im)(np.log(p0.to_vector()))
         F_SCALE = max(mad(residual0), 1e-6)
 
     p_opt, results = fit_params_global_local(
@@ -933,7 +913,7 @@ def main():
     )
 
     # ---- optional validation split ----
-    if DO_VAL and DO_RESIDUAL_ANALYSIS:
+    if DO_VAL:
         train_idx, val_idx = block_split_indices(f_fit.size, VAL_BLOCKS, VAL_HOLDOUT, seed=SEED)
         f_train = f_fit[train_idx]
         Z_train = Z_fit[train_idx]
@@ -941,6 +921,9 @@ def main():
         if SCALE_MODE == "mad":
             s_re_tr = max(mad(Z_train.real), 1e-12)
             s_im_tr = max(mad(Z_train.imag), 1e-12)
+        elif SCALE_MODE == "none":
+            s_re_tr = 1.0
+            s_im_tr = 1.0
         else:
             s_re_tr = max(float(np.std(Z_train.real)), 1e-12)
             s_im_tr = max(float(np.std(Z_train.imag)), 1e-12)
@@ -965,25 +948,21 @@ def main():
         f_val = f_fit[val_idx]
         Z_val = Z_fit[val_idx]
         weights_val = weights_fit[val_idx]
-        v_train = (np.log(p_train.to_vector()) - u_lo) / u_scale
-        residual_val = make_residual_fn(f_val, Z_val, weights_val, s_re_tr, s_im_tr, u_lo, u_hi)(v_train)
+        residual_val = make_residual_fn(f_val, Z_val, weights_val, s_re_tr, s_im_tr)(np.log(p_train.to_vector()))
         rss_val = float(np.dot(residual_val, residual_val))
         print(f"Validation RSS (block split): {rss_val:.6g} (n={residual_val.size})")
 
     # ---- GP residual analysis ----
-    if DO_RESIDUAL_ANALYSIS:
-        gp_residual_analysis(
-            f_all,
-            Z_all,
-            p_opt,
-            out_prefix="exp_10_gp_residual",
-            csv_path=r"D:\Desktop\tmp\curver_gp_residual.csv",
-        )
+    gp_residual_analysis(
+        f_all,
+        Z_all,
+        p_opt,
+        out_prefix="exp_10_gp_residual",
+        csv_path=r"D:\Desktop\tmp\curver_gp_residual.csv",
+    )
 
 
 
 if __name__ == "__main__":
-    main()
-
-
-
+    args = build_arg_parser().parse_args()
+    main(show_plots=not args.no_show, seed=args.seed)

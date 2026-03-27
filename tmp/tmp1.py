@@ -67,12 +67,24 @@ def mag_phase_to_complex(mag: np.ndarray, phase_deg: np.ndarray) -> np.ndarray:
 # 1) Parameter vector (14D) + mapping
 # ============================================================
 
+# Base parameter list (full model)
 PARAM_NAMES: List[str] = [
     "Lls", "Csw", "Rsw", "Llr", "Rrs", "Rcore",
     "Lm", "nLls", "Csf", "Rsf", "Csf0", "Lad", "Cad", "Rad"   # 娣诲姞 Lad, Cad, Rad
 ]
 
-N_PARAMS: int = len(PARAM_NAMES)
+# Fixed parameters (not optimized)
+FIXED_NAMES = {"Csf", "Csf0", "Csw"}
+
+# Lls = Llr constraint: drop Llr from optimization, reuse Lls
+CONSTRAINED_ALIAS = {"Llr": "Lls"}
+
+# Build optimization parameter list
+OPT_PARAM_NAMES: List[str] = [
+    n for n in PARAM_NAMES if n not in FIXED_NAMES and n not in CONSTRAINED_ALIAS
+]
+
+N_PARAMS: int = len(OPT_PARAM_NAMES)
 
 @dataclass
 class Params:
@@ -92,15 +104,20 @@ class Params:
     Rad: float   # series resistance with Cad
 
     @staticmethod
-    def from_vector(x: np.ndarray) -> "Params":
+    def from_vector(x: np.ndarray, fixed: "Params") -> "Params":
         x = np.asarray(x, dtype=float).reshape(-1)
         if x.size != N_PARAMS:
             raise ValueError(f"Expected {N_PARAMS} params, got {x.size}")
-        d = dict(zip(PARAM_NAMES, x.tolist()))
+        d = fixed.as_dict()
+        for k, v in zip(OPT_PARAM_NAMES, x.tolist()):
+            d[k] = v
+        # apply constraint alias
+        for k, alias in CONSTRAINED_ALIAS.items():
+            d[k] = d[alias]
         return Params(**d)
 
     def to_vector(self) -> np.ndarray:
-        return np.array([getattr(self, k) for k in PARAM_NAMES], dtype=float)
+        return np.array([getattr(self, k) for k in OPT_PARAM_NAMES], dtype=float)
 
     def as_dict(self) -> Dict[str, float]:
         return {k: getattr(self, k) for k in PARAM_NAMES}
@@ -343,8 +360,8 @@ def default_bounds(p0: Params) -> Tuple[np.ndarray, np.ndarray]:
     hi_mul = np.full(N_PARAMS, 10.0, dtype=float)
 
     # resistances often vary wider
-    for name in ["Rsw", "Rrs", "Rcore", "Rsf", "Rad"]:
-        i = PARAM_NAMES.index(name)
+    for name in ["Rsw", "Rsf", "Rrs", "Rcore", "Rad"]:
+        i = OPT_PARAM_NAMES.index(name)
         lo_mul[i] = 0.01
         hi_mul[i] = 100.0
 
@@ -356,7 +373,7 @@ def default_bounds(p0: Params) -> Tuple[np.ndarray, np.ndarray]:
     hi = np.maximum(hi, lo * 1.001)
 
     # Cad bounds (F): 1e-12 ~ 2e-10
-    i_cad = PARAM_NAMES.index("Cad")
+    i_cad = OPT_PARAM_NAMES.index("Cad")
     lo[i_cad] = 1e-12
     hi[i_cad] = 2e-10
     return lo, hi
@@ -403,6 +420,7 @@ def make_residual_fn(
     s_im: float,
     u_lo: np.ndarray,
     u_hi: np.ndarray,
+    fixed_params: Params,
 ):
     f_hz = np.asarray(f_hz, float)
     Z_data = np.asarray(Z_data, complex)
@@ -415,7 +433,7 @@ def make_residual_fn(
         STATS.residual_calls += 1
         u = u_lo + v * u_scale
         x = np.exp(u)
-        p = Params.from_vector(x)
+        p = Params.from_vector(x, fixed_params)
         Z_sim = simulate_complex(f_hz, p)
         r_re = weights * (Z_sim.real - Z_data.real) / s_re
         r_im = weights * (Z_sim.imag - Z_data.imag) / s_im
@@ -473,7 +491,7 @@ def fit_params_global_local(
     v_lo = np.zeros_like(u_lo)
     v_hi = np.ones_like(u_hi)
 
-    residual = make_residual_fn(f_fit, Z_fit, weights, s_re, s_im, u_lo, u_hi)
+    residual = make_residual_fn(f_fit, Z_fit, weights, s_re, s_im, u_lo, u_hi, p0)
 
     def objective(v: np.ndarray) -> float:
         STATS.objective_calls += 1
@@ -529,7 +547,7 @@ def fit_params_global_local(
     results.sort(key=lambda d: d["cost"])
     best = results[0]
     u_best = u_lo + best["x"] * u_scale
-    p_best = Params.from_vector(np.exp(u_best))
+    p_best = Params.from_vector(np.exp(u_best), p0)
     return p_best, results
 
 def compute_aic_bic(rss: float, n: int, p: int) -> Tuple[float, float]:
@@ -866,7 +884,7 @@ def main():
     s_im = max(s_im, 1e-12)
 
     if F_SCALE is None:
-        residual0 = make_residual_fn(f_fit, Z_fit, weights_fit, s_re, s_im, u_lo, u_hi)(v0)
+        residual0 = make_residual_fn(f_fit, Z_fit, weights_fit, s_re, s_im, u_lo, u_hi, p0)(v0)
         F_SCALE = max(mad(residual0), 1e-6)
 
     p_opt, results = fit_params_global_local(
@@ -966,7 +984,7 @@ def main():
         Z_val = Z_fit[val_idx]
         weights_val = weights_fit[val_idx]
         v_train = (np.log(p_train.to_vector()) - u_lo) / u_scale
-        residual_val = make_residual_fn(f_val, Z_val, weights_val, s_re_tr, s_im_tr, u_lo, u_hi)(v_train)
+        residual_val = make_residual_fn(f_val, Z_val, weights_val, s_re_tr, s_im_tr, u_lo, u_hi, p0)(v_train)
         rss_val = float(np.dot(residual_val, residual_val))
         print(f"Validation RSS (block split): {rss_val:.6g} (n={residual_val.size})")
 
