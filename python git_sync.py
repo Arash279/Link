@@ -7,7 +7,7 @@ import datetime
 PROJECT_PATH = r"D:\Desktop\Link"
 
 # 2. 注释开关：True 表示使用自定义注释，False 表示使用自动生成的通用注释
-USE_CUSTOM_COMMENT = True
+USE_CUSTOM_COMMENT = False
 
 # 3. 自定义注释内容（当 USE_CUSTOM_COMMENT 为 True 时生效）
 CUSTOM_COMMENT = "Before Codex"
