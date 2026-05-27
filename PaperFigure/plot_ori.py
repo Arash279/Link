@@ -247,29 +247,23 @@ def plot_compare(
     f_exp: np.ndarray,
     zabs_exp: np.ndarray,
     phase_exp: np.ndarray,
-    f_sim: np.ndarray,
-    zabs_sim: np.ndarray,
-    phase_sim: np.ndarray,
-    title_suffix: str = "",
 ):
     plt.figure(figsize=(12, 8))
 
     plt.subplot(2, 1, 1)
-    plt.semilogx(f_sim, np.log10(zabs_sim), label="Simulation", linewidth=2)
-    plt.semilogx(f_exp, np.log10(zabs_exp), label="Experiment", linewidth=2)
+    plt.semilogx(f_exp, np.log10(zabs_exp), label="Experiment", color="k", linewidth=2)
     plt.xlabel("Frequency (Hz)")
     plt.ylabel("log10(|Z|) (Ohm)")
-    plt.title(f"Impedance Magnitude Comparison {title_suffix}".strip())
-    plt.grid(True)
+    plt.title("Magnitude")
+    plt.grid(True)  # grid restored
     plt.legend()
 
     plt.subplot(2, 1, 2)
-    plt.semilogx(f_sim, wrap_phase_deg(phase_sim), label="Simulation", linewidth=2)
-    plt.semilogx(f_exp, wrap_phase_deg(phase_exp), label="Experiment", linewidth=2)
+    plt.semilogx(f_exp, wrap_phase_deg(phase_exp), label="Experiment", color="k", linewidth=2)
     plt.xlabel("Frequency (Hz)")
     plt.ylabel("Phase (deg)")
-    plt.title(f"Impedance Phase Comparison {title_suffix}".strip())
-    plt.grid(True)
+    plt.title("Phase")
+    plt.grid(True)  # grid restored
     plt.legend()
 
     plt.tight_layout()
@@ -280,7 +274,7 @@ def plot_residuals(
     f: np.ndarray,
     res: np.ndarray,
     title: str,
-    rel_to: np.ndarray | None = None,
+    rel_to: Optional[np.ndarray] = None,
 ):
     """Plot residual Re, Im and |res|."""
     f = np.asarray(f, float)
@@ -291,23 +285,23 @@ def plot_residuals(
     fig, axes = plt.subplots(3, 1, figsize=(12, 10), sharex=True)
     fig.suptitle(title)
 
-    axes[0].semilogx(f, re, ".", color="tab:blue", alpha=0.4, label="Residual Re")
+    axes[0].semilogx(f, re, ".", color="k", alpha=0.6, label="Residual Re")
     axes[0].set_ylabel("Re residual (Ohm)")
-    axes[0].grid(True)
+    axes[0].grid(True)  # grid restored
     axes[0].legend()
 
-    axes[1].semilogx(f, im, ".", color="tab:blue", alpha=0.4, label="Residual Im")
+    axes[1].semilogx(f, im, ".", color="k", alpha=0.6, label="Residual Im")
     axes[1].set_ylabel("Im residual (Ohm)")
-    axes[1].grid(True)
+    axes[1].grid(True)  # grid restored
     axes[1].legend()
 
-    axes[2].semilogx(f, mag, ".", color="tab:blue", alpha=0.4, label="|res|")
+    axes[2].semilogx(f, mag, ".", color="k", alpha=0.6, label="|res|")
     if rel_to is not None:
         rel = mag / (np.asarray(rel_to, float) + 1e-12)
-        axes[2].semilogx(f, rel, "r-", linewidth=1.5, label="|res| / |Z_exp|")
+        axes[2].semilogx(f, rel, "k-", linewidth=1.5, label="|res| / |Z_exp|")
     axes[2].set_xlabel("Frequency (Hz)")
     axes[2].set_ylabel("Magnitude (Ohm/ratio)")
-    axes[2].grid(True)
+    axes[2].grid(True)  # grid restored
     axes[2].legend()
 
     plt.tight_layout()
@@ -373,10 +367,6 @@ def main():
         f_exp=f,
         zabs_exp=zabs_exp,
         phase_exp=phase_exp,
-        f_sim=f,
-        zabs_sim=zabs_sim,
-        phase_sim=phase_sim,
-        title_suffix="(NO FIT)",
     )
 
     res = compute_complex_residual(

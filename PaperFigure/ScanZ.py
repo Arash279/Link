@@ -53,7 +53,6 @@ PARAM_NAMES: List[str] = [
     "Csf",
     "Rsf",
     "Csf0",
-    "Lad",
 ]
 N_PARAMS: int = len(PARAM_NAMES)
 
@@ -71,7 +70,6 @@ class Params:
     Csf: float
     Rsf: float
     Csf0: float
-    Lad: float
 
     @staticmethod
     def from_dict(d: Dict[str, float]) -> "Params":
@@ -121,10 +119,6 @@ def Zcsf0(omega: np.ndarray, p: Params) -> np.ndarray:
     return 1.0 / (1j * omega * p.Csf0)
 
 
-def Zlad(omega: np.ndarray, p: Params) -> np.ndarray:
-    return 1j * omega * p.Lad
-
-
 def Y_to_Delta(
     za: np.ndarray, zb: np.ndarray, zc: np.ndarray
 ) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
@@ -164,7 +158,7 @@ def Z_total(omega: np.ndarray, p: Params) -> np.ndarray:
     z1, z2, _, _, z4, z5, z6, _, _, _ = Z1_to_Z9(omega, p)
     z_parallel = par(z6 + 0.5 * z1, z5 + 0.5 * z2)
     z_core_total = z_parallel + z4
-    return Zlad(omega, p) + z_core_total + 0.5 * Zlad(omega, p)
+    return z_core_total
 
 
 def load_experiment_from_db(db_path: str, table: str) -> pd.DataFrame:
@@ -190,6 +184,18 @@ def simulate_on_freq(f_hz: np.ndarray, p: Params) -> Tuple[np.ndarray, np.ndarra
     mag = np.abs(z)
     ph = np.angle(z, deg=True)
     return z, np.log10(mag), wrap_phase_deg(ph)
+
+
+def component_impedances(f_hz: np.ndarray, p: Params) -> Dict[str, np.ndarray]:
+    """Return individual component impedances on the given frequency grid."""
+    omega = 2.0 * np.pi * np.asarray(f_hz, dtype=float)
+    return {
+        "Zmr": Zmr(omega, p),
+        "Zmid": Zmid(omega, p),
+        "Z_nLls": Z_nLls(omega, p),
+        "Zbra": Zbra(omega, p),
+        "Zcsf0": Zcsf0(omega, p),
+    }
 
 
 def compute_metrics(
@@ -276,6 +282,59 @@ def plot_compare(
     plt.show()
 
 
+def plot_component_impedances(
+    f_hz: np.ndarray,
+    components: Dict[str, np.ndarray],
+    title_suffix: str = "",
+):
+    """Plot magnitude and phase of individual impedances with the same style as Z_total."""
+    plt.figure(figsize=(12, 8))
+
+    plt.subplot(2, 1, 1)
+    for name, z in components.items():
+        plt.semilogx(f_hz, np.log10(np.abs(z)), label=name, linewidth=2)
+    plt.xlabel("Frequency (Hz)")
+    plt.ylabel("log10(|Z|) (Ohm)")
+    plt.title(f"Component Impedance Magnitude {title_suffix}".strip())
+    plt.grid(True)
+    plt.legend()
+
+    plt.subplot(2, 1, 2)
+    for name, z in components.items():
+        plt.semilogx(f_hz, wrap_phase_deg(np.angle(z, deg=True)), label=name, linewidth=2)
+    plt.xlabel("Frequency (Hz)")
+    plt.ylabel("Phase (deg)")
+    plt.title(f"Component Impedance Phase {title_suffix}".strip())
+    plt.grid(True)
+    plt.legend()
+
+    plt.tight_layout()
+    plt.show()
+
+
+def print_component_table(
+    f_hz: np.ndarray,
+    components: Dict[str, np.ndarray],
+    n_points: int = 6,
+):
+    """Print a compact table at a few log-spaced frequency points."""
+    f_hz = np.asarray(f_hz, dtype=float)
+    if f_hz.size == 0:
+        return
+
+    target_freqs = np.geomspace(f_hz[0], f_hz[-1], num=min(n_points, f_hz.size))
+    sample_idx = np.unique([int(np.argmin(np.abs(f_hz - f0))) for f0 in target_freqs])
+
+    print("\n===== Component impedance samples =====")
+    for idx in sample_idx:
+        print(f"\nFreq = {f_hz[idx]:.6g} Hz")
+        print(f"{'Name':8s} {'|Z|(Ohm)':>14s} {'Phase(deg)':>14s}")
+        for name, z in components.items():
+            mag = np.abs(z[idx])
+            phase = wrap_phase_deg(np.array([np.angle(z[idx], deg=True)]))[0]
+            print(f"{name:8s} {mag:14.6g} {phase:14.6f}")
+
+
 def plot_residuals(
     f: np.ndarray,
     res: np.ndarray,
@@ -319,18 +378,17 @@ def main():
     TABLE = "exp_10"
 
     PARAMS_FIXED: Dict[str, float] = dict(
-        Lls=2.55e-2,
-        Csw=1.012e-9,
-        Rsw=1.3437e4,
-        Llr=2.55e-2,
-        Rrs=28.0,
-        Rcore=4.751e3,
-        Lm=5.5e-2,
-        nLls=1.7806e-10,
-        Csf=2.461e-10,
-        Rsf=2.74e3,
-        Csf0=7.38e-10,
-        Lad=1.3e-7,
+        Lls=0.03288,
+        Csw=6.33796e-10,
+        Rsw=14311.4,
+        Llr=0.0138097,
+        Rrs=2800,
+        Rcore=5265.38,
+        Lm=0.0206859,
+        nLls=1.7806e-09,
+        Csf=3.46289e-10,
+        Rsf=27.4,
+        Csf0=7.38e-09,
     )
 
     METRIC_BANDS = [
@@ -347,8 +405,9 @@ def main():
     p = Params.from_dict(PARAMS_FIXED)
     z, logmag_sim, phase_sim = simulate_on_freq(f, p)
     zabs_sim = np.abs(z)
+    components = component_impedances(f, p)
 
-    print("\n===== Fixed parameters used (NO FIT) =====")
+    print("\n===== Fixed parameters used (NO FIX) =====")
     for k, v in p.as_dict().items():
         print(f"{k:8s} = {v:.6g}")
 
@@ -369,6 +428,8 @@ def main():
         print(f"  Phase RMSE(deg)= {m['phase_RMSE_deg']:.6g}")
         print(f"  Phase MAE(deg) = {m['phase_MAE_deg']:.6g}")
 
+    print_component_table(f_hz=f, components=components)
+
     plot_compare(
         f_exp=f,
         zabs_exp=zabs_exp,
@@ -376,7 +437,12 @@ def main():
         f_sim=f,
         zabs_sim=zabs_sim,
         phase_sim=phase_sim,
-        title_suffix="(NO FIT)",
+        title_suffix="(NO FIX)",
+    )
+    plot_component_impedances(
+        f_hz=f,
+        components=components,
+        title_suffix="(NO FIX)",
     )
 
     res = compute_complex_residual(
@@ -387,7 +453,7 @@ def main():
     plot_residuals(
         f=f,
         res=res,
-        title=f"Residuals (NO FIT) - {TABLE}",
+        title=f"Residuals (NO FIX) - {TABLE}",
         rel_to=zabs_exp,
     )
 
