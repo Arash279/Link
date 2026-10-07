@@ -1,0 +1,1694 @@
+[
+  {
+    "path": "D:\\Desktop\\LinkCodex\\.gitignore",
+    "bytes": 313,
+    "sha256": "152f53ac8a86c98e9a39209f7f52347065dad8138513cdaf5b7984c929f786b4",
+    "mtime_ns": 1780014827163380200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\main.py",
+    "bytes": 22,
+    "sha256": "cf603e7740f7f7cbf211c7b240f8426c0bf602353290cdb3c9a52adbb0dfaec1",
+    "mtime_ns": 1760453739000000000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\python git_sync.py",
+    "bytes": 2298,
+    "sha256": "0731778d14fb8e242aa3db344d3153d4d2e52063a8375827e9e698abff475b68",
+    "mtime_ns": 1780014049556748300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\README.md",
+    "bytes": 2602,
+    "sha256": "d55a96fd5054b93929b629e619d4031aad69c97f71f755bf664cfac9e5029aed",
+    "mtime_ns": 1770663064394493500
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\sync_to_github.bat",
+    "bytes": 136,
+    "sha256": "31be258934b1ebb3c96826053aa396c89bec0201f181b47d48ac14adb0babb9f",
+    "mtime_ns": 1761290970000000000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\sync_to_local.bat",
+    "bytes": 1281,
+    "sha256": "beb9fbef98b27d0c4a124d194e71a23137570b79dc8e355294e60cccdbe1ff89",
+    "mtime_ns": 1769494847105303200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\tmp.py",
+    "bytes": 1319,
+    "sha256": "34fcf77d86606fb7268099a9a6e837d6a23fb4f7c1bd96d087353f8ccd15a68f",
+    "mtime_ns": 1772553447611684400
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\.idea\\.gitignore",
+    "bytes": 190,
+    "sha256": "aefe07a52418e9d0c587b31238f7503d35e75034a769547d5e56851a1f822ccf",
+    "mtime_ns": 1760456571000000000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\.idea\\.name",
+    "bytes": 10,
+    "sha256": "c90e694059762c6302e18175fd27a26fba7c3ed2dd02e23412b8222066c76e1e",
+    "mtime_ns": 1789031499964889300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\.idea\\copilot.data.migration.ask2agent.xml",
+    "bytes": 199,
+    "sha256": "65753465e271eed78cc36dce8b8a00ed3c8fc75eeeb3e2b1fde04a51bcd786c6",
+    "mtime_ns": 1770558433334236200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\.idea\\dataSources.local.xml",
+    "bytes": 1608,
+    "sha256": "47310475abc4591f77fac3b3f7175acc678f756528a5a989c7d9145ee66fb4d6",
+    "mtime_ns": 1768171902584711600
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\.idea\\dataSources.xml",
+    "bytes": 926,
+    "sha256": "bede055507ea016280c19d03f9dec16e28c16a6ce0613004359e53c4c4f3476a",
+    "mtime_ns": 1768171320028973900
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\.idea\\data_source_mapping.xml",
+    "bytes": 247,
+    "sha256": "47f03013dbc4d5fbd3d6dbd7f591d4a5b2f4264cbc927518fa5014ff51871a24",
+    "mtime_ns": 1768171320030973800
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\.idea\\db-forest-config.xml",
+    "bytes": 305,
+    "sha256": "ffd92f0eabe0a742cac99be85e3ffd217dadce8071adcbf5c7874ee25dc520e2",
+    "mtime_ns": 1768171320038974800
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\.idea\\dbnavigator.xml",
+    "bytes": 25465,
+    "sha256": "56e39bb55c804a6ca48836caa95bc28fbafa26ba4f0b1dd38a59e4f4b13ed295",
+    "mtime_ns": 1789031500021021100
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\.idea\\Link.iml",
+    "bytes": 512,
+    "sha256": "7bd7d0d8cfc8cb26ce18f99a2703c4dd3293ef244028e426d6fc26d9fd32e5eb",
+    "mtime_ns": 1766903625580152700
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\.idea\\misc.xml",
+    "bytes": 305,
+    "sha256": "aa3adebe46c67d759a7d61c1bb3a790dfc732faf85aa0e27e36e8b306d1fedd4",
+    "mtime_ns": 1780009973840367500
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\.idea\\modules.xml",
+    "bytes": 267,
+    "sha256": "d5b94caaacff393d1a5fbe2996a2003fd7e74e251f7a5fbb2cbabc89f2299d59",
+    "mtime_ns": 1760456585000000000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\.idea\\sqldialects.xml",
+    "bytes": 212,
+    "sha256": "ca78b92c09b6e6442299569cf6d5dd9aa8426042c8f075727f98b553077f355e",
+    "mtime_ns": 1768171320033973500
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\.idea\\vcs.xml",
+    "bytes": 172,
+    "sha256": "62be7e0a7f84ab3c35b4d4bafb890a4951d061eadafde1a10aa3f5d0406db5df",
+    "mtime_ns": 1760456585000000000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\.idea\\workspace.xml",
+    "bytes": 17665,
+    "sha256": "58594ddd031e209a198ecbea4ae52c40fe53f554da2775edc25edf4adaacb579",
+    "mtime_ns": 1789032847597623600
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\.pytest_cache\\.gitignore",
+    "bytes": 39,
+    "sha256": "e7c6bb30148cf667606dcd63e7ca77acaa3cfb0c8303bf09e6419e1e1669dc6d",
+    "mtime_ns": 1766903716750458000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\.pytest_cache\\CACHEDIR.TAG",
+    "bytes": 191,
+    "sha256": "37dc88ef9a0abeddbe81053a6dd8fdfb13afb613045ea1eb4a5c815a74a3bde4",
+    "mtime_ns": 1766903716750458000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\.pytest_cache\\README.md",
+    "bytes": 310,
+    "sha256": "420e808d79a6c25d3cda0af33bc4782314a14949866682c68ce8149e89b66b70",
+    "mtime_ns": 1766903716750458000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\ablation_de_only.py",
+    "bytes": 30831,
+    "sha256": "eb351ac057d90eac5914576ce6e20bd6cb1b7a26e42369bba417bd7c02d14379",
+    "mtime_ns": 1774585001228011000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\ablation_ga_ls.py",
+    "bytes": 32650,
+    "sha256": "5c7c738016b9af140ba534abaca3d55a8b020e3d726db055390871abeec0d500",
+    "mtime_ns": 1774585001229170200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\ablation_ls_only.py",
+    "bytes": 30420,
+    "sha256": "ca7e9af8b6777b5b4fcf791e8daee6c1574718281cb731359b2cae023dbc134b",
+    "mtime_ns": 1774585001229170200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\ablation_no_freq_weights.py",
+    "bytes": 31447,
+    "sha256": "33f37156e92fca56976ab35c9acba1eed6cda10491918241556b9ae9af804dee",
+    "mtime_ns": 1774585001230181600
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\ablation_no_reim_scaling.py",
+    "bytes": 31599,
+    "sha256": "9383190c2c0cac55f4fcf6dc095b1f5f8279c4189c9c21a114f4ecf26a569716",
+    "mtime_ns": 1774585001231331900
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\CurVer.py",
+    "bytes": 31203,
+    "sha256": "8660c8350bad09b2f8daf5d78807f9f58bc852963d0bcbb8365478e0b31fce56",
+    "mtime_ns": 1780016612509174700
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\gp_peak_summary_by_script.csv",
+    "bytes": 5921,
+    "sha256": "1cba4c9f4aa40cd894f2382fef17b99a5d741c9d8751d95d9b86beea1eb358e5",
+    "mtime_ns": 1774613696643196100
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\parameter_summary_by_script.csv",
+    "bytes": 8461,
+    "sha256": "9969fbb987e689be8404f741baf32f65b866d744a3d41dbe520abaa6b9c62161",
+    "mtime_ns": 1774613696642196000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\parsed_runs.csv",
+    "bytes": 23791,
+    "sha256": "f9fd79cb903624607dbeb48d872de97ad27f99fcf6a81d33df15718b3e90bf16",
+    "mtime_ns": 1774613696640196400
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\parsed_runs_compact.csv",
+    "bytes": 8136,
+    "sha256": "783b51e0682806557842cc82db561e1d96cea8df53ff3dfd65de85f1517a53c5",
+    "mtime_ns": 1774613696641196100
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\socket.py",
+    "bytes": 8274,
+    "sha256": "61346fc1ef54152550d7a7f97e5568f5991189d12f2318963019cd956af0522a",
+    "mtime_ns": 1774607128620162800
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\socket_run_log.txt",
+    "bytes": 102520,
+    "sha256": "d897397a757b5a25b333469defc870e6d1f73d3ff6479aaadf2624c754a14b8d",
+    "mtime_ns": 1774613414741707000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\summary.py",
+    "bytes": 13117,
+    "sha256": "e04ed45f9ab52469e2c34f2fa2354ea1c22c1f009692709cc5cbe5b74d2ad655",
+    "mtime_ns": 1774613696197512200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\summary_by_script.csv",
+    "bytes": 7766,
+    "sha256": "660cba34a26d61e1bcb0b5c88f8c6b92f6e948d1aa417ee88e04a1a6f7f64262",
+    "mtime_ns": 1774613696642196000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\__init__.py",
+    "bytes": 41,
+    "sha256": "09e1c7833f2fb3d4011d9fcc713bda20c246632aa6dbfd92d1f894e4187d3abe",
+    "mtime_ns": 1780010116355319700
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baselines\\Anly_Meth.py",
+    "bytes": 20096,
+    "sha256": "0fb14ac4c7296ea5254042aea517a3cdd9a0b03d760a4ed09d71b3617fb4667a",
+    "mtime_ns": 1772466105987680300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baselines\\CurVer.py",
+    "bytes": 30735,
+    "sha256": "e630038e387f1a6222618e7d7d6e3c80d309aa4d39230f360be581745d4173bb",
+    "mtime_ns": 1772476820336687800
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baselines\\CurVer_no_L.py",
+    "bytes": 30403,
+    "sha256": "3a061a149b8c89d0e3eaf5f184b79d2160d769cb85b318693e09a3170ac50e07",
+    "mtime_ns": 1772476840660561700
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baselines\\exp_10_gp_residual.png",
+    "bytes": 297453,
+    "sha256": "c300c84eecceadb104cae74a9eb3f67e22c4d7156170dca8c9396a96f0565945",
+    "mtime_ns": 1774440191912832100
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baselines\\GA+Anly.py",
+    "bytes": 31096,
+    "sha256": "37c0ac7e43594dabcd338649b4f9eaefea92c17344c2d23e5ac9d0e1e15fc304",
+    "mtime_ns": 1772478767106305000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baselines\\GA.py",
+    "bytes": 31748,
+    "sha256": "8d4eb8dd106960bf9a38d8a8968f85df31adc7c734bcb8277295ad08cd3ab260",
+    "mtime_ns": 1772478879648463500
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baselines\\IniVer.py",
+    "bytes": 23467,
+    "sha256": "39e8fc8875d12ad4914f0fcee6168b6a179fa12309ec8edefa6b9b45fe36f5f1",
+    "mtime_ns": 1772476864317547000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baselines\\NUTSVer.py",
+    "bytes": 38295,
+    "sha256": "71dd35384a180b330368dd2d28b413c0476d226d00d033ca378ba503022d9d8c",
+    "mtime_ns": 1772551931298127100
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baselines\\Only_fit.py",
+    "bytes": 34566,
+    "sha256": "9d52890c195d217585e7ec28b125c4513d50c836e7996fc80b6809a0a1a1cfab",
+    "mtime_ns": 1772477105021471600
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\Circuit_Fitting\\compute_Lm.py",
+    "bytes": 11235,
+    "sha256": "ff06afb336cb2f830bad6bc29e897c0d3d2eb1b10a911f704f06c65756df9d3c",
+    "mtime_ns": 1768161619573565500
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\Circuit_Fitting\\exp_10_fit.py",
+    "bytes": 18372,
+    "sha256": "1ff4bffcf2706b7bcad3ed192c2c0870a0f22efa460526ba2c56ef9f08ef4ea4",
+    "mtime_ns": 1770564856721029600
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\Circuit_Fitting\\exp_1_fit.py",
+    "bytes": 16751,
+    "sha256": "a1663890a512659a56f20685109d5ad2f26cee50f3defa6748cf68371720ea1c",
+    "mtime_ns": 1769494847332014500
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\docs\\EE5003.md",
+    "bytes": 18912,
+    "sha256": "48ddaa644b5fef30eeee8f6007312d94bbbef2501d1f425ff114886c9088a31d",
+    "mtime_ns": 1769459553170962300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\docs\\paper1.pdf",
+    "bytes": 1130794,
+    "sha256": "7e4b7330b5b908ae9c5edd4c486e472e6b21764df4016d2e4c5584e38084c83a",
+    "mtime_ns": 1760453739000000000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\docs\\paper2.pdf",
+    "bytes": 1274725,
+    "sha256": "4fc0b6814da0b76534460f261342d9c99f0cd28432f4481e8bebd9ecf5dffa27",
+    "mtime_ns": 1760453739000000000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\1.png",
+    "bytes": 275270,
+    "sha256": "a19394c2faef1dccdf6ddbd9026c1b6602856308a47a096088a6c419037977c0",
+    "mtime_ns": 1791201229721874000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\Add1.png",
+    "bytes": 158701,
+    "sha256": "a50dff10811aafd616cd481d3b2e0cc2f7ba7aaf985fee1305afd6a9742e19f7",
+    "mtime_ns": 1791201229633043200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\Add2.png",
+    "bytes": 197257,
+    "sha256": "c2f791fef7e50af3778e7fe834dac4363ad4019a971de2cc88dc77138cd0c9cf",
+    "mtime_ns": 1791201229626985500
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\Add3.png",
+    "bytes": 451348,
+    "sha256": "85cf55a5c3d7c7f06990075f45120509d85db6177d67d654a94a8f946e39495a",
+    "mtime_ns": 1791201229619874300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\Add4.png",
+    "bytes": 531702,
+    "sha256": "58a8648942d20aa7baa4bbbc4de112e5b74a85ebf0f54dc5fd9858b0c98d9e38",
+    "mtime_ns": 1791201229611732800
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\circuit1p.png",
+    "bytes": 81708,
+    "sha256": "c993547820c679c748ab2234f8fea84e58f4c0f65c7c964608733341b09a17ec",
+    "mtime_ns": 1791201229638575700
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\circuit3p_1.png",
+    "bytes": 92015,
+    "sha256": "634ec51cbbbf90470979381351762ee7b96f0b9431b2de21e1760b7e8df1bf46",
+    "mtime_ns": 1791201229646758400
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\circuit3p_2.png",
+    "bytes": 33148,
+    "sha256": "b8404ff1b0bbdd1f2210e5175c861e10b3208d256cfe0ca708c794676b95b536",
+    "mtime_ns": 1791201229651795200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\fig1_rmse_bar.png",
+    "bytes": 125708,
+    "sha256": "185a5b41d9ba64daa6054290bee865f36a6406058df1bd44c2dc6f0745088df6",
+    "mtime_ns": 1791201229692303400
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\fig2_tfit_bar.png",
+    "bytes": 130555,
+    "sha256": "49e779e7fd1f2ac020561b06604f362286f6a4f861fe7b8c13bf3c791e5bb6d2",
+    "mtime_ns": 1791201229714664700
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\fig3_rmse_vs_time.png",
+    "bytes": 114252,
+    "sha256": "b8635bc2ead72b17663e04f8a331f6c9b1d88ff19ba2fe4d363c09b9100b53c3",
+    "mtime_ns": 1791201229709619600
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\fig4_param_cv_heatmap.png",
+    "bytes": 189420,
+    "sha256": "2c942e5f725bf7b79fcca227f65c237748b86783cc57531c7a883887d97cfa3a",
+    "mtime_ns": 1791201229704470500
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\fig5_model_eval_bar.png",
+    "bytes": 143400,
+    "sha256": "940483384bd5313885588e3f76523ce893106d3db05527978e6c805727acebd0",
+    "mtime_ns": 1791201229698364000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\fig_curver.png",
+    "bytes": 147588,
+    "sha256": "d7756a50416bbea6a8095a966849e34ffc81fe20bc934f56cf451ce4a1f929f4",
+    "mtime_ns": 1791201229679094100
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\fig_curver_gp.png",
+    "bytes": 292494,
+    "sha256": "0ff83642601bc1294ea4ba0acaafb0c38e292fa000e4c4e7aba0a4569c92f3fa",
+    "mtime_ns": 1791201229673004400
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\fig_noL.png",
+    "bytes": 145148,
+    "sha256": "bdb589fb54bf5f3bd0c73f20147e3948d47e4fa14dd75e3ef6811df13378c4ea",
+    "mtime_ns": 1791201229665906200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\fig_noL_gp.png",
+    "bytes": 273637,
+    "sha256": "f18ab5f0d9af10cb465a379adecbde522eff01793c11b1eca7cbca314e511b28",
+    "mtime_ns": 1791201229659861200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\fig_nuts_fit.png",
+    "bytes": 186697,
+    "sha256": "109cb35b4fb5801afcc08991704dd14f5d4e34a7fa8d77488fa9254344de8bed",
+    "mtime_ns": 1791201229686205200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\main.tex",
+    "bytes": 57228,
+    "sha256": "e0b4905c86e428c945b17f9aad39321bc294eae9d842f2133b868f038f758083",
+    "mtime_ns": 1791201229726891200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\references.bib",
+    "bytes": 95756,
+    "sha256": "3f74cef872fd944fd3a2e211daa7ccbd2e9938b175a1135ec979d0258860f230",
+    "mtime_ns": 1791201229598581900
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\MD_documents\\EE5003.md",
+    "bytes": 20378,
+    "sha256": "58c49b27874bc8e17686ee6faea62446d2bb000a6a49c64744b24e0dd48fd825",
+    "mtime_ns": 1775645644643358800
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\MD_documents\\EE5003实验对比.md",
+    "bytes": 1513,
+    "sha256": "15e46a870c62dbc04d9fa517d3524220e2027a26397ac81b4c7fc03136f7446e",
+    "mtime_ns": 1780015300071965200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\MD_documents\\mat1.md",
+    "bytes": 10755,
+    "sha256": "7469f2fcdec9432e88d334cfbcba72283ed14fd8a4c99509f6be868aaa1c94e2",
+    "mtime_ns": 1775667393024358200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\MD_documents\\Project Summary; Wide-to-Ultra-High-Frequency Grey-Box Modeling of Motor Impedance.md",
+    "bytes": 11541,
+    "sha256": "c4584b83e70e91dcd9763b42e642ca9667502e6ffb34e0b0bdb600d1d95d3ff1",
+    "mtime_ns": 1776582455231080700
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\MD_documents\\一些问题.md",
+    "bytes": 3757,
+    "sha256": "39b81e9b55528cb987907da30ff7ec7aacb25c534ae089ec9a143f5784a7c129",
+    "mtime_ns": 1781184187956776600
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\MD_documents\\参数提取方法.md",
+    "bytes": 9194,
+    "sha256": "f580bef9071836a323a85743c31f057d3ffc6e471de70636bb555eb947f31090",
+    "mtime_ns": 1775755321388914900
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\MD_documents\\算法复杂度量化方法.md",
+    "bytes": 15532,
+    "sha256": "6b7a9f8a4b9adabff638c4d8e605cdc55a3a89c593e277744e58d7feaaa56a1e",
+    "mtime_ns": 1772553167305925600
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\MD_documents\\算法解释.md",
+    "bytes": 5035,
+    "sha256": "5c7af217e2bf35f51fb4ed0e04565e01684eadc1df782af1a609d23b96886247",
+    "mtime_ns": 1775754782189747500
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\MD_documents\\顺序.md",
+    "bytes": 1592,
+    "sha256": "53fe8ede4ed189e04af493a3670d9b7721e4b4763ef95d44f14823f5d886258f",
+    "mtime_ns": 1780019360581583000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\outputs\\Ztotal_result.csv",
+    "bytes": 5561678,
+    "sha256": "71b10d45b8d0a6bb8bfa77b5fd02e62d27bf39bca0dc2b67ccbd0fca13976321",
+    "mtime_ns": 1766915532287272800
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\PaperFigure\\Csf.py",
+    "bytes": 12122,
+    "sha256": "1471921c4870caff975ca835a58c0ff4e42c586f54d1041a905cce6c26d37bce",
+    "mtime_ns": 1776600518093099100
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\PaperFigure\\fr_fa.py",
+    "bytes": 15623,
+    "sha256": "0da42622dfb6bdeaff818d4674c4c482f70c2ad1edb01c193230d82583725635",
+    "mtime_ns": 1776600371397286900
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\PaperFigure\\NoLad.py",
+    "bytes": 31271,
+    "sha256": "88e84c0b38efae10ce20a9748d0ddc989c1b512b12eac51635a9a48cde3cce79",
+    "mtime_ns": 1776587514370763100
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\PaperFigure\\plot_ori.py",
+    "bytes": 10404,
+    "sha256": "4afa406824bca0b9fcdbada8637f95cc8a58db698ae8de4a24a5513927d25341",
+    "mtime_ns": 1776595151524685700
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\PaperFigure\\ScanZ.py",
+    "bytes": 12995,
+    "sha256": "98fa5735a63e4110525d16a810f725ac419ebbbc5529a76b3282a70880d92919",
+    "mtime_ns": 1776603029504942900
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\PaperFigure\\ScanZ_1e6_1e8.py",
+    "bytes": 13577,
+    "sha256": "28eb57a2bed1f912f218880448abfde102cd40b81dbc666ce22f821eeca5bebb",
+    "mtime_ns": 1776604318008223700
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\Parameter_Fitting\\Cs.py",
+    "bytes": 8977,
+    "sha256": "d8d0b1f7d169c907c495c1bc797189217a95d68319172e87b589a6ced88ac921",
+    "mtime_ns": 1770562759723370400
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\Parameter_Fitting\\Csf.py",
+    "bytes": 11677,
+    "sha256": "a6ceb5f6470a2eb333148819d634bd3c00ff330aba0386cecb970c55b8ecfcaa",
+    "mtime_ns": 1768168069930906200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\Parameter_Fitting\\fit_1.py",
+    "bytes": 5729,
+    "sha256": "265cbb21725c25b497d6bdc3ae3a1bca4652e223529153ad341482b1f1c619af",
+    "mtime_ns": 1760468570000000000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\Parameter_Fitting\\fit_rr.py",
+    "bytes": 3079,
+    "sha256": "6b88a5f5a41ad07fd23c8e743c0a88d8042323fbcaac83343e33bb204e17ee2a",
+    "mtime_ns": 1780017830539338100
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\Parameter_Fitting\\fit_rs.py",
+    "bytes": 3777,
+    "sha256": "88a2d494ea3a5cfa26aeb9d5ff1c5514bdf7f286caa9446fbe0fb1342922cb05",
+    "mtime_ns": 1760976602000000000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\Parameter_Fitting\\fr_fa.py",
+    "bytes": 14082,
+    "sha256": "0c63f1351e5489f5a6e589f119a55cf49a8075c35a29368f3f4def06dd1feea1",
+    "mtime_ns": 1768168872381931000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\Parameter_Fitting\\fr_fa_for1phase.py",
+    "bytes": 8447,
+    "sha256": "692e83741fd942450ca85375562abeccc5d0c42e276baf11d6121adb018ec2e1",
+    "mtime_ns": 1768187446869422100
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\Parameter_Fitting\\Llr.py",
+    "bytes": 11582,
+    "sha256": "e0096778f3d1b18e7f90bb068f9743428ee1b2239126a66477c94830f91c84e2",
+    "mtime_ns": 1768167996595862500
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\Parameter_Fitting\\Lm.py",
+    "bytes": 6572,
+    "sha256": "265f9f969bedb66d020c7dac41e9fae5c7509552e89979aee6363ed75fb1944f",
+    "mtime_ns": 1780018208652833200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\tmp\\Lad_try2_success.py",
+    "bytes": 14049,
+    "sha256": "e5f3e27ab99093da5b1538027edeb4d86bece0a7933b731100f043b5095ecee4",
+    "mtime_ns": 1770567721980745500
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\tmp\\scan.py",
+    "bytes": 3818,
+    "sha256": "bd8131ee4e5e9c602b6f93fff3952d1d256a121fcc4ecae632166ef8d3382231",
+    "mtime_ns": 1773229910100785000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\tmp\\tmp.py",
+    "bytes": 32073,
+    "sha256": "872d80c0e5146d944bf2d28af267c29c4f15ec3ebad584291e37f4cdb61eae7f",
+    "mtime_ns": 1773235626567277400
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\tmp\\tmp1.py",
+    "bytes": 32666,
+    "sha256": "0f00bf8187041b20e20093e25a9690b4b6c33c7e1be64e2c1198b7adc7229ef0",
+    "mtime_ns": 1773234494646471400
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\tmp\\tmp2.py",
+    "bytes": 32644,
+    "sha256": "ad2451e9b7cce0eeb1fd28a9d0973b5647121c2dbb11901e5dd9e4139a4054e5",
+    "mtime_ns": 1773234643808360000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\tmp\\tmp3.py",
+    "bytes": 32601,
+    "sha256": "58f56fe80c5b4406c83792aa72ec9ba9e1adad87d95c1a947c671630a351edb0",
+    "mtime_ns": 1773235878808584800
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\tools\\Calculate.py",
+    "bytes": 4759,
+    "sha256": "68eb5e0bfc2e8a9339938ee858475455c24f0b0fd0f292897d9e09ef0064a128",
+    "mtime_ns": 1769494847305464400
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\tools\\Export_CSV.py",
+    "bytes": 553,
+    "sha256": "f382f126ce8be9243e58ebd37550c8955887cf79fe0e05e49671ef37357c3f89",
+    "mtime_ns": 1760974241000000000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\tools\\figure_all.py",
+    "bytes": 3825,
+    "sha256": "0b493b5f403390d5283d1551adf999e67c6b0b9336400b785a50e90a37c57d62",
+    "mtime_ns": 1768171348327231100
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\tools\\plot_for_test.py",
+    "bytes": 10776,
+    "sha256": "36122f5be8572aea2b9464908b55aa74db3af2d39cd97031906229d28a81292a",
+    "mtime_ns": 1775672105237413500
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\tools\\scan.py",
+    "bytes": 11327,
+    "sha256": "6abc6a388e851fd57d0b1fe4c239f57b8859a9ab5d028226a5b4a193cd064b22",
+    "mtime_ns": 1772542157206993600
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\try\\exp_10_gp_residual.png",
+    "bytes": 295744,
+    "sha256": "9dd465635427471ad5c95491fe81e46d08b84558737104577ddb3c3ee76bea43",
+    "mtime_ns": 1776607663424909400
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\try\\NoLad.py",
+    "bytes": 31003,
+    "sha256": "5f620adf254dbc33815acf21e42adb9ceb4678a3f1b1f38791e780171a59bfbb",
+    "mtime_ns": 1775673850381091400
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\try\\NUTSVerTry.py",
+    "bytes": 39316,
+    "sha256": "ea95f6a76b64aed588b1be3daf41cd38b287500b6da938ef59386fa28c6e8d33",
+    "mtime_ns": 1775760018316852000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\try\\only1e7.py",
+    "bytes": 31003,
+    "sha256": "5f620adf254dbc33815acf21e42adb9ceb4678a3f1b1f38791e780171a59bfbb",
+    "mtime_ns": 1775673850381091400
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\try\\pymc_test.py",
+    "bytes": 1271,
+    "sha256": "3db800d5cebb37ca7267621bc25f6c6c9ac9655402c3421abcd56b3fc935240b",
+    "mtime_ns": 1775760460804739100
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\try\\try.py",
+    "bytes": 31229,
+    "sha256": "2066bd7528881e3cb43b24229c537133fc86aa05cf9b39a33101d583069a8060",
+    "mtime_ns": 1775674240075778000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\try\\try2.py",
+    "bytes": 30356,
+    "sha256": "34c1e00df0b9c033cacb278b0694ef6e01fe72726846fb67c2fd5e85d6539eb9",
+    "mtime_ns": 1776084143337984700
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\__pycache__\\test_plot.cpython-39-pytest-8.4.2.pyc",
+    "bytes": 10209,
+    "sha256": "3e72d41030857af6896462d1b01cdaf9df395ebdd62f0f8419809cb323519633",
+    "mtime_ns": 1770562238420445600
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\.idea\\dataSources\\01da7fd4-6acf-47c0-9381-a84dd19ce157.xml",
+    "bytes": 65793,
+    "sha256": "109da58dbf67dbd346f3dac91ecb28d52de84fbe823708a58f0cdd27b35f2f9a",
+    "mtime_ns": 1768171349685392600
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\.idea\\dataSources\\29684f7c-6bf6-4274-91bb-4d7e2fe685df.xml",
+    "bytes": 55889,
+    "sha256": "80b9ec8fd1d7e99337b89acab98f6d06ac2d826985e8b9ae2fd9ab4385d1a597",
+    "mtime_ns": 1766903733742130700
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\.idea\\inspectionProfiles\\profiles_settings.xml",
+    "bytes": 174,
+    "sha256": "6172c5997eeb3cd19c9ca2b5b97d6e2983cdd1fa60b2460d7bbb74055edcaa46",
+    "mtime_ns": 1760456585000000000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\.idea\\inspectionProfiles\\Project_Default.xml",
+    "bytes": 443,
+    "sha256": "400a8a2c0bf36c14b09751076dc3175612ac9ba005a9b2dc96132efca24b2f7b",
+    "mtime_ns": 1760456585000000000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\.idea\\queries\\Query.sql",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mtime_ns": 1768171319707853000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\.idea\\dataSources\\01da7fd4-6acf-47c0-9381-a84dd19ce157\\storage_v2\\_src_\\schema\\main.uQUzAA.meta",
+    "bytes": 59,
+    "sha256": "240079d10e4bf307e8c0338c688bcbc3b15be74d020ca865e735e7cfe2e1a0be",
+    "mtime_ns": 1768171320900829900
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\.pytest_cache\\v\\cache\\lastfailed",
+    "bytes": 2,
+    "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "mtime_ns": 1766913125592115200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\.pytest_cache\\v\\cache\\nodeids",
+    "bytes": 2,
+    "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "mtime_ns": 1770562782665713100
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\experimental_reim_workflow\\fitting.py",
+    "bytes": 7024,
+    "sha256": "ac5d285d2fa725c780603a850c0f29f9f7b871c8211319222b3e91d57d148258",
+    "mtime_ns": 1780018405819833600
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\experimental_reim_workflow\\README.md",
+    "bytes": 1116,
+    "sha256": "91e9c0d72439ee89c41f346653dfe6fe7daf638124e3a636c67a666a89726687",
+    "mtime_ns": 1780014601967088700
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\experimental_reim_workflow\\run_experiment.py",
+    "bytes": 2778,
+    "sha256": "2ce0161d7ed811fd577b503bbd9b37890c91758c6f35dc00aae4ccb26cd57cdc",
+    "mtime_ns": 1780019633745611200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\experimental_reim_workflow\\validate_performance.py",
+    "bytes": 4405,
+    "sha256": "9908ed70e6a5718aa6e19b0db8b6ee8fa4e4b6085fa84003402623b0bd7ea3d4",
+    "mtime_ns": 1780014601966584600
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\experimental_reim_workflow\\__init__.py",
+    "bytes": 73,
+    "sha256": "351b2f18cd47fe26d9ffbd92ca355f4e3adf2081b7846907162cdba66ca81951",
+    "mtime_ns": 1780010742427136200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\hp30_workflow\\config.py",
+    "bytes": 1193,
+    "sha256": "d825e745ab568a5d8da3a5ebd285cb182ae266e15b45b40efe70ace72485360c",
+    "mtime_ns": 1780020590233099600
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\hp30_workflow\\extraction.py",
+    "bytes": 401,
+    "sha256": "9938056bdd57d0187040fb1d28a5eb9a4dc7ab484059059dd85409cbabc6a414",
+    "mtime_ns": 1780020604579660500
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\hp30_workflow\\fitting.py",
+    "bytes": 7930,
+    "sha256": "7afd74cc37da2224cc1af5b9a898b0e98dd3fbfceeafdd771859f428a5a5d325",
+    "mtime_ns": 1780021193026141000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\hp30_workflow\\README.md",
+    "bytes": 713,
+    "sha256": "dd5b565fb247b9f2dd87a421e18220df4a568a277d27c2425e98713fd3c6d6c5",
+    "mtime_ns": 1780020766542935900
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\hp30_workflow\\run_workflow.py",
+    "bytes": 3090,
+    "sha256": "0eba71551ee73c5a9ca6b917746053843a2c8e35300b3e340d04a52f703a6f4b",
+    "mtime_ns": 1780020701630365100
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\hp30_workflow\\validate_performance.py",
+    "bytes": 4828,
+    "sha256": "30a4df2a3f66a01ab9a4133ddec6cfa2c064237e046db739d7c7106d66213e9a",
+    "mtime_ns": 1780020750362225300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\hp30_workflow\\validation.py",
+    "bytes": 2223,
+    "sha256": "7e89c08b03e0f16111cee2fd8c5146d9aa26a1cac7d09c8aeb121692d92ce6b4",
+    "mtime_ns": 1780020680660358500
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\hp30_workflow\\__init__.py",
+    "bytes": 30,
+    "sha256": "9cd5f1b03997b1e0f3090963fc4e6d84ffdb80cb38f568ad43b4d0f935f30ee4",
+    "mtime_ns": 1780020574190662600
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\mag_phase_workflow\\fitting.py",
+    "bytes": 6934,
+    "sha256": "63a688ad55a31ae1412554285b7347c941c2b51e90738a89981bdfb21c06c0c1",
+    "mtime_ns": 1780018422012776400
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\mag_phase_workflow\\README.md",
+    "bytes": 948,
+    "sha256": "47a742204dcccb26e3bd06207051481fd196d298f12be20b7a836678dde14e17",
+    "mtime_ns": 1780014827162877500
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\mag_phase_workflow\\run_experiment.py",
+    "bytes": 2703,
+    "sha256": "c8d1bebad9e1f528fe00bcf0f4044ad16dab6cd3fa5745fb78ff11144de7ea92",
+    "mtime_ns": 1780019645874293700
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\mag_phase_workflow\\validate_performance.py",
+    "bytes": 4353,
+    "sha256": "ffafe18186367bcdf71db45ea47f9b23ff8f6b17e6d54359ec71e46791a4050f",
+    "mtime_ns": 1780014827159572600
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\mag_phase_workflow\\__init__.py",
+    "bytes": 69,
+    "sha256": "4eb156d36d54b4259ce61054f6520ff5e78ee8fe4dca6267447ea3a0664a9ed4",
+    "mtime_ns": 1780014827155023900
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow\\config.py",
+    "bytes": 2698,
+    "sha256": "0bb27377b723e66e09d06b91bb0fc11714c45099a2d24deabfda76a5746d96fb",
+    "mtime_ns": 1780018224423124300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow\\data.py",
+    "bytes": 2120,
+    "sha256": "7eb822580e795fe2ba35acbf4992a8da011a64e4713ab07ffb9cd0aa35daf8fb",
+    "mtime_ns": 1780010116364233200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow\\extraction.py",
+    "bytes": 460,
+    "sha256": "42ec8cfa849a8f1d8339dd581c8de38294ef150431e5c41382a27182d946a16d",
+    "mtime_ns": 1780018308517427800
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow\\fitting.py",
+    "bytes": 4807,
+    "sha256": "ed263d597e9a30eaf36cf94cf0d41da969cc8d7bff3e6653d6d276ac44bb46df",
+    "mtime_ns": 1780018341564200100
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow\\initial_params.py",
+    "bytes": 3344,
+    "sha256": "23e8f884191a87f138fae045b6012bf0b5017da96a1d589e133efdff21ea3264",
+    "mtime_ns": 1780016940402642100
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow\\model.py",
+    "bytes": 391,
+    "sha256": "9d4a975164491ddef2fa2e98595ed550efabbf478920939f1e60984eb193489c",
+    "mtime_ns": 1780010116366260300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow\\parameter_fitting.py",
+    "bytes": 11773,
+    "sha256": "19b8ea7911e1cd9f468de4610aea409a19b4791b0ecce6de5507b9d93bc362f8",
+    "mtime_ns": 1780020990036156000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow\\README.md",
+    "bytes": 2639,
+    "sha256": "dad121661f452da51f58cf6cc3a7fc29b05070b10fd5e5803f9cbb5b750a05cb",
+    "mtime_ns": 1780018816128521400
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow\\run_workflow.py",
+    "bytes": 2891,
+    "sha256": "251684cf7e0718e448cd96ae423b1e4d3779e5894726d4161b0a14900e96ff79",
+    "mtime_ns": 1780019620432367500
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow\\validate_performance.py",
+    "bytes": 4252,
+    "sha256": "b062ee39d52cbe840621b2703a51237fc1087ac1d6424a81e65a31ae7e8d564f",
+    "mtime_ns": 1780014263016615300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow\\validation.py",
+    "bytes": 1880,
+    "sha256": "20db7dcd61075f2966b09a7a7f75db748a2f0a958073317e0f6c5eee4df1f39e",
+    "mtime_ns": 1780010229398018200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow\\__init__.py",
+    "bytes": 58,
+    "sha256": "d51828e654e1c0810aa13a28b3fccca41a90a3ce5a461805129fc0e5d2ae388f",
+    "mtime_ns": 1780010116358320200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow_outputs\\stage1_csf_report.csv",
+    "bytes": 758,
+    "sha256": "0115c79dc88065f2bb6a5f6b52c3d03716ed916d8872791a869c621dec0e09c0",
+    "mtime_ns": 1780020282948292800
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow_outputs\\stage1_initial_inputs.csv",
+    "bytes": 340,
+    "sha256": "6d94dbb8d7bcdafb8a694c95e551dae9c117d47f7b03eda6e19fa57b8ab58ae5",
+    "mtime_ns": 1780020282963980700
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow_outputs\\stage1_initial_inputs.json",
+    "bytes": 413,
+    "sha256": "ff51675ffe2dba81861065c77869d9680b83f3afa7e80f7b4820e741ad6ddcc6",
+    "mtime_ns": 1780020282963980700
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow_outputs\\stage1_leakage_report.csv",
+    "bytes": 1240,
+    "sha256": "73db2b24b11c55b81e72638adf71063702e7d004288a60d79c691f3ac8fad4d8",
+    "mtime_ns": 1780020282948292800
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow_outputs\\stage1_lm_report.csv",
+    "bytes": 642,
+    "sha256": "16ea51183abf3e94d5cc29068a85bfffd4d5c168bef794ed46094a2b6779b8fa",
+    "mtime_ns": 1780020282963980700
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow_outputs\\stage1_resonance_report.csv",
+    "bytes": 942,
+    "sha256": "d4c6f6d4493753a821df8baf94d8167741df77232df1460851b42092f335a592",
+    "mtime_ns": 1780020282948292800
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow_outputs\\stage1_rr_report.csv",
+    "bytes": 191,
+    "sha256": "fbd55be88fc21287b8780eb9af385055b4a93929b19c32afd06909a9837637c3",
+    "mtime_ns": 1780020282948292800
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow_outputs\\stage2_fit_candidates_exp_10_seed0.csv",
+    "bytes": 815,
+    "sha256": "a2620b7f47e8832fc3994c5f6993781e178ee0c21cbf54b3bfe54476eab1c248",
+    "mtime_ns": 1780020292845535400
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow_outputs\\stage2_fit_metrics_exp_10_seed0.csv",
+    "bytes": 236,
+    "sha256": "db0e6fcd514e3ca2783f93fb76fd3bb8a6a29bea4524b08ccfe366a172f4fc9c",
+    "mtime_ns": 1780020292845535400
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow_outputs\\stage2_fit_params_exp_10_seed0.csv",
+    "bytes": 330,
+    "sha256": "14d4e5cd53b6ebd757ab07a32cb5bc2554c732758f154f7d7a5922c490ea9cd5",
+    "mtime_ns": 1780020292845535400
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow_outputs\\stage2_fit_params_exp_10_seed0.json",
+    "bytes": 1297,
+    "sha256": "c053dc848c8de13a6da5e198979b9bc206efd6dcb99b72a685abe4a5133534a1",
+    "mtime_ns": 1780020292829851400
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow_outputs\\stage3_gp_residual_exp_10.csv",
+    "bytes": 169358,
+    "sha256": "a14ef702ebc305095e32c23fbb618b49343a65953b4d96433d3166f7bd1c8b3c",
+    "mtime_ns": 1780020352632917900
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow_outputs\\stage3_gp_residual_exp_10.png",
+    "bytes": 298318,
+    "sha256": "8f225795ff922ea32974473f4d262dd2ec89eace1e60759830fd7534204b59e8",
+    "mtime_ns": 1780020354261909200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow_outputs\\stage3_performance_exp_10_seed0.png",
+    "bytes": 242732,
+    "sha256": "ed54de1872bb57bb6ed579ba26e9cb2aa939b7206a2e8bcd49a2cdb7482c81bf",
+    "mtime_ns": 1780014276834160300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow_outputs\\stage3_validation_metrics_exp_10.csv",
+    "bytes": 238,
+    "sha256": "b4fd409f8a3a21f061311c915148e5d874aaa73ef3d30497f16a5d1600bb3428",
+    "mtime_ns": 1780020292861609700
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\__pycache__\\ablation_de_only.cpython-313.pyc",
+    "bytes": 42332,
+    "sha256": "9bce0ad9b2781b8dc12895366162471fbca90b2ca6a10ee2f5a873a5908fdbd0",
+    "mtime_ns": 1774585014001838400
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\__pycache__\\ablation_ga_ls.cpython-313.pyc",
+    "bytes": 45298,
+    "sha256": "9704328e5256511fa2c6b8ddba4ee927d05e13cb5e8be956c1767b02507bcb85",
+    "mtime_ns": 1774585014009180200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\__pycache__\\ablation_ls_only.cpython-313.pyc",
+    "bytes": 41861,
+    "sha256": "69dca7ec8808bf5991655f664213adaf7f52ac66d98892a5e9bc78503f246e3d",
+    "mtime_ns": 1774585014020046700
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\__pycache__\\ablation_no_freq_weights.cpython-313.pyc",
+    "bytes": 43307,
+    "sha256": "1cc6c8323c2a4863280fa90dcdabe6f0601dfd344185edafa3bafc3c7dd14dd5",
+    "mtime_ns": 1774585014026107400
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\__pycache__\\ablation_no_reim_scaling.cpython-313.pyc",
+    "bytes": 43393,
+    "sha256": "acc18f35e1121cb3f257b93fb156ec53ad9b80faf4b49ccb7eb0e0a9261a4dc0",
+    "mtime_ns": 1774585014032172500
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\__pycache__\\CurVer.cpython-313.pyc",
+    "bytes": 43158,
+    "sha256": "3bdfc3c73dbab9603ed5f19552da6dd28f5b9f88fc5f7bec330be0f85b84a498",
+    "mtime_ns": 1774606703084443400
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\__pycache__\\CurVer.cpython-39.pyc",
+    "bytes": 25116,
+    "sha256": "12b6a46a6de5ca1279f830039eab61467915ee6cff07324c96c137a5fbbc07a0",
+    "mtime_ns": 1780016654610968500
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\__pycache__\\socket.cpython-313.pyc",
+    "bytes": 11643,
+    "sha256": "a41483b957928cbaf098461d2c3d3917d1dea09e060431dc50c2f98b93760060",
+    "mtime_ns": 1774607134745969700
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\__pycache__\\socket.cpython-39.pyc",
+    "bytes": 6542,
+    "sha256": "7b50aaa046a4783c0feba5144ba052318978ab3787837700bea47cbb176b5e57",
+    "mtime_ns": 1774607152172794500
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\__pycache__\\__init__.cpython-313.pyc",
+    "bytes": 188,
+    "sha256": "4f44e3b3aa04cd8f580d05e495c24e5a6b1dab5955f6f868914f287bf0733351",
+    "mtime_ns": 1780010271881694300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\__pycache__\\__init__.cpython-39.pyc",
+    "bytes": 179,
+    "sha256": "8441895dc2f3e3a4e372fe6bb11d54eafc15d88fd3a7e23b896f37f07de12ec7",
+    "mtime_ns": 1780010324709360400
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\experimental_reim_workflow\\outputs\\experimental_reim_fit_exp_10_seed0_candidates.csv",
+    "bytes": 815,
+    "sha256": "a2620b7f47e8832fc3994c5f6993781e178ee0c21cbf54b3bfe54476eab1c248",
+    "mtime_ns": 1780018910211091400
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\experimental_reim_workflow\\outputs\\experimental_reim_fit_exp_10_seed0_metrics.csv",
+    "bytes": 260,
+    "sha256": "0404afcdc93484ebb423c13a4d27d75df3f8bc3f5f4f7676d4b12bb66e769463",
+    "mtime_ns": 1780018910211091400
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\experimental_reim_workflow\\outputs\\experimental_reim_fit_exp_10_seed0_params.csv",
+    "bytes": 330,
+    "sha256": "14d4e5cd53b6ebd757ab07a32cb5bc2554c732758f154f7d7a5922c490ea9cd5",
+    "mtime_ns": 1780018910211091400
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\experimental_reim_workflow\\outputs\\experimental_reim_fit_exp_10_seed0_params.json",
+    "bytes": 1365,
+    "sha256": "7eba6ba18d537c64c30d529fdfb28524045a42eaef6f8a15e91c4e7398862b61",
+    "mtime_ns": 1780018910209879900
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\experimental_reim_workflow\\outputs\\experimental_reim_performance_exp_10_seed0.png",
+    "bytes": 244416,
+    "sha256": "7acaa565334a376f3a37706c672e6ceb67f491058026f914d2fd9a7b0f840d80",
+    "mtime_ns": 1780014626210868200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\experimental_reim_workflow\\outputs\\stage1_csf_report.csv",
+    "bytes": 758,
+    "sha256": "0115c79dc88065f2bb6a5f6b52c3d03716ed916d8872791a869c621dec0e09c0",
+    "mtime_ns": 1780019833525244300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\experimental_reim_workflow\\outputs\\stage1_initial_inputs.csv",
+    "bytes": 340,
+    "sha256": "6d94dbb8d7bcdafb8a694c95e551dae9c117d47f7b03eda6e19fa57b8ab58ae5",
+    "mtime_ns": 1780019833525244300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\experimental_reim_workflow\\outputs\\stage1_initial_inputs.json",
+    "bytes": 413,
+    "sha256": "ff51675ffe2dba81861065c77869d9680b83f3afa7e80f7b4820e741ad6ddcc6",
+    "mtime_ns": 1780019833525244300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\experimental_reim_workflow\\outputs\\stage1_leakage_report.csv",
+    "bytes": 1240,
+    "sha256": "73db2b24b11c55b81e72638adf71063702e7d004288a60d79c691f3ac8fad4d8",
+    "mtime_ns": 1780019833525244300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\experimental_reim_workflow\\outputs\\stage1_lm_report.csv",
+    "bytes": 642,
+    "sha256": "16ea51183abf3e94d5cc29068a85bfffd4d5c168bef794ed46094a2b6779b8fa",
+    "mtime_ns": 1780019833525244300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\experimental_reim_workflow\\outputs\\stage1_resonance_report.csv",
+    "bytes": 942,
+    "sha256": "d4c6f6d4493753a821df8baf94d8167741df77232df1460851b42092f335a592",
+    "mtime_ns": 1780019833525244300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\experimental_reim_workflow\\outputs\\stage1_rr_report.csv",
+    "bytes": 191,
+    "sha256": "fbd55be88fc21287b8780eb9af385055b4a93929b19c32afd06909a9837637c3",
+    "mtime_ns": 1780019833525244300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\experimental_reim_workflow\\outputs\\stage3_validation_metrics_exp_10.csv",
+    "bytes": 267,
+    "sha256": "7587d666e6377145b2a12bcb88e479dfce3a1fba5457cb8a81a089ecf4a27abf",
+    "mtime_ns": 1780015075216956000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\experimental_reim_workflow\\__pycache__\\fitting.cpython-39.pyc",
+    "bytes": 6948,
+    "sha256": "98d7c7b9251f813d04e98f7b90f4ded2c7280386c4e0184175c169dbfde98a9d",
+    "mtime_ns": 1780018448746487300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\experimental_reim_workflow\\__pycache__\\run_experiment.cpython-39.pyc",
+    "bytes": 2340,
+    "sha256": "9bd89f8022d7e95081a2475e7b5fe2979327b5851967c16c220a7fdb123f2728",
+    "mtime_ns": 1780018448748509700
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\experimental_reim_workflow\\__pycache__\\validate_performance.cpython-39.pyc",
+    "bytes": 4322,
+    "sha256": "ff621f05b331b93c085ae8d8df8c10279c45f81a4e07a5b0dd96c0f8b4245187",
+    "mtime_ns": 1780014625021782200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\experimental_reim_workflow\\__pycache__\\__init__.cpython-39.pyc",
+    "bytes": 237,
+    "sha256": "7124db25d6d1ca56e4943fb9e34efd2eef35a19e39c0842331ea744205334e1c",
+    "mtime_ns": 1780010770243128300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\hp30_workflow\\outputs\\stage1_csf_report.csv",
+    "bytes": 336,
+    "sha256": "9d1c86f815bb7db47ccca4735569da57a4ffd7895edae1bc674f21530204d716",
+    "mtime_ns": 1780021298915010300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\hp30_workflow\\outputs\\stage1_initial_inputs.csv",
+    "bytes": 274,
+    "sha256": "3255121b0cfc1f4f43515dc544ac6f6cd78b3866d365dbd614177ded7df9726a",
+    "mtime_ns": 1780021298920535100
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\hp30_workflow\\outputs\\stage1_initial_inputs.json",
+    "bytes": 347,
+    "sha256": "f36b19301e7e39ef455118e132cbad64f0332055669d899767976ffd81fdbe3e",
+    "mtime_ns": 1780021298920535100
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\hp30_workflow\\outputs\\stage1_leakage_report.csv",
+    "bytes": 606,
+    "sha256": "e364ef6f3537e1151bb04300be2fac3a8f7b725bf9dfe6ea19bd798f9ac49819",
+    "mtime_ns": 1780021298915010300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\hp30_workflow\\outputs\\stage1_lm_report.csv",
+    "bytes": 161,
+    "sha256": "b89c06c3d7abd4233a7b386bcc3e15d5087c0eeaf6b742495154b83e20e951b1",
+    "mtime_ns": 1780021298919474200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\hp30_workflow\\outputs\\stage1_resonance_report.csv",
+    "bytes": 997,
+    "sha256": "f8ebf846fc2089993297edb90f461855604461fd4b45e290f39e4bffae7eac0e",
+    "mtime_ns": 1780021298914020300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\hp30_workflow\\outputs\\stage1_rr_report.csv",
+    "bytes": 206,
+    "sha256": "7d659ab54c0bd04100d747f8204ef76c92462e6717e2668ad6b413a1788cfac2",
+    "mtime_ns": 1780021298918467400
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\hp30_workflow\\outputs\\stage2_fit_candidates_exp_10_seed0.csv",
+    "bytes": 800,
+    "sha256": "9ce87ef8ad68ad055b41860ec9305c954967adf3bb63e9b43936d671664fd898",
+    "mtime_ns": 1780021302204441000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\hp30_workflow\\outputs\\stage2_fit_metrics_exp_10_seed0.csv",
+    "bytes": 234,
+    "sha256": "4bc2578c23c2784e355c7f6e49519f84043403483703eb39803e1609d6c3aaf7",
+    "mtime_ns": 1780021302204441000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\hp30_workflow\\outputs\\stage2_fit_params_exp_10_seed0.csv",
+    "bytes": 328,
+    "sha256": "8770b9b0151eeb74a84cb71c7f1a15dfa46f3a4201feaf429c025b9403f3dbd2",
+    "mtime_ns": 1780021302203900200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\hp30_workflow\\outputs\\stage2_fit_params_exp_10_seed0.json",
+    "bytes": 1187,
+    "sha256": "7b1323fd6b25fdf98769f54bff698515d0993b5bab0baa5dae6277be0c33d98b",
+    "mtime_ns": 1780021302201231800
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\hp30_workflow\\outputs\\stage3_validation_metrics_exp_10.csv",
+    "bytes": 240,
+    "sha256": "9fde47f1e1bcc9d43017a442e705a7b77344ada80e1ffe3fcfed50a9369e292a",
+    "mtime_ns": 1780021315510842100
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\hp30_workflow\\__pycache__\\config.cpython-39.pyc",
+    "bytes": 1608,
+    "sha256": "c7c72de249466346794fffbe29f34dd62f4ccf4d058f1c2ccececcc72a4d5f80",
+    "mtime_ns": 1780020785826282300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\hp30_workflow\\__pycache__\\extraction.cpython-39.pyc",
+    "bytes": 645,
+    "sha256": "e73c35588971e4071809a604d5c8c63b54b7dfb4f9513cb7bb15f9d7a7f4783f",
+    "mtime_ns": 1780020785828438500
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\hp30_workflow\\__pycache__\\fitting.cpython-39.pyc",
+    "bytes": 7148,
+    "sha256": "a96fb0e7860ec7eb2f1c625873339ce9ffca61363b4d590967845e0e0803a59c",
+    "mtime_ns": 1780021209719133800
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\hp30_workflow\\__pycache__\\run_workflow.cpython-39.pyc",
+    "bytes": 2806,
+    "sha256": "e778c3c3b1a536106401fae7c89e5bf84925f242d0adde3ce6b3f665e3c109c3",
+    "mtime_ns": 1780020785877028100
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\hp30_workflow\\__pycache__\\validate_performance.cpython-39.pyc",
+    "bytes": 4514,
+    "sha256": "dce7586769d117e161bfd6e8baee5ffd539b52b83b9abcd39d6bd3cb12d1202d",
+    "mtime_ns": 1780020785880027600
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\hp30_workflow\\__pycache__\\validation.cpython-39.pyc",
+    "bytes": 2252,
+    "sha256": "a11c2d8093bc7d8163ba9dbd2bf22b45e7e449d021947d488e7a80cca9bead8d",
+    "mtime_ns": 1780020785876029400
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\hp30_workflow\\__pycache__\\__init__.cpython-39.pyc",
+    "bytes": 182,
+    "sha256": "f213b5514c2212e1a399f99e3047872124eb49b2d0eab45dc60703bb81e2b8b3",
+    "mtime_ns": 1780020785838628700
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\mag_phase_workflow\\outputs\\mag_phase_fit_exp_10_seed0_candidates.csv",
+    "bytes": 804,
+    "sha256": "17da96e758c5693f35e3af1b6965a3cb5514a24dea837a17a0cf8a05f562afa9",
+    "mtime_ns": 1780018999864263700
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\mag_phase_workflow\\outputs\\mag_phase_fit_exp_10_seed0_metrics.csv",
+    "bytes": 260,
+    "sha256": "9dd9dd897c8f56a421e66b907ce91a972de6d20f1b05f115f3b619541e81b26f",
+    "mtime_ns": 1780018999864263700
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\mag_phase_workflow\\outputs\\mag_phase_fit_exp_10_seed0_params.csv",
+    "bytes": 329,
+    "sha256": "9776a3c9d6d0d101fd9dedb57339e32c8dac39940ba7c295350e42d2d6c7a002",
+    "mtime_ns": 1780018999864263700
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\mag_phase_workflow\\outputs\\mag_phase_fit_exp_10_seed0_params.json",
+    "bytes": 1363,
+    "sha256": "c22387082546e2bf2bae40c520ccc38d46730d388df5cee4144057401a933c90",
+    "mtime_ns": 1780018999864263700
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\mag_phase_workflow\\outputs\\mag_phase_performance_exp_10_seed0.png",
+    "bytes": 247487,
+    "sha256": "8f86b15a5ade9700a54bb7791276ff3f3a58ae64b51f57804c3949ae92d3b9c3",
+    "mtime_ns": 1780014858469923500
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\mag_phase_workflow\\outputs\\stage1_csf_report.csv",
+    "bytes": 758,
+    "sha256": "0115c79dc88065f2bb6a5f6b52c3d03716ed916d8872791a869c621dec0e09c0",
+    "mtime_ns": 1780019834044286700
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\mag_phase_workflow\\outputs\\stage1_initial_inputs.csv",
+    "bytes": 340,
+    "sha256": "6d94dbb8d7bcdafb8a694c95e551dae9c117d47f7b03eda6e19fa57b8ab58ae5",
+    "mtime_ns": 1780019834046226900
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\mag_phase_workflow\\outputs\\stage1_initial_inputs.json",
+    "bytes": 413,
+    "sha256": "ff51675ffe2dba81861065c77869d9680b83f3afa7e80f7b4820e741ad6ddcc6",
+    "mtime_ns": 1780019834046226900
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\mag_phase_workflow\\outputs\\stage1_leakage_report.csv",
+    "bytes": 1240,
+    "sha256": "73db2b24b11c55b81e72638adf71063702e7d004288a60d79c691f3ac8fad4d8",
+    "mtime_ns": 1780019834040053400
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\mag_phase_workflow\\outputs\\stage1_lm_report.csv",
+    "bytes": 642,
+    "sha256": "16ea51183abf3e94d5cc29068a85bfffd4d5c168bef794ed46094a2b6779b8fa",
+    "mtime_ns": 1780019834045291000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\mag_phase_workflow\\outputs\\stage1_resonance_report.csv",
+    "bytes": 942,
+    "sha256": "d4c6f6d4493753a821df8baf94d8167741df77232df1460851b42092f335a592",
+    "mtime_ns": 1780019834040053400
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\mag_phase_workflow\\outputs\\stage1_rr_report.csv",
+    "bytes": 191,
+    "sha256": "fbd55be88fc21287b8780eb9af385055b4a93929b19c32afd06909a9837637c3",
+    "mtime_ns": 1780019834044286700
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\mag_phase_workflow\\outputs\\stage3_validation_metrics_exp_10.csv",
+    "bytes": 250,
+    "sha256": "944743968f5220dd88d670e7e67cf53c02ff914839ebd48c8042587a7ae4b14c",
+    "mtime_ns": 1780015069546707100
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\mag_phase_workflow\\__pycache__\\fitting.cpython-39.pyc",
+    "bytes": 6791,
+    "sha256": "bb8f3fa4fe42901b9fdb29fdc9e9af7044252b9d99c379991cbbdb25e95ade6a",
+    "mtime_ns": 1780018448756526100
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\mag_phase_workflow\\__pycache__\\run_experiment.cpython-39.pyc",
+    "bytes": 2308,
+    "sha256": "8224506afb1325715ec4102a763e1ee439f33c6c6d6bcfc2c72bc59127dcc92d",
+    "mtime_ns": 1780018448760529300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\mag_phase_workflow\\__pycache__\\validate_performance.cpython-39.pyc",
+    "bytes": 4272,
+    "sha256": "0a36e0eb2b2bb25c0314e2996c5ff92eba893039b7b306d60af720d1cc4772ce",
+    "mtime_ns": 1780014857358966300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\mag_phase_workflow\\__pycache__\\__init__.cpython-39.pyc",
+    "bytes": 225,
+    "sha256": "eb16db7d135e40b9f7c10ee1ed4002a3452d99a23d6291ab1dcc3a942ea68e5a",
+    "mtime_ns": 1780014840382524200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow\\__pycache__\\config.cpython-313.pyc",
+    "bytes": 3602,
+    "sha256": "5a03ed6de4ed5b059a22a022f854cee238729d4404f2cef6a19d6df3c3611535",
+    "mtime_ns": 1780010262963453700
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow\\__pycache__\\config.cpython-39.pyc",
+    "bytes": 4284,
+    "sha256": "2b0ee8a4961aa8bbb7ba17ad8070c1841782e72be1deae8a48c1c3d78f7b5b2d",
+    "mtime_ns": 1780018448693549800
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow\\__pycache__\\data.cpython-313.pyc",
+    "bytes": 3894,
+    "sha256": "79458591c57840e4a89a250c428c5e96f35dfa213c20232f45b75163d90c8d18",
+    "mtime_ns": 1780010262967024300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow\\__pycache__\\data.cpython-39.pyc",
+    "bytes": 2136,
+    "sha256": "eda9947af452193e0e6a80743ddfcf8d52fb97f62c78f35da429aa29ff773f29",
+    "mtime_ns": 1780010364066295700
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow\\__pycache__\\extraction.cpython-313.pyc",
+    "bytes": 16448,
+    "sha256": "b65314752d832d973befa10bacf84a504c2a43945fb1496322b9b7399b980047",
+    "mtime_ns": 1780010262980858200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow\\__pycache__\\extraction.cpython-39.pyc",
+    "bytes": 658,
+    "sha256": "44092c93f978c3d6e110ded6f7343eb666b2798f28154b8c7fe5e7d3f0c95d8c",
+    "mtime_ns": 1780018448700898900
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow\\__pycache__\\fitting.cpython-313.pyc",
+    "bytes": 6409,
+    "sha256": "c8959b6ad3abf7631087e0e5aa8328a670184409b8ff7ead200d831dd9c1cd6d",
+    "mtime_ns": 1780010263032307300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow\\__pycache__\\fitting.cpython-39.pyc",
+    "bytes": 4313,
+    "sha256": "9ad0f8637d262297f1da899614c6215afb2d3366f73cddc4f3d9ce1f4189ebb6",
+    "mtime_ns": 1780018448740672500
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow\\__pycache__\\initial_params.cpython-39.pyc",
+    "bytes": 3333,
+    "sha256": "0482d0b4e600c16d8c0ba687c62598f9a3433bef2dff1ab1877276c70a0a4413",
+    "mtime_ns": 1780016953847400100
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow\\__pycache__\\model.cpython-313.pyc",
+    "bytes": 425,
+    "sha256": "3dcdee6888ab32d700e20e274238b1493d8c4cbba01e4624255a95847eeff5c8",
+    "mtime_ns": 1780010262975401900
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow\\__pycache__\\model.cpython-39.pyc",
+    "bytes": 398,
+    "sha256": "f7cb216b0a521561086e0b50000114b4fe2925264bc358820b1593266bc1f3ce",
+    "mtime_ns": 1780010364067139800
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow\\__pycache__\\parameter_fitting.cpython-39.pyc",
+    "bytes": 8256,
+    "sha256": "88b8b8eb35eba1ae447cfa778ca0b901f927d881e12d1cd1e34be5f42bfc426a",
+    "mtime_ns": 1780021007399048000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow\\__pycache__\\run_workflow.cpython-313.pyc",
+    "bytes": 3669,
+    "sha256": "3f4db16e5d115fd016426632eb7f6744482af77a7ed1167be1215d225b76e506",
+    "mtime_ns": 1780010263070049600
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow\\__pycache__\\run_workflow.cpython-39.pyc",
+    "bytes": 2286,
+    "sha256": "ccff035a67a7ec493541b3f896246a3093ab0501eebdb88bda0586e672a11315",
+    "mtime_ns": 1780018448740672500
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow\\__pycache__\\validate_performance.cpython-39.pyc",
+    "bytes": 4136,
+    "sha256": "b429f2f1d141ef471e0567332d778f21090d1ef579e90c8ca9ac753aa957cd8e",
+    "mtime_ns": 1780014275441664900
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow\\__pycache__\\validation.cpython-313.pyc",
+    "bytes": 3159,
+    "sha256": "6e5afef3c05c4b3896d143588fda8be13898b283506927f38c90250af62f963a",
+    "mtime_ns": 1780010263065828200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow\\__pycache__\\validation.cpython-39.pyc",
+    "bytes": 2139,
+    "sha256": "51196c2c3d80e34ae4ff3475f81dff0b2398c1bfcc7a2491e710f2798343ab18",
+    "mtime_ns": 1780010364079235200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow\\__pycache__\\__init__.cpython-313.pyc",
+    "bytes": 213,
+    "sha256": "12cfe24c3b20ab8a903e4d25fc868139ebfcd27bb161b2d3f6b2edf13bb5a09e",
+    "mtime_ns": 1780010271881694300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow\\__pycache__\\__init__.cpython-39.pyc",
+    "bytes": 204,
+    "sha256": "722926337a61953cc27f45c1283a2d036bcdd46f0a9843a93d09c5eb5fc3a674",
+    "mtime_ns": 1780010324718457900
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\docs\\Group Meeting\\2026.1.12.pptx",
+    "bytes": 960804,
+    "sha256": "6f033d4ea066f7bdb882e666059c1e218fa22fa01f5dcba67930b40998a25645",
+    "mtime_ns": 1769494847313011000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\docs\\Group Meeting\\2026.1.27.pptx",
+    "bytes": 3390675,
+    "sha256": "7015a9f1908b79c3ed7bad077b934798a3dde9020caf2ef6f17d652ad981d20d",
+    "mtime_ns": 1772549101215564000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\docs\\Group Meeting\\2026.3.3.pptx",
+    "bytes": 1321470,
+    "sha256": "b09d6e2ab91be66ecde404fd60fa2c84d3dfe0e64362bf95c47c258a6b9b5e73",
+    "mtime_ns": 1772556221929055700
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\docs\\Group Meeting\\EE5003_rebuild.pdf",
+    "bytes": 1087087,
+    "sha256": "55eaa04a92331b49a9fd611ddfd9a46b58aa71c29fdd9175cc75a3077d19486a",
+    "mtime_ns": 1769492099002639600
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\docs\\Group Meeting\\GROUP MEETING 2026.3.11.pdf",
+    "bytes": 593397,
+    "sha256": "8c634682971b1440321d0da60967382d823b04815f3be92e07299bf4209bcb77",
+    "mtime_ns": 1773240369768060300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\PaperFigure\\__pycache__\\Csf.cpython-313.pyc",
+    "bytes": 16888,
+    "sha256": "d4b1855abaab36698d4f0ff5f03715cc8defcd55882f132dab39621191ab264e",
+    "mtime_ns": 1776600522784629000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\PaperFigure\\__pycache__\\fr_fa.cpython-313.pyc",
+    "bytes": 20320,
+    "sha256": "91d929760285a002107d5542d884008ed867f8cfd208982caad43f8f76198076",
+    "mtime_ns": 1776600377301284900
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\PaperFigure\\__pycache__\\NoLad.cpython-313.pyc",
+    "bytes": 42428,
+    "sha256": "7382866b174b443ff523f81573dc5f12fd46a927069c1b6fb2fd32f3a9c40fd1",
+    "mtime_ns": 1776587519608366100
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\PaperFigure\\__pycache__\\ScanZ_1e6_1e8.cpython-313.pyc",
+    "bytes": 22455,
+    "sha256": "7953644ed5b50ea89d998ee7bed07b57bdf29547a5c2179bd74bcd83b9e37c88",
+    "mtime_ns": 1776604322913179500
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\Parameter_Fitting\\__pycache__\\Csf.cpython-313.pyc",
+    "bytes": 16709,
+    "sha256": "1015bbc536ae8231d74c75f0d33e995a9fc41a4d9e8a55bd603d46b3417d2371",
+    "mtime_ns": 1780018098287178800
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\Parameter_Fitting\\__pycache__\\Csf.cpython-39.pyc",
+    "bytes": 9545,
+    "sha256": "04141441984b888d1ea06acf3c9ece945f27d5a3d54ab26369e8f44637649bf2",
+    "mtime_ns": 1780018110205486400
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\Parameter_Fitting\\__pycache__\\fit_rr.cpython-313.pyc",
+    "bytes": 4256,
+    "sha256": "8f95036ca7a0827af83b493fbfc0532e35df6086b7fcc5053637253a8188bd41",
+    "mtime_ns": 1780018098255454300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\Parameter_Fitting\\__pycache__\\fit_rr.cpython-39.pyc",
+    "bytes": 2697,
+    "sha256": "099ae1fa30b5b1c85528dcd449413e09d6df993c6137b1d14f5dc5a9866ab361",
+    "mtime_ns": 1780018109469770900
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\Parameter_Fitting\\__pycache__\\fr_fa.cpython-313.pyc",
+    "bytes": 17976,
+    "sha256": "8c4b46c3d1f8f61ea2cc595b829be103ea670d2d3a27437ecebc0c664ffc2480",
+    "mtime_ns": 1780018098292107000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\Parameter_Fitting\\__pycache__\\fr_fa.cpython-39.pyc",
+    "bytes": 10827,
+    "sha256": "4ca1d221616b15edf419666053437d34676cadb1c38a04fa3f1281726c787b98",
+    "mtime_ns": 1780018110206817300
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\Parameter_Fitting\\__pycache__\\Llr.cpython-313.pyc",
+    "bytes": 15945,
+    "sha256": "ffae340b4e5e663130753bfa9cd67a8849925ad1934b3ce6ba276ca632bdde72",
+    "mtime_ns": 1780018098275093200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\Parameter_Fitting\\__pycache__\\Llr.cpython-39.pyc",
+    "bytes": 9598,
+    "sha256": "9bc18fb000de9cef2a56f08f3f90de418f534d8d31fc5574328352110d4848e1",
+    "mtime_ns": 1780018109978238000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\Parameter_Fitting\\__pycache__\\Lm.cpython-39.pyc",
+    "bytes": 6709,
+    "sha256": "bd6b6670edbfd2a1bdf45faf8eccf604c176bcdbcd428b465942c256486a6541",
+    "mtime_ns": 1780018448688745000
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\tools\\__pycache__\\plot_for_test.cpython-312.pyc",
+    "bytes": 17604,
+    "sha256": "1ad18a8f43fa3c3af7605e129f539e66f8279406ce52dbb824aa55e34589112a",
+    "mtime_ns": 1789031712485302200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\tools\\__pycache__\\plot_for_test.cpython-313.pyc",
+    "bytes": 17492,
+    "sha256": "b21a1d9b88e0fbe80a4856f39a7ff9a77613e989c8901eca1c7e0f3babe1f2a2",
+    "mtime_ns": 1775672111202965200
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\try\\__pycache__\\pymc_test.cpython-39.pyc",
+    "bytes": 1383,
+    "sha256": "0134a88d60a8c236283f5c67eb56b0c1c7ac62768559db4e62c1d512ab8236cc",
+    "mtime_ns": 1779897278030338400
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\try\\__pycache__\\try.cpython-313.pyc",
+    "bytes": 42732,
+    "sha256": "c9c4efba48b55a40e2554331d91eb4aff6ed900e557cadf77c66a546757aa547",
+    "mtime_ns": 1775674243966612600
+  },
+  {
+    "path": "D:\\Desktop\\EE5003\\data\\AP_1p5.db",
+    "bytes": 1044480,
+    "sha256": "e442a24979946e220eaaf18c962d8400ed7cb1c0169bd4cb2f2b8b70ef849217",
+    "mtime_ns": 1760377614000000000
+  },
+  {
+    "path": "D:\\Desktop\\EE5003\\data\\AP_30.db",
+    "bytes": 1097728,
+    "sha256": "8eb87fe387be3e378b4d1a88439f7277f8ce73e0d9539ddf597f10403a597002",
+    "mtime_ns": 1760377615000000000
+  },
+  {
+    "path": "D:\\Desktop\\EE5003\\data\\AP_7p5.db",
+    "bytes": 966656,
+    "sha256": "3b9bc04777b002401339077b23638906533ce21cd431d68daef8ae9e3cc244a5",
+    "mtime_ns": 1760377615000000000
+  },
+  {
+    "path": "D:\\Desktop\\EE5003\\data\\impedance_measurements_all.db",
+    "bytes": 8200192,
+    "sha256": "0800cfa2bb1a0556e6255292a7c18e6b928e6f99de1369b361d5f0a266cbdd1a",
+    "mtime_ns": 1760376787000000000
+  },
+  {
+    "path": "D:\\Desktop\\EE5003\\data\\README.md",
+    "bytes": 7919,
+    "sha256": "0259832357f72ea855590ba8e9c4f3c6644681543662cd7e5c838918c6569aeb",
+    "mtime_ns": 1780540387241452100
+  },
+  {
+    "path": "D:\\Desktop\\EE5003\\data\\resonance_report.csv",
+    "bytes": 2879,
+    "sha256": "ddc79440c3e5378ed297d5ccdaf92cca1c57f1ad539f913c6a5123451fcb234c",
+    "mtime_ns": 1776600490628818100
+  }
+]

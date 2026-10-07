@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import argparse
 import sqlite3
 import time
 from dataclasses import dataclass
@@ -11,8 +10,6 @@ from typing import Dict, Tuple, List, Optional
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-
-from baseline1.workflow.initial_params import DEFAULT_INITIAL_INPUTS, build_initial_param_values
 
 
 @dataclass
@@ -26,6 +23,7 @@ class RunStats:
     t_local: float = 0.0
     t_total_fit: float = 0.0
     t_gp: float = 0.0
+    t_nuts: float = 0.0
 
 
 STATS = RunStats()
@@ -67,12 +65,12 @@ def mag_phase_to_complex(mag: np.ndarray, phase_deg: np.ndarray) -> np.ndarray:
 
 
 # ============================================================
-# 1) Parameter vector (11D) + mapping
+# 1) Parameter vector + mapping
 # ============================================================
 
 PARAM_NAMES: List[str] = [
     "Lls", "Csw", "Rsw", "Llr", "Rrs", "Rcore",
-    "Lm", "nLls", "Csf", "Rsf", "Csf0", "Lad"   # 添加 Lad
+    "Lm", "nLls", "Csf", "Rsf", "Csf0", "Lad", "Cad_lad", "Rad_lad"
 ]
 
 N_PARAMS: int = len(PARAM_NAMES)
@@ -90,7 +88,9 @@ class Params:
     Csf: float
     Rsf: float
     Csf0: float
-    Lad: float   # 新增 Lad
+    Lad: float
+    Cad_lad: float
+    Rad_lad: float
 
     @staticmethod
     def from_vector(x: np.ndarray) -> "Params":
@@ -146,8 +146,10 @@ def Zcsf0(omega: np.ndarray, p: Params) -> np.ndarray:
     return 1.0/(1j*omega*p.Csf0)
 
 def Zlad(omega: np.ndarray, p: Params) -> np.ndarray:
-    """Zlad = jωLad"""
-    return 1j * omega * p.Lad
+    """Zlad = jωLad || (Rad_lad + 1/(jωCad_lad))"""
+    ZL = 1j * omega * p.Lad
+    ZC_branch = p.Rad_lad + 1.0 / (1j * omega * p.Cad_lad)
+    return par(ZL, ZC_branch)
 
 def Y_to_Delta(Za: np.ndarray, Zb: np.ndarray, Zc: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
@@ -207,12 +209,13 @@ def Z1_to_Z9(omega: np.ndarray, p: Params):
 def Z_total(omega: np.ndarray, p: Params) -> np.ndarray:
     """
     UPDATED:
-    Z_total = Lad (series) + [ (Z6 + 1/2 Z1) || (Z5 + 1/2 Z2) + Z4 ] + Lad (series)
+    Z_total = Zlad (series) + [ (Z6 + 1/2 Z1) || (Z5 + 1/2 Z2) + Z4 ] + 1/2 Zlad (series)
     """
     Z1, Z2, _, _, Z4, Z5, Z6, _, _, _ = Z1_to_Z9(omega, p)
     Z_parallel = par(Z6 + 0.5 * Z1, Z5 + 0.5 * Z2)
     Z_core_total = Z_parallel + Z4
-    return Zlad(omega, p) + Z_core_total + 0.5 * Zlad(omega, p)  # 首尾加1.5个 Lad（BC端口的两个短接）
+    Z_lad_branch = Zlad(omega, p)
+    return Z_lad_branch + Z_core_total + 0.5 * Z_lad_branch
 
 # ============================================================
 # 3) Load experiment data from SQLite
@@ -304,8 +307,23 @@ def simulate_complex(f_hz: np.ndarray, p: Params) -> np.ndarray:
     return Z_total(omega, p)
 
 def make_initial_params() -> Params:
-    values = build_initial_param_values(DEFAULT_INITIAL_INPUTS)
-    return Params(**values)
+    # Mild initial values for Lad||(Cad_lad+Rad_lad), avoiding an overly stiff auxiliary branch.
+    return Params(
+        Lls=2.55e-2,
+        Csw=1.012e-9,
+        Rsw=1.3437e4,
+        Llr=2.55e-2,
+        Rrs=28.0,
+        Rcore=4.751e3,
+        Lm=5.5e-2,
+        nLls=1.7806e-10,
+        Csf=2.461e-10,
+        Rsf=2.74e3,
+        Csf0=7.38e-10,
+        Lad=1.3e-7,
+        Cad_lad=10.0e-12,
+        Rad_lad=120.0,
+    )
 
 def default_bounds(p0: Params) -> Tuple[np.ndarray, np.ndarray]:
     """
@@ -319,10 +337,20 @@ def default_bounds(p0: Params) -> Tuple[np.ndarray, np.ndarray]:
     hi_mul = np.full(N_PARAMS, 10.0, dtype=float)
 
     # resistances often vary wider
-    for name in ["Rsw", "Rrs", "Rcore", "Rsf"]:
+    for name in ["Rsw", "Rrs", "Rcore", "Rsf", "Rad_lad"]:
         i = PARAM_NAMES.index(name)
         lo_mul[i] = 0.01
         hi_mul[i] = 100.0
+
+    for name in ["Cad_lad", "Csw", "Csf", "Csf0"]:
+        i = PARAM_NAMES.index(name)
+        lo_mul[i] = 0.05
+        hi_mul[i] = 20.0
+
+    for name in ["Lad", "Lls", "Llr", "Lm", "nLls"]:
+        i = PARAM_NAMES.index(name)
+        lo_mul[i] = 0.05
+        hi_mul[i] = 20.0
 
     lo = x0 * lo_mul
     hi = x0 * hi_mul
@@ -491,6 +519,171 @@ def fit_params_global_local(
     best = results[0]
     p_best = Params.from_vector(np.exp(best["x"]))
     return p_best, results
+
+def fit_params_nuts(
+    f_fit: np.ndarray,
+    Z_fit: np.ndarray,
+    p_init: "Params",
+    weights: np.ndarray,
+    s_re: float,
+    s_im: float,
+    draws: int = 1500,
+    tune: int = 1500,
+    chains: int = 2,
+    target_accept: float = 0.9,
+    seed: int = 0,
+):
+    """
+    NUTS posterior inference in log-domain u = log(p) with bounds from default_bounds().
+    Returns: (p_map, p_mean, trace)
+    """
+    t0 = time.perf_counter()
+    try:
+        import pymc as pm
+        import pytensor.tensor as pt
+    except ImportError as e:
+        print(
+            "PyMC is not available; skip NUTS baseline. "
+            "Install via: pip install pymc"
+        )
+        return None, None, None
+
+    f_fit = np.asarray(f_fit, float)
+    Z_fit = np.asarray(Z_fit, complex)
+    weights = np.asarray(weights, float)
+
+    x0 = p_init.to_vector()
+    lo, hi = default_bounds(p_init)
+    u0 = np.log(x0)
+    u_lo = np.log(lo)
+    u_hi = np.log(hi)
+
+    def simulate_reim_pt(f_hz_pt, u_pt):
+        x = pt.exp(u_pt)
+        Lls, Csw, Rsw, Llr, Rrs, Rcore, Lm, nLls, Csf, Rsf, Csf0, Lad, Cad_lad, Rad_lad = [x[i] for i in range(14)]
+        omega = 2.0 * np.pi * f_hz_pt
+
+        eps = 1e-30
+
+        def c_add(ar, ai, br, bi):
+            return ar + br, ai + bi
+
+        def c_mul(ar, ai, br, bi):
+            return ar * br - ai * bi, ar * bi + ai * br
+
+        def c_inv(ar, ai):
+            den = ar * ar + ai * ai + eps
+            return ar / den, -ai / den
+
+        def c_div(ar, ai, br, bi):
+            ir, ii = c_inv(br, bi)
+            return c_mul(ar, ai, ir, ii)
+
+        def c_par2(ar, ai, br, bi):
+            iar, iai = c_inv(ar, ai)
+            ibr, ibi = c_inv(br, bi)
+            sr, si = iar + ibr, iai + ibi
+            return c_inv(sr, si)
+
+        def c_par3(ar, ai, br, bi, cr, ci):
+            iar, iai = c_inv(ar, ai)
+            ibr, ibi = c_inv(br, bi)
+            icr, ici = c_inv(cr, ci)
+            sr, si = iar + ibr + icr, iai + ibi + ici
+            return c_inv(sr, si)
+
+        ZL_re, ZL_im = 0.0, omega * Lls
+        ZC_re, ZC_im = 0.0, -1.0 / (omega * Csw + eps)
+        ZR_re, ZR_im = Rsw, 0.0
+
+        Zpar_re, Zpar_im = c_par3(ZL_re, ZL_im, ZC_re, ZC_im, ZR_re, ZR_im)
+        Zmid_re, Zmid_im = Zpar_re + Rs, Zpar_im
+
+        Zs_re, Zs_im = Rrs, omega * Llr
+        Zc_re, Zc_im = Rcore, 0.0
+        Zlm_re, Zlm_im = 0.0, omega * Lm
+        Zmr_re, Zmr_im = c_par3(Zs_re, Zs_im, Zc_re, Zc_im, Zlm_re, Zlm_im)
+
+        Zmin_re, Zmin_im = c_add(Zmid_re, Zmid_im, Zmr_re, Zmr_im)
+
+        Zn_re, Zn_im = 0.0, omega * nLls
+        Zbra_re, Zbra_im = Rsf, -1.0 / (omega * Csf + eps)
+        Z0_re, Z0_im = 0.0, -1.0 / (omega * Csf0 + eps)
+
+        Za_re, Za_im = Zn_re, Zn_im
+        Zb_re, Zb_im = Zmin_re, Zmin_im
+        Zc_re, Zc_im = Zbra_re, Zbra_im
+
+        t1_re, t1_im = c_mul(Za_re, Za_im, Zb_re, Zb_im)
+        t2_re, t2_im = c_mul(Zb_re, Zb_im, Zc_re, Zc_im)
+        t3_re, t3_im = c_mul(Zc_re, Zc_im, Za_re, Za_im)
+        S_re, S_im = t1_re + t2_re + t3_re, t1_im + t2_im + t3_im
+
+        Z1_re, Z1_im = c_div(S_re, S_im, Zc_re, Zc_im)
+        Z2_re, Z2_im = c_div(S_re, S_im, Zb_re, Zb_im)
+        Z3_re, Z3_im = c_div(S_re, S_im, Za_re, Za_im)
+
+        Z3h_re, Z3h_im = 0.5 * Z3_re, 0.5 * Z3_im
+        Z4_0_re, Z4_0_im = c_par3(Z3_re, Z3_im, Z3h_re, Z3h_im, Z0_re, Z0_im)
+
+        Sum_re, Sum_im = Z2_re + Z4_0_re + Z1_re, Z2_im + Z4_0_im + Z1_im
+
+        numA_re, numA_im = c_mul(Z2_re, Z2_im, Z1_re, Z1_im)
+        Z4_re, Z4_im = c_div(numA_re, numA_im, Sum_re, Sum_im)
+
+        numB_re, numB_im = c_mul(Z2_re, Z2_im, Z4_0_re, Z4_0_im)
+        Z5_re, Z5_im = c_div(numB_re, numB_im, Sum_re, Sum_im)
+
+        numC_re, numC_im = c_mul(Z4_0_re, Z4_0_im, Z1_re, Z1_im)
+        Z6_re, Z6_im = c_div(numC_re, numC_im, Sum_re, Sum_im)
+
+        a_re, a_im = Z6_re + 0.5 * Z1_re, Z6_im + 0.5 * Z1_im
+        b_re, b_im = Z5_re + 0.5 * Z2_re, Z5_im + 0.5 * Z2_im
+        Zp_re, Zp_im = c_par2(a_re, a_im, b_re, b_im)
+
+        Zcore_re, Zcore_im = Zp_re + Z4_re, Zp_im + Z4_im
+
+        Zlad_l_re, Zlad_l_im = 0.0, omega * Lad
+        Zlad_rc_re, Zlad_rc_im = Rad_lad, -1.0 / (omega * Cad_lad + eps)
+        Zlad_re, Zlad_im = c_par2(Zlad_l_re, Zlad_l_im, Zlad_rc_re, Zlad_rc_im)
+
+        Ztot_re = Zcore_re + Zlad_re + 0.5 * Zlad_re
+        Ztot_im = Zcore_im + Zlad_im + 0.5 * Zlad_im
+        return Ztot_re, Ztot_im
+
+    with pm.Model() as model:
+        u = pm.Uniform("u", lower=u_lo, upper=u_hi, initval=u0, shape=u0.size)
+
+        f_pt = pt.as_tensor_variable(f_fit)
+        weights_pt = pt.as_tensor_variable(np.asarray(weights, dtype=float))
+        Z_obs_re = pt.as_tensor_variable(np.asarray(Z_fit.real, dtype=float))
+        Z_obs_im = pt.as_tensor_variable(np.asarray(Z_fit.imag, dtype=float))
+
+        Z_sim_re, Z_sim_im = simulate_reim_pt(f_pt, u)
+        r_re = weights_pt * (Z_sim_re - Z_obs_re) / s_re
+        r_im = weights_pt * (Z_sim_im - Z_obs_im) / s_im
+        r = pt.concatenate([r_re, r_im])
+
+        zero = np.zeros(2 * f_fit.size, dtype=np.float64)
+        pm.Normal("resid", mu=r, sigma=1.0, observed=zero)
+
+        trace = pm.sample(
+            draws=draws,
+            tune=tune,
+            chains=chains,
+            target_accept=target_accept,
+            random_seed=seed,
+            progressbar=True,
+        )
+
+        map_est = pm.find_MAP()
+        u_map = map_est["u"]
+        u_mean = trace.posterior["u"].mean(dim=("chain", "draw")).values
+
+    p_map = Params.from_vector(np.exp(u_map))
+    p_mean = Params.from_vector(np.exp(u_mean))
+    STATS.t_nuts += time.perf_counter() - t0
+    return p_map, p_mean, trace
 
 def compute_aic_bic(rss: float, n: int, p: int) -> Tuple[float, float]:
     rss = max(rss, 1e-24)
@@ -707,13 +900,34 @@ def plot_compare(
     zabs_sim: np.ndarray,
     phase_sim: np.ndarray,
     title_suffix: str = "",
+    sim_series: Optional[List[Tuple[np.ndarray, np.ndarray, np.ndarray, str]]] = None,
 ):
+    color_map = {
+        "LS": "tab:blue",
+        "MAP": "tab:green",
+        "Mean": "tab:purple",
+        "Simulation": "tab:blue",
+        "Experiment": "tab:orange",
+    }
     plt.figure(figsize=(12, 8))
 
     # magnitude
     plt.subplot(2, 1, 1)
-    plt.semilogx(f_sim, np.log10(zabs_sim), label="Simulation", linewidth=2)
-    plt.semilogx(f_exp, np.log10(zabs_exp), label="Experiment", linewidth=2)
+    if sim_series is None:
+        plt.semilogx(
+            f_sim, np.log10(zabs_sim),
+            label="Simulation", linewidth=2, color=color_map["Simulation"],
+        )
+    else:
+        for f_i, zabs_i, _, label in sim_series:
+            plt.semilogx(
+                f_i, np.log10(zabs_i),
+                label=label, linewidth=2, color=color_map.get(label),
+            )
+    plt.semilogx(
+        f_exp, np.log10(zabs_exp),
+        label="Experiment", linewidth=2, color=color_map["Experiment"],
+    )
     plt.xlabel("Frequency (Hz)")
     plt.ylabel("log10(|Z|) (Ohm)")
     plt.title(f"Impedance Magnitude Comparison {title_suffix}".strip())
@@ -722,8 +936,21 @@ def plot_compare(
 
     # phase
     plt.subplot(2, 1, 2)
-    plt.semilogx(f_sim, wrap_phase_deg(phase_sim), label="Simulation", linewidth=2)
-    plt.semilogx(f_exp, wrap_phase_deg(phase_exp), label="Experiment", linewidth=2)
+    if sim_series is None:
+        plt.semilogx(
+            f_sim, wrap_phase_deg(phase_sim),
+            label="Simulation", linewidth=2, color=color_map["Simulation"],
+        )
+    else:
+        for f_i, _, phase_i, label in sim_series:
+            plt.semilogx(
+                f_i, wrap_phase_deg(phase_i),
+                label=label, linewidth=2, color=color_map.get(label),
+            )
+    plt.semilogx(
+        f_exp, wrap_phase_deg(phase_exp),
+        label="Experiment", linewidth=2, color=color_map["Experiment"],
+    )
     plt.xlabel("Frequency (Hz)")
     plt.ylabel("Phase (deg)")
     plt.title(f"Impedance Phase Comparison {title_suffix}".strip())
@@ -738,23 +965,13 @@ def plot_compare(
 # 7) Main
 # ============================================================
 
-def build_arg_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Run the CurVer baseline experiment.")
-    parser.add_argument("--no-show", action="store_true", help="Disable matplotlib windows during execution.")
-    parser.add_argument("--seed", type=int, default=None, help="Override the random seed used by the experiment.")
-    return parser
-
-
-def main(show_plots: bool = True, seed: int | None = None):
-    if not show_plots:
-        plt.show = lambda *args, **kwargs: None
-
+def main():
     # ---- user config ----
     DB_PATH = r"D:\Desktop\EE5003\data\AP_1p5.db"
     TABLE = "exp_10"          # ??? exp_13 / exp_17 / exp_21 ??????
     N_SAMPLES = 2000           # ????????????????????????
     SAMPLE_MODE = "log_uniform"  # "log_uniform" or "random"
-    SEED = 0 if seed is None else seed
+    SEED = 0
 
     # multi-start + global -> local
     N_STARTS = 120
@@ -852,6 +1069,25 @@ def main(show_plots: bool = True, seed: int | None = None):
     )
     STATS.t_total_fit += time.perf_counter() - t_fit0
 
+    print("\n===== NUTS baseline (Bayesian inference) =====")
+    p_map, p_mean, trace = fit_params_nuts(
+        f_fit=f_fit,
+        Z_fit=Z_fit,
+        p_init=p_opt,
+        weights=weights_fit,
+        s_re=s_re,
+        s_im=s_im,
+        draws=1200,
+        tune=1200,
+        chains=2,
+        target_accept=0.9,
+        seed=SEED,
+    )
+    has_nuts = p_map is not None and p_mean is not None
+    if has_nuts:
+        print("MAP params:", p_map)
+        print("Posterior-mean params:", p_mean)
+
     fit_model_eval = STATS.model_eval - m0
     fit_res_calls = STATS.residual_calls - r0
     fit_obj_calls = STATS.objective_calls - o0
@@ -867,8 +1103,10 @@ def main(show_plots: bool = True, seed: int | None = None):
     print(f"N_freq_fit = {f_fit.size}, N_residual_dim = {2 * f_fit.size}")
     print(f"model_eval = {fit_model_eval}")
     print(f"residual_calls = {fit_res_calls}, objective_calls = {fit_obj_calls}")
-    print(f"T_fit_total = {STATS.t_total_fit:.3f} s")
+    t_fit_total = STATS.t_total_fit + STATS.t_nuts
+    print(f"T_fit_total = {t_fit_total:.3f} s (global/local + optional NUTS)")
     print(f"T_global = {STATS.t_global:.3f} s, T_local = {STATS.t_local:.3f} s")
+    print(f"T_nuts = {STATS.t_nuts:.3f} s")
     print(
         f"n_starts = {N_STARTS}, top_k = {TOP_K}, de_popsize = {DE_POPSIZE}, de_maxiter = {DE_MAXITER}"
     )
@@ -878,12 +1116,28 @@ def main(show_plots: bool = True, seed: int | None = None):
     f_plot = np.logspace(np.log10(f_all.min()), np.log10(f_all.max()), N_PLOT)
     logmag_sim, phase_sim = simulate_on_freq(f_plot, p_opt)
     zabs_sim = 10**logmag_sim
+    if has_nuts:
+        logmag_map, phase_map = simulate_on_freq(f_plot, p_map)
+        zabs_map = 10**logmag_map
+        logmag_mean, phase_mean = simulate_on_freq(f_plot, p_mean)
+        zabs_mean = 10**logmag_mean
 
-    plot_compare(
-        f_exp=f_all, zabs_exp=zabs_all, phase_exp=phase_all,
-        f_sim=f_plot, zabs_sim=zabs_sim, phase_sim=phase_sim,
-        title_suffix="(Fitted)"
-    )
+        plot_compare(
+            f_exp=f_all, zabs_exp=zabs_all, phase_exp=phase_all,
+            f_sim=f_plot, zabs_sim=zabs_sim, phase_sim=phase_sim,
+            title_suffix="(Fitted: LS / MAP / Mean)",
+            sim_series=[
+                (f_plot, zabs_sim, phase_sim, "LS"),
+                (f_plot, zabs_map, phase_map, "MAP"),
+                (f_plot, zabs_mean, phase_mean, "Mean"),
+            ],
+        )
+    else:
+        plot_compare(
+            f_exp=f_all, zabs_exp=zabs_all, phase_exp=phase_all,
+            f_sim=f_plot, zabs_sim=zabs_sim, phase_sim=phase_sim,
+            title_suffix="(Fitted: LS only)",
+        )
 
     # ---- Raw-space metrics on full data ----
     Z_sim_all = simulate_complex(f_all, p_opt)
@@ -939,11 +1193,10 @@ def main(show_plots: bool = True, seed: int | None = None):
         Z_all,
         p_opt,
         out_prefix="exp_10_gp_residual",
-        csv_path=r"D:\Desktop\tmp\curver_gp_residual.csv",
+        csv_path=r"D:\Desktop\tmp\nutsver_gp_residual.csv",
     )
 
 
 
 if __name__ == "__main__":
-    args = build_arg_parser().parse_args()
-    main(show_plots=not args.no_show, seed=args.seed)
+    main()

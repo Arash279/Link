@@ -1,0 +1,354 @@
+[
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baselines\\exp_10_gp_residual.png",
+    "size": [
+      1800,
+      1800
+    ],
+    "info": {
+      "Software": "Matplotlib version3.9.4, https://matplotlib.org/",
+      "dpi": [
+        150.01239999999999,
+        150.01239999999999
+      ]
+    },
+    "pixel_hash": "c6ec3c2a76b531517b6b3b12460176074434fa6090698d021e9465b3081c5383"
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\1.png",
+    "size": [
+      3570,
+      2352
+    ],
+    "info": {
+      "Software": "Matplotlib version3.9.4, https://matplotlib.org/",
+      "dpi": [
+        299.9994,
+        299.9994
+      ]
+    },
+    "pixel_hash": "91711ee210a236ad1a858e89136b5448b40c6ad017adc158ac5b15d61d46db41"
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\Add1.png",
+    "size": [
+      1800,
+      1200
+    ],
+    "info": {
+      "dpi": [
+        143.99259999999998,
+        143.99259999999998
+      ],
+      "Software": "Snipaste"
+    },
+    "pixel_hash": "25b45e7b95d48529ecf97ba2e8f6d69c469d30bd2c4e9c54b55b1cd2d8984fce"
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\Add2.png",
+    "size": [
+      1401,
+      944
+    ],
+    "info": {
+      "dpi": [
+        143.99259999999998,
+        143.99259999999998
+      ],
+      "Software": "Snipaste"
+    },
+    "pixel_hash": "3f43f379d0ea6dae3f7cf344c366b1608e5523cae3f4986fe6196769011aa2f1"
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\Add3.png",
+    "size": [
+      1408,
+      1212
+    ],
+    "info": {},
+    "pixel_hash": "ae24b6e309db6aa798c6b7303c9c856ad990f7234686f05a830bc2041e51f955"
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\Add4.png",
+    "size": [
+      1723,
+      1336
+    ],
+    "info": {},
+    "pixel_hash": "cdccac14fa5180cfc72719af15baa91364aa5f2f158c2a2200fc20d60a353945"
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\circuit1p.png",
+    "size": [
+      631,
+      320
+    ],
+    "info": {
+      "dpi": [
+        96.012,
+        96.012
+      ]
+    },
+    "pixel_hash": "f2b34b87b3202a4fd0237cd8731e373b7b6dabfbdf8ca2754fa567667cdece6b"
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\circuit3p_1.png",
+    "size": [
+      716,
+      656
+    ],
+    "info": {
+      "dpi": [
+        96.012,
+        96.012
+      ]
+    },
+    "pixel_hash": "a686f001e7b225f41917c4312b882bcc5708a6dbd1e9190976af1b7e9227b20b"
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\circuit3p_2.png",
+    "size": [
+      1048,
+      707
+    ],
+    "info": {
+      "srgb": 0,
+      "gamma": 0.45455,
+      "dpi": [
+        95.9866,
+        95.9866
+      ]
+    },
+    "pixel_hash": "e8c7d6e4632791e58014ed7e644aa7eb82e958172b9735c35f95fb59c64dac70"
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\fig1_rmse_bar.png",
+    "size": [
+      3034,
+      1834
+    ],
+    "info": {
+      "Software": "Matplotlib version3.9.4, https://matplotlib.org/",
+      "dpi": [
+        299.9994,
+        299.9994
+      ]
+    },
+    "pixel_hash": "09b5622366cf4ea28cef857fa649254addcf890acdf2f919a7a40fc5bbda9ffc"
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\fig2_tfit_bar.png",
+    "size": [
+      3034,
+      1834
+    ],
+    "info": {
+      "Software": "Matplotlib version3.9.4, https://matplotlib.org/",
+      "dpi": [
+        299.9994,
+        299.9994
+      ]
+    },
+    "pixel_hash": "7e3b55c59d6e7f928a5209c7ec728e467cf1899b9e6b4cbf47e811ee51d77fa2"
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\fig3_rmse_vs_time.png",
+    "size": [
+      2434,
+      1834
+    ],
+    "info": {
+      "Software": "Matplotlib version3.9.4, https://matplotlib.org/",
+      "dpi": [
+        299.9994,
+        299.9994
+      ]
+    },
+    "pixel_hash": "9234e3ab71d65df12568390e4f091fa3bbf250d31eb0de87fa8d609afbdb66ce"
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\fig4_param_cv_heatmap.png",
+    "size": [
+      3028,
+      2434
+    ],
+    "info": {
+      "Software": "Matplotlib version3.9.4, https://matplotlib.org/",
+      "dpi": [
+        299.9994,
+        299.9994
+      ]
+    },
+    "pixel_hash": "a34a174b07ee67e96250ed6341e76e27e33f85819f0e46fb952783ce60dad402"
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\fig5_model_eval_bar.png",
+    "size": [
+      3034,
+      1834
+    ],
+    "info": {
+      "Software": "Matplotlib version3.9.4, https://matplotlib.org/",
+      "dpi": [
+        299.9994,
+        299.9994
+      ]
+    },
+    "pixel_hash": "a5bcd2ebfa5369a412beeb4fd584667ddec29689296257f8e0c4e85320678e75"
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\fig_curver.png",
+    "size": [
+      1800,
+      1200
+    ],
+    "info": {
+      "dpi": [
+        143.99259999999998,
+        143.99259999999998
+      ],
+      "Software": "Snipaste",
+      "User Comment": "Screenshot"
+    },
+    "pixel_hash": "83a798d27c289a44c80c7f1a4d18879e80eb8f33daebaf379aaf5b4d5207eee0"
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\fig_curver_gp.png",
+    "size": [
+      2560,
+      1444
+    ],
+    "info": {
+      "dpi": [
+        143.99259999999998,
+        143.99259999999998
+      ],
+      "Software": "Snipaste",
+      "User Comment": "Screenshot"
+    },
+    "pixel_hash": "a313996fe975ded5963367b4b1d34d86022d61e5395372867ea55050aab24ffc"
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\fig_noL.png",
+    "size": [
+      1800,
+      1200
+    ],
+    "info": {
+      "dpi": [
+        143.99259999999998,
+        143.99259999999998
+      ],
+      "Software": "Snipaste",
+      "User Comment": "Screenshot"
+    },
+    "pixel_hash": "780dea3544393e2e7f654a764ff8c220d29e444b3bebd5946be5e52265810df7"
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\fig_noL_gp.png",
+    "size": [
+      2560,
+      1444
+    ],
+    "info": {
+      "dpi": [
+        143.99259999999998,
+        143.99259999999998
+      ],
+      "Software": "Snipaste",
+      "User Comment": "Screenshot"
+    },
+    "pixel_hash": "e7172acf0813496d0ba2e226ffbaec69f622baa0f9940e0a0f8299aac563b64a"
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\EE5003report__Copy_\\fig_nuts_fit.png",
+    "size": [
+      1800,
+      1200
+    ],
+    "info": {
+      "dpi": [
+        143.99259999999998,
+        143.99259999999998
+      ],
+      "Software": "Snipaste",
+      "User Comment": "Screenshot"
+    },
+    "pixel_hash": "f42bc33511388fe4d1a48a4ef033e177aa2e85188adaae10fa12df3df3c49c9d"
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\try\\exp_10_gp_residual.png",
+    "size": [
+      1800,
+      1800
+    ],
+    "info": {
+      "Software": "Matplotlib version3.9.4, https://matplotlib.org/",
+      "dpi": [
+        150.01239999999999,
+        150.01239999999999
+      ]
+    },
+    "pixel_hash": "a6e07a53a23b33ca86a2d331ee36ef3c25bfc671a8655ebe0d6a505fb28ce4f1"
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow_outputs\\stage3_gp_residual_exp_10.png",
+    "size": [
+      1800,
+      1800
+    ],
+    "info": {
+      "Software": "Matplotlib version3.9.4, https://matplotlib.org/",
+      "dpi": [
+        150.01239999999999,
+        150.01239999999999
+      ]
+    },
+    "pixel_hash": "9a71bf6e61f4c2866f8294fec4404f7f2bcaa2a5758a87cef0d400378585e4b0"
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\workflow_outputs\\stage3_performance_exp_10_seed0.png",
+    "size": [
+      1980,
+      1440
+    ],
+    "info": {
+      "Software": "Matplotlib version3.9.4, https://matplotlib.org/",
+      "dpi": [
+        180.00979999999998,
+        180.00979999999998
+      ]
+    },
+    "pixel_hash": "0dfed6eb958e65a2a5ef3530c39e80b3166efb519709697dce6746bbffa21b8a"
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\experimental_reim_workflow\\outputs\\experimental_reim_performance_exp_10_seed0.png",
+    "size": [
+      1980,
+      1440
+    ],
+    "info": {
+      "Software": "Matplotlib version3.9.4, https://matplotlib.org/",
+      "dpi": [
+        180.00979999999998,
+        180.00979999999998
+      ]
+    },
+    "pixel_hash": "bb89ad725e9a38b471c9bcc1e462003e7cee4492866be9aae9b1913eaeb0dbba"
+  },
+  {
+    "path": "D:\\Desktop\\LinkCodex\\baseline1\\mag_phase_workflow\\outputs\\mag_phase_performance_exp_10_seed0.png",
+    "size": [
+      1980,
+      1440
+    ],
+    "info": {
+      "Software": "Matplotlib version3.9.4, https://matplotlib.org/",
+      "dpi": [
+        180.00979999999998,
+        180.00979999999998
+      ]
+    },
+    "pixel_hash": "56aa987a6d38013b80c96c323fbf014712c3dd538b7b22406973b1d4e71c5bd4"
+  }
+]

@@ -1,0 +1,57 @@
+[
+  {
+    "path": "D:\\Desktop\\tmp\\curver_gp_residual.csv",
+    "sha256": "2fa4c117d4242c805fd83575d4fd369a8bcedec0322fb3fa1e8cc1e7eea5274a",
+    "bytes": 169413
+  },
+  {
+    "path": "D:\\Desktop\\tmp\\nutsver_gp_residual.csv",
+    "sha256": "2fa4c117d4242c805fd83575d4fd369a8bcedec0322fb3fa1e8cc1e7eea5274a",
+    "bytes": 169413
+  },
+  {
+    "path": "D:\\Desktop\\tmp\\anly_meth_gp_residual.csv",
+    "sha256": "5992519c020d875710f403d926940d5eb2ce103f4d207fda116fedfb4a89aa19",
+    "bytes": 169502
+  },
+  {
+    "path": "D:\\Desktop\\tmp\\socket_run_log.txt",
+    "sha256": "d897397a757b5a25b333469defc870e6d1f73d3ff6479aaadf2624c754a14b8d",
+    "bytes": 102520
+  },
+  {
+    "path": "D:\\Desktop\\tmp\\summary_by_script.csv",
+    "sha256": "660cba34a26d61e1bcb0b5c88f8c6b92f6e948d1aa417ee88e04a1a6f7f64262",
+    "bytes": 7766
+  },
+  {
+    "path": "D:\\Desktop\\tmp\\parameter_summary_by_script.csv",
+    "sha256": "9969fbb987e689be8404f741baf32f65b866d744a3d41dbe520abaa6b9c62161",
+    "bytes": 8461
+  },
+  {
+    "path": "D:\\Desktop\\tmp\\paper2_cited.tex",
+    "sha256": "8476179f4416dc4c8782be084c4ea2f0acf888a65a58a10c65bc3d1734f0ff11",
+    "bytes": 50908
+  },
+  {
+    "path": "D:\\Desktop\\tmp\\paper2_cited (3).tex",
+    "sha256": "9ab3590d44ae197891c936620dfcd7d18fac16eca7c45e8eebfaae968f13e84a",
+    "bytes": 50376
+  },
+  {
+    "path": "D:\\Desktop\\tmp\\paper2_cited (4).tex",
+    "sha256": "33cb1173088e000ad4f537c17a8f21b119d4e31e8b3eaa80b0efded3800c439c",
+    "bytes": 49267
+  },
+  {
+    "path": "D:\\Desktop\\tmp\\paper2_cited_rewrapped.tex",
+    "sha256": "862ab57ce2cf38cd9241bcb6d6274ad3abcfd3ecf1a92f2d74aed520a664473d",
+    "bytes": 50104
+  },
+  {
+    "path": "D:\\Desktop\\tmp\\paper2_cited.tex.bak",
+    "sha256": "d7db29a749c1916f51779a663c6c7fa73c196d8276c4d8ac450e73a47aacaf4d",
+    "bytes": 50154
+  }
+]

@@ -1,0 +1,15 @@
+﻿field,value
+hp,1.5
+connection,Y
+lls_h,0.0255
+llr_h,0.0255
+lm_h,0.055
+rrs_ohm,28.0
+csf_hf_f,2.461e-10
+csf_lf_f,4.709920290621116e-09
+fr_hz,109066.077
+zmax_ohm,2570.9672759971427
+fa_hz,212144.31
+zanti_ohm,1080.3812754342855
+nlls_init_h,1.8e-10
+lad_h,1.3e-07

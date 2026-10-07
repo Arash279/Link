@@ -1,0 +1,13 @@
+ M .gitignore
+ M Parameter_Fitting/fit_rr.py
+ M baseline1/CurVer.py
+D  "python git_sync.py"
+?? EE5003report__Copy_/
+?? MD_documents/
+?? Parameter_Fitting/Lm.py
+?? baseline1/__init__.py
+?? baseline1/experimental_reim_workflow/
+?? baseline1/hp30_workflow/
+?? baseline1/mag_phase_workflow/
+?? baseline1/workflow/
+?? "python git_sync.py"

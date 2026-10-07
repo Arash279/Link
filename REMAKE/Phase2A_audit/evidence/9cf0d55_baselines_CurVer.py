@@ -1,8 +1,96 @@
 # -*- coding: utf-8 -*-
 
+"""
+【中文说明】
+本程序实现了一个用于感应电机高频等效电路的阻抗建模与参数拟合框架，
+其中所有电路参数被统一视为一个 11 维可调参数向量。
+
+程序整体采用模块化结构，主要分为以下几个部分：
+
+(0) 工具函数（Utilities）：
+    提供阻抗并联运算、相位包裹（phase wrapping）等基础数学工具，
+    用于保证数值计算的稳定性与拟合过程中相位误差的连续性。
+
+(1) 参数管理（Parameter handling）：
+    使用 dataclass 定义 11 个物理参数及其向量表示，
+    实现参数向量与具名物理量之间的双向映射，
+    以提高可读性并方便数值优化。
+
+(2) 阻抗模型定义（Impedance model definition）：
+    以向量化形式实现高频等效电路的各个子阻抗，
+    包括 Zmid、Zmr、Zbra 等基本模块，
+    并通过 Y–Δ / Δ–Y 变换构建完整网络，
+    最终得到总阻抗 Z_total(ω)。
+
+(3) 实验数据读取（Experimental data loading）：
+    从 SQLite 数据库中读取实验测得的阻抗幅值与相位数据，
+    并进行必要的预处理（排序、去除无效点等）。
+
+(4) 频率抽样（Frequency sampling）：
+    在拟合阶段对实验频点进行对数均匀或随机抽样，
+    以降低计算复杂度并加快参数优化过程。
+
+(5) 参数拟合（Parameter fitting）：
+    基于非线性最小二乘法，对模型阻抗与实验阻抗进行拟合，
+    以 log(|Z|) 与相位为目标量，
+    并通过对数域优化保证参数始终保持物理上的正值。
+
+(6) 结果可视化（Visualization）：
+    绘制拟合前后模型与实验阻抗在幅值与相位上的对比曲线，
+    用于直观评估拟合效果。
+
+(7) 主程序（Main routine）：
+    统一调度数据读取、频率抽样、初始仿真、参数拟合及最终绘图流程。
+
+------------------------------------------------------------
+
+[English Description]
+This script implements a high-frequency impedance modeling and parameter
+fitting framework for an induction machine equivalent circuit, where all
+circuit elements are treated as a single 11-dimensional tunable parameter vector.
+
+The program is organized in a modular manner with the following main components:
+
+(0) Utilities:
+    Basic mathematical helper functions for impedance parallel operations
+    and phase wrapping, ensuring numerical stability and phase continuity
+    during optimization.
+
+(1) Parameter handling:
+    A dataclass-based definition of the 11 physical parameters,
+    providing bidirectional mapping between a parameter vector and
+    named circuit elements for readability and optimization convenience.
+
+(2) Impedance model definition:
+    Vectorized implementations of the high-frequency equivalent circuit,
+    including elemental impedances (Zmid, Zmr, Zbra, etc.),
+    Y–Δ / Δ–Y transformations, and the final total impedance Z_total(ω).
+
+(3) Experimental data loading:
+    Functions to load measured impedance magnitude and phase data
+    from an SQLite database with basic preprocessing.
+
+(4) Frequency sampling:
+    Optional subsampling of experimental frequency points
+    (e.g., log-uniform or random sampling) to reduce computational cost
+    during parameter fitting.
+
+(5) Parameter fitting:
+    Nonlinear least-squares fitting of simulated impedance to experimental data
+    using log-magnitude and phase as fitting targets,
+    with positivity of parameters enforced via log-domain optimization.
+
+(6) Visualization:
+    Comparison plots of simulated and experimental impedance magnitude
+    and phase before and after fitting.
+
+(7) Main routine:
+    Coordinates data loading, sampling, initial simulation,
+    parameter optimization, and final visualization.
+"""
+
 from __future__ import annotations
 
-import argparse
 import sqlite3
 import time
 from dataclasses import dataclass
@@ -11,8 +99,6 @@ from typing import Dict, Tuple, List, Optional
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-
-from baseline1.workflow.initial_params import DEFAULT_INITIAL_INPUTS, build_initial_param_values
 
 
 @dataclass
@@ -304,8 +390,21 @@ def simulate_complex(f_hz: np.ndarray, p: Params) -> np.ndarray:
     return Z_total(omega, p)
 
 def make_initial_params() -> Params:
-    values = build_initial_param_values(DEFAULT_INITIAL_INPUTS)
-    return Params(**values)
+    # your given initial values
+    return Params(
+        Lls=2.55e-2,
+        Csw=1.012e-9,
+        Rsw=1.3437e4,
+        Llr=2.55e-2,
+        Rrs=28.0,
+        Rcore=4.751e3,
+        Lm=5.5e-2,
+        nLls=1.7806e-10,
+        Csf=2.461e-10,
+        Rsf=2.74e3,
+        Csf0=7.38e-10,
+        Lad=1.3e-7,
+    )
 
 def default_bounds(p0: Params) -> Tuple[np.ndarray, np.ndarray]:
     """
@@ -498,40 +597,6 @@ def compute_aic_bic(rss: float, n: int, p: int) -> Tuple[float, float]:
     bic = n * np.log(rss / n) + p * np.log(n)
     return aic, bic
 
-def evaluate_raw_space_metrics(Z_sim: np.ndarray, Z_data: np.ndarray, p: int) -> Dict[str, float]:
-    # --- 原始误差 ---
-    err_re = Z_sim.real - Z_data.real
-    err_im = Z_sim.imag - Z_data.imag
-
-    # --- 原始空间 SSE ---
-    sse = float(np.sum(err_re**2 + err_im**2))
-
-    # 样本数（Re + Im 视为两个观测维度）
-    n = 2 * int(len(Z_data))
-
-    # --- RMSE（复平面）---
-    rmse = float(np.sqrt(sse / n))
-
-    # --- AIC / BIC ---
-    # 假设高斯误差，σ² 用 SSE/n 估计
-    sigma2 = sse / n
-
-    if sigma2 <= 0:
-        aic = float("inf")
-        bic = float("inf")
-    else:
-        aic = float(n * np.log(sigma2) + 2 * p)
-        bic = float(n * np.log(sigma2) + p * np.log(n))
-
-    return {
-        "SSE_raw": sse,
-        "RMSE_raw": rmse,
-        "AIC_raw": aic,
-        "BIC_raw": bic,
-        "n": float(n),
-        "p": float(p),
-    }
-
 def block_split_indices(n: int, n_blocks: int, n_val_blocks: int, seed: int = 0) -> Tuple[np.ndarray, np.ndarray]:
     """
     Split indices into contiguous blocks; select some blocks for validation.
@@ -551,7 +616,6 @@ def gp_residual_analysis(
     weights: Optional[np.ndarray] = None,
     out_prefix: str = "gp_residual",
     top_n: int = 3,
-    csv_path: Optional[str] = None,
 ):
     t0 = time.perf_counter()
     try:
@@ -564,9 +628,6 @@ def gp_residual_analysis(
     Z_sim = simulate_complex(f_hz, p_opt)
     res_re = (Z_data.real - Z_sim.real)
     res_im = (Z_data.imag - Z_sim.imag)
-    phase_sim = wrap_phase_deg(np.angle(Z_sim, deg=True))
-    phase_dat = wrap_phase_deg(np.angle(Z_data, deg=True))
-    res_phase = phase_diff_deg(phase_sim, phase_dat)
 
     logf = np.log10(f_hz)
     x = (logf - logf.mean()) / (logf.std() + 1e-12)
@@ -588,51 +649,19 @@ def gp_residual_analysis(
     x_gp = x[keep]
     res_re_gp = res_re[keep]
     res_im_gp = res_im[keep]
-    res_phase_gp = res_phase[keep]
 
     kernel = RBF(length_scale=0.5, length_scale_bounds=(1e-2, 1e2)) + WhiteKernel(noise_level=1e-6)
     gp_re = GaussianProcessRegressor(kernel=kernel, normalize_y=True, random_state=0)
     gp_im = GaussianProcessRegressor(kernel=kernel, normalize_y=True, random_state=0)
-    gp_ph = GaussianProcessRegressor(kernel=kernel, normalize_y=True, random_state=0)
 
     gp_re.fit(x_gp, res_re_gp)
     gp_im.fit(x_gp, res_im_gp)
-    gp_ph.fit(x_gp, res_phase_gp)
 
     logf_grid = np.linspace(logf.min(), logf.max(), 400)
     x_grid = (logf_grid - logf.mean()) / (logf.std() + 1e-12)
     f_grid = 10 ** logf_grid
     mean_re, std_re = gp_re.predict(x_grid.reshape(-1, 1), return_std=True)
     mean_im, std_im = gp_im.predict(x_grid.reshape(-1, 1), return_std=True)
-    mean_ph, std_ph = gp_ph.predict(x_grid.reshape(-1, 1), return_std=True)
-
-    if csv_path:
-        import os
-        os.makedirs(os.path.dirname(csv_path), exist_ok=True)
-        df = pd.DataFrame(
-            {
-                "f_hz": f_hz,
-                "res_re": res_re,
-                "res_im": res_im,
-                "res_phase_deg": res_phase,
-            }
-        )
-        df_gp = pd.DataFrame(
-            {
-                "f_grid_hz": f_grid,
-                "gp_mean_re": mean_re,
-                "gp_std_re": std_re,
-                "gp_mean_im": mean_im,
-                "gp_std_im": std_im,
-                "gp_mean_phase_deg": mean_ph,
-                "gp_std_phase_deg": std_ph,
-            }
-        )
-        out = pd.concat(
-            [df, df_gp.reindex(range(max(len(df), len(df_gp))))],
-            axis=1,
-        )
-        out.to_csv(csv_path, index=False)
 
     def top_freqs(mean_vec: np.ndarray) -> List[float]:
         order = np.argsort(np.abs(mean_vec))[::-1]
@@ -647,47 +676,25 @@ def gp_residual_analysis(
 
     top_re = top_freqs(mean_re)
     top_im = top_freqs(mean_im)
-    top_ph = top_freqs(mean_ph)
 
     print("GP structure peaks (Re):", ", ".join(f"{f0:.3g} Hz" for f0 in top_re))
     print("GP structure peaks (Im):", ", ".join(f"{f0:.3g} Hz" for f0 in top_im))
-    print("GP structure peaks (Phase):", ", ".join(f"{f0:.3g} Hz" for f0 in top_ph))
 
-    fig, axes = plt.subplots(3, 1, figsize=(12, 12), sharex=True)
-    ax = axes[0]
-    ax.semilogx(f_hz, res_re, ".", color="tab:blue", alpha=0.4, label="raw")
-    ax.semilogx(f_grid, mean_re, "r-", label="GP mean")
-    ax.fill_between(f_grid, mean_re - 1.96 * std_re, mean_re + 1.96 * std_re, color="r", alpha=0.2, label="95% band")
-    for f0 in top_re:
-        ax.axvline(f0, linestyle="--", linewidth=1)
-    ax.set_title("Residual Re + GP")
-    ax.set_xlabel("Frequency (Hz)")
-    ax.set_ylabel("Ohm")
-    ax.grid(True)
-
-    ax = axes[1]
-    ax.semilogx(f_hz, res_im, ".", color="tab:blue", alpha=0.4, label="raw")
-    ax.semilogx(f_grid, mean_im, "r-", label="GP mean")
-    ax.fill_between(f_grid, mean_im - 1.96 * std_im, mean_im + 1.96 * std_im, color="r", alpha=0.2, label="95% band")
-    for f0 in top_im:
-        ax.axvline(f0, linestyle="--", linewidth=1)
-    ax.set_title("Residual Im + GP")
-    ax.set_xlabel("Frequency (Hz)")
-    ax.set_ylabel("Ohm")
-    ax.grid(True)
-
-    ax = axes[2]
-    ax.semilogx(f_hz, res_phase, ".", color="tab:blue", alpha=0.4, label="raw")
-    ax.semilogx(f_grid, mean_ph, "r-", label="GP mean")
-    ax.fill_between(f_grid, mean_ph - 1.96 * std_ph, mean_ph + 1.96 * std_ph, color="r", alpha=0.2, label="95% band")
-    for f0 in top_ph:
-        ax.axvline(f0, linestyle="--", linewidth=1)
-    ax.set_title("Residual Phase + GP")
-    ax.set_xlabel("Frequency (Hz)")
-    ax.set_ylabel("deg")
-    ax.grid(True)
-
+    fig, axes = plt.subplots(2, 1, figsize=(12, 8), sharex=True)
+    axes[0].semilogx(f_hz, res_re, ".", alpha=0.4, label="Residual Re")
+    axes[0].semilogx(f_grid, mean_re, "r-", label="GP mean")
+    axes[0].fill_between(f_grid, mean_re - std_re, mean_re + std_re, color="r", alpha=0.2)
+    axes[0].set_ylabel("Re residual (Ohm)")
+    axes[0].grid(True)
     axes[0].legend()
+
+    axes[1].semilogx(f_hz, res_im, ".", alpha=0.4, label="Residual Im")
+    axes[1].semilogx(f_grid, mean_im, "r-", label="GP mean")
+    axes[1].fill_between(f_grid, mean_im - std_im, mean_im + std_im, color="r", alpha=0.2)
+    axes[1].set_ylabel("Im residual (Ohm)")
+    axes[1].set_xlabel("Frequency (Hz)")
+    axes[1].grid(True)
+    axes[1].legend()
 
     plt.tight_layout()
     plt.savefig(f"{out_prefix}.png", dpi=150)
@@ -738,23 +745,13 @@ def plot_compare(
 # 7) Main
 # ============================================================
 
-def build_arg_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Run the CurVer baseline experiment.")
-    parser.add_argument("--no-show", action="store_true", help="Disable matplotlib windows during execution.")
-    parser.add_argument("--seed", type=int, default=None, help="Override the random seed used by the experiment.")
-    return parser
-
-
-def main(show_plots: bool = True, seed: int | None = None):
-    if not show_plots:
-        plt.show = lambda *args, **kwargs: None
-
+def main():
     # ---- user config ----
     DB_PATH = r"D:\Desktop\EE5003\data\AP_1p5.db"
     TABLE = "exp_10"          # ??? exp_13 / exp_17 / exp_21 ??????
     N_SAMPLES = 2000           # ????????????????????????
     SAMPLE_MODE = "log_uniform"  # "log_uniform" or "random"
-    SEED = 0 if seed is None else seed
+    SEED = 0
 
     # multi-start + global -> local
     N_STARTS = 120
@@ -885,16 +882,21 @@ def main(show_plots: bool = True, seed: int | None = None):
         title_suffix="(Fitted)"
     )
 
-    # ---- Raw-space metrics on full data ----
-    Z_sim_all = simulate_complex(f_all, p_opt)
-    raw_metrics = evaluate_raw_space_metrics(Z_sim_all, Z_all, N_PARAMS)
-    print(
-        f"\nSSE_raw = {raw_metrics['SSE_raw']:.6g}, "
-        f"RMSE_raw = {raw_metrics['RMSE_raw']:.6g}, "
-        f"AIC_raw = {raw_metrics['AIC_raw']:.3f}, "
-        f"BIC_raw = {raw_metrics['BIC_raw']:.3f}, "
-        f"n = {int(raw_metrics['n'])}"
+    # ---- AIC/BIC on full data ----
+    weights_all = compute_freq_weights(
+        f_all, Z_all, mode=WEIGHT_MODE, min_w=WEIGHT_MIN, max_w=WEIGHT_MAX, power=WEIGHT_POWER
     )
+    if SCALE_MODE == "mad":
+        s_re_all = max(mad(Z_all.real), 1e-12)
+        s_im_all = max(mad(Z_all.imag), 1e-12)
+    else:
+        s_re_all = max(float(np.std(Z_all.real)), 1e-12)
+        s_im_all = max(float(np.std(Z_all.imag)), 1e-12)
+    residual_all = make_residual_fn(f_all, Z_all, weights_all, s_re_all, s_im_all)(np.log(p_opt.to_vector()))
+    rss = float(np.dot(residual_all, residual_all))
+    n = residual_all.size
+    aic, bic = compute_aic_bic(rss, n, N_PARAMS)
+    print(f"\nAIC = {aic:.3f}, BIC = {bic:.3f}, RSS = {rss:.6g}, n = {n}")
 
     # ---- optional validation split ----
     if DO_VAL:
@@ -934,16 +936,9 @@ def main(show_plots: bool = True, seed: int | None = None):
         print(f"Validation RSS (block split): {rss_val:.6g} (n={residual_val.size})")
 
     # ---- GP residual analysis ----
-    gp_residual_analysis(
-        f_all,
-        Z_all,
-        p_opt,
-        out_prefix="exp_10_gp_residual",
-        csv_path=r"D:\Desktop\tmp\curver_gp_residual.csv",
-    )
+    gp_residual_analysis(f_all, Z_all, p_opt, out_prefix="exp_10_gp_residual")
 
 
 
 if __name__ == "__main__":
-    args = build_arg_parser().parse_args()
-    main(show_plots=not args.no_show, seed=args.seed)
+    main()

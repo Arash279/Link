@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import argparse
 import sqlite3
 import time
 from dataclasses import dataclass
@@ -11,8 +10,6 @@ from typing import Dict, Tuple, List, Optional
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-
-from baseline1.workflow.initial_params import DEFAULT_INITIAL_INPUTS, build_initial_param_values
 
 
 @dataclass
@@ -72,7 +69,7 @@ def mag_phase_to_complex(mag: np.ndarray, phase_deg: np.ndarray) -> np.ndarray:
 
 PARAM_NAMES: List[str] = [
     "Lls", "Csw", "Rsw", "Llr", "Rrs", "Rcore",
-    "Lm", "nLls", "Csf", "Rsf", "Csf0", "Lad"   # 添加 Lad
+    "Lm", "nLls", "Csf", "Rsf", "Csf0", "Lad", "Cad_lad", "Rad_lad"
 ]
 
 N_PARAMS: int = len(PARAM_NAMES)
@@ -90,7 +87,9 @@ class Params:
     Csf: float
     Rsf: float
     Csf0: float
-    Lad: float   # 新增 Lad
+    Lad: float
+    Cad_lad: float
+    Rad_lad: float
 
     @staticmethod
     def from_vector(x: np.ndarray) -> "Params":
@@ -146,8 +145,10 @@ def Zcsf0(omega: np.ndarray, p: Params) -> np.ndarray:
     return 1.0/(1j*omega*p.Csf0)
 
 def Zlad(omega: np.ndarray, p: Params) -> np.ndarray:
-    """Zlad = jωLad"""
-    return 1j * omega * p.Lad
+    """Zlad = jωLad || (Rad_lad + 1/(jωCad_lad))"""
+    ZL = 1j * omega * p.Lad
+    ZC_branch = p.Rad_lad + 1.0 / (1j * omega * p.Cad_lad)
+    return par(ZL, ZC_branch)
 
 def Y_to_Delta(Za: np.ndarray, Zb: np.ndarray, Zc: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
@@ -207,12 +208,13 @@ def Z1_to_Z9(omega: np.ndarray, p: Params):
 def Z_total(omega: np.ndarray, p: Params) -> np.ndarray:
     """
     UPDATED:
-    Z_total = Lad (series) + [ (Z6 + 1/2 Z1) || (Z5 + 1/2 Z2) + Z4 ] + Lad (series)
+    Z_total = Zlad (series) + [ (Z6 + 1/2 Z1) || (Z5 + 1/2 Z2) + Z4 ] + 1/2 Zlad (series)
     """
     Z1, Z2, _, _, Z4, Z5, Z6, _, _, _ = Z1_to_Z9(omega, p)
     Z_parallel = par(Z6 + 0.5 * Z1, Z5 + 0.5 * Z2)
     Z_core_total = Z_parallel + Z4
-    return Zlad(omega, p) + Z_core_total + 0.5 * Zlad(omega, p)  # 首尾加1.5个 Lad（BC端口的两个短接）
+    Z_lad_branch = Zlad(omega, p)
+    return Z_lad_branch + Z_core_total + 0.5 * Z_lad_branch
 
 # ============================================================
 # 3) Load experiment data from SQLite
@@ -304,8 +306,23 @@ def simulate_complex(f_hz: np.ndarray, p: Params) -> np.ndarray:
     return Z_total(omega, p)
 
 def make_initial_params() -> Params:
-    values = build_initial_param_values(DEFAULT_INITIAL_INPUTS)
-    return Params(**values)
+    # Mild initial values for Lad||(Cad_lad+Rad_lad), avoiding an overly stiff auxiliary branch.
+    return Params(
+        Lls=2.55e-2,
+        Csw=1.012e-9,
+        Rsw=1.3437e4,
+        Llr=2.55e-2,
+        Rrs=28.0,
+        Rcore=4.751e3,
+        Lm=5.5e-2,
+        nLls=1.7806e-10,
+        Csf=2.461e-10,
+        Rsf=2.74e3,
+        Csf0=7.38e-10,
+        Lad=1.3e-7,
+        Cad_lad=10.0e-12,
+        Rad_lad=120.0,
+    )
 
 def default_bounds(p0: Params) -> Tuple[np.ndarray, np.ndarray]:
     """
@@ -319,10 +336,20 @@ def default_bounds(p0: Params) -> Tuple[np.ndarray, np.ndarray]:
     hi_mul = np.full(N_PARAMS, 10.0, dtype=float)
 
     # resistances often vary wider
-    for name in ["Rsw", "Rrs", "Rcore", "Rsf"]:
+    for name in ["Rsw", "Rrs", "Rcore", "Rsf", "Rad_lad"]:
         i = PARAM_NAMES.index(name)
         lo_mul[i] = 0.01
         hi_mul[i] = 100.0
+
+    for name in ["Cad_lad", "Csw", "Csf", "Csf0"]:
+        i = PARAM_NAMES.index(name)
+        lo_mul[i] = 0.05
+        hi_mul[i] = 20.0
+
+    for name in ["Lad", "Lls", "Llr", "Lm", "nLls"]:
+        i = PARAM_NAMES.index(name)
+        lo_mul[i] = 0.05
+        hi_mul[i] = 20.0
 
     lo = x0 * lo_mul
     hi = x0 * hi_mul
@@ -498,24 +525,18 @@ def compute_aic_bic(rss: float, n: int, p: int) -> Tuple[float, float]:
     bic = n * np.log(rss / n) + p * np.log(n)
     return aic, bic
 
-def evaluate_raw_space_metrics(Z_sim: np.ndarray, Z_data: np.ndarray, p: int) -> Dict[str, float]:
-    # --- 原始误差 ---
-    err_re = Z_sim.real - Z_data.real
-    err_im = Z_sim.imag - Z_data.imag
+def evaluate_relative_impedance_metrics(Z_sim: np.ndarray, Z_data: np.ndarray, p: int) -> Dict[str, float]:
+    # Use magnitude-only relative error: (|Z_sim| - |Z_exp|) / |Z_exp|.
+    mag_sim = np.abs(Z_sim)
+    mag_data = np.abs(Z_data)
+    mag_scale = np.maximum(mag_data, 1e-12)
+    err_mag_rel = (mag_sim - mag_data) / mag_scale
 
-    # --- 原始空间 SSE ---
-    sse = float(np.sum(err_re**2 + err_im**2))
-
-    # 样本数（Re + Im 视为两个观测维度）
-    n = 2 * int(len(Z_data))
-
-    # --- RMSE（复平面）---
+    sse = float(np.sum(err_mag_rel**2))
+    n = int(len(Z_data))
     rmse = float(np.sqrt(sse / n))
 
-    # --- AIC / BIC ---
-    # 假设高斯误差，σ² 用 SSE/n 估计
     sigma2 = sse / n
-
     if sigma2 <= 0:
         aic = float("inf")
         bic = float("inf")
@@ -524,10 +545,10 @@ def evaluate_raw_space_metrics(Z_sim: np.ndarray, Z_data: np.ndarray, p: int) ->
         bic = float(n * np.log(sigma2) + p * np.log(n))
 
     return {
-        "SSE_raw": sse,
-        "RMSE_raw": rmse,
-        "AIC_raw": aic,
-        "BIC_raw": bic,
+        "SSE_rel": sse,
+        "RMSE_rel": rmse,
+        "AIC_rel": aic,
+        "BIC_rel": bic,
         "n": float(n),
         "p": float(p),
     }
@@ -738,23 +759,13 @@ def plot_compare(
 # 7) Main
 # ============================================================
 
-def build_arg_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Run the CurVer baseline experiment.")
-    parser.add_argument("--no-show", action="store_true", help="Disable matplotlib windows during execution.")
-    parser.add_argument("--seed", type=int, default=None, help="Override the random seed used by the experiment.")
-    return parser
-
-
-def main(show_plots: bool = True, seed: int | None = None):
-    if not show_plots:
-        plt.show = lambda *args, **kwargs: None
-
+def main():
     # ---- user config ----
     DB_PATH = r"D:\Desktop\EE5003\data\AP_1p5.db"
     TABLE = "exp_10"          # ??? exp_13 / exp_17 / exp_21 ??????
     N_SAMPLES = 2000           # ????????????????????????
     SAMPLE_MODE = "log_uniform"  # "log_uniform" or "random"
-    SEED = 0 if seed is None else seed
+    SEED = 0
 
     # multi-start + global -> local
     N_STARTS = 120
@@ -885,15 +896,15 @@ def main(show_plots: bool = True, seed: int | None = None):
         title_suffix="(Fitted)"
     )
 
-    # ---- Raw-space metrics on full data ----
+    # ---- Relative |Z| metrics on full data ----
     Z_sim_all = simulate_complex(f_all, p_opt)
-    raw_metrics = evaluate_raw_space_metrics(Z_sim_all, Z_all, N_PARAMS)
+    rel_metrics = evaluate_relative_impedance_metrics(Z_sim_all, Z_all, N_PARAMS)
     print(
-        f"\nSSE_raw = {raw_metrics['SSE_raw']:.6g}, "
-        f"RMSE_raw = {raw_metrics['RMSE_raw']:.6g}, "
-        f"AIC_raw = {raw_metrics['AIC_raw']:.3f}, "
-        f"BIC_raw = {raw_metrics['BIC_raw']:.3f}, "
-        f"n = {int(raw_metrics['n'])}"
+        f"\nSSE_rel = {rel_metrics['SSE_rel']:.6g}, "
+        f"RMSE_rel = {rel_metrics['RMSE_rel']:.6g}, "
+        f"AIC_rel = {rel_metrics['AIC_rel']:.3f}, "
+        f"BIC_rel = {rel_metrics['BIC_rel']:.3f}, "
+        f"n = {int(rel_metrics['n'])}"
     )
 
     # ---- optional validation split ----
@@ -945,5 +956,4 @@ def main(show_plots: bool = True, seed: int | None = None):
 
 
 if __name__ == "__main__":
-    args = build_arg_parser().parse_args()
-    main(show_plots=not args.no_show, seed=args.seed)
+    main()

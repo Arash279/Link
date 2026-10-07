@@ -1,0 +1,202 @@
+## ppt/slides/slide1.xml
+GROUP MEETING
+2026.1.12
+
+## ppt/slides/slide2.xml
+Recent Progress
+Key Points
+Partial recovery of previously lost data
+Some documentation missing, but 
+core scripts restored
+Opportunity to 
+re-audit and correct legacy code
+Model performance returned to previous baseline
+
+## ppt/slides/slide3.xml
+Fitting Strategy Update
+Current Approach
+Nonlinear Least Squares (NLLS) fitting
+Applied mainly in LF–MF range
+Notes
+Optimization space is still flexible:
+Re-weighting residuals
+Improved frequency sampling
+Advanced methods (e.g. NN-based fitting) postponed intentionally
+
+## ppt/slides/slide4.xml
+Status of Paper Replication
+Replication Result
+Core analytical model: successfully reproduced
+Parameters match literature values reasonably well
+Important Limitation
+Ultra-high-frequency region (10⁷–10⁸ Hz): Outside current model validity
+Conclusion
+Below UHF range → fitting quality is very good
+
+## ppt/slides/slide5.xml
+Extraction of Stator Series Leakage Inductance (
+Lls
+)
+Method Used
+Work in mid-frequency range
+Identify a reliable inductive plateau
+Convert measured port inductance → total leakage inductance L
+σ
+Assumption from the paper: 
+Leakage equally shared, 
+Lls
+ = 
+Llr
+ = 0.5 · L
+σ
+
+## ppt/slides/slide6.xml
+Extraction of Stator Series Leakage Inductance (
+Lls
+)
+Consistency Check
+Ratio:
+Leq_Y
+ / 
+Leq_Δ
+ ≈ 3.188
+Expected theoretical range: 3.0 – 3.3 (Conclusion from the paper)
+Final Value
+: 
+Lls
+ = 
+Llr
+ = 2.55 × 10⁻² H
+Conclusion
+Low-frequency leakage inductance extraction is reliable
+
+## ppt/slides/slide7.xml
+Computing 
+η
+Lls
+, Stator first turn leakage inductance
+ηLls
+ represents:
+Small fraction of stator leakage
+Located near terminals
+Step 1 — Estimating 
+Csf
+Sweep impedance vs frequency
+Identify capacitive plateaus:
+Before first resonance (LF)
+After first resonance (HF)
+
+## ppt/slides/slide8.xml
+Computing 
+η
+Lls
+, Stator first turn leakage inductance
+Cross-Validation
+Single-phase vs Δ-connection
+Parallel and series combinations
+Observed Ratios
+Δ / (2 × #13) ≈ 0.85
+Δ / (6 × single-phase) ≈ 0.88
+Conclusion
+Consistency acceptable
+Parameter
+Value
+Csf_HF
+2.461 × 10⁻¹⁰ F
+Csf_LF
+1.516 × 10⁻⁹ F
+
+## ppt/slides/slide9.xml
+Computing 
+η
+Lls
+, Stator first turn leakage inductance
+Cross-Validation
+Single-phase vs Δ-connection
+Parallel and series combinations
+Observed Ratios
+Δ / (2 × #13) ≈ 0.85
+Δ / (6 × single-phase) ≈ 0.88
+Conclusion
+Consistency acceptable
+Parameter
+Value
+Csf_HF
+2.461 × 10⁻¹⁰ F
+Csf_LF
+1.516 × 10⁻⁹ F
+Result
+: 
+η
+Lls
+ = 1.7806 × 10⁻² H
+
+## ppt/slides/slide10.xml
+Emerging Physical Inconsistency
+Key Observation
+ηLls
+ ≈ 70% of total 
+Lls
+Why This Is a Problem
+ηLls
+ should represent only 
+f
+irst few turns,
+ 
+v
+ery small portion of stator leakage;
+This contradicts physical intuition
+
+## ppt/slides/slide11.xml
+Impact on High-Frequency Simulation
+If 
+ηLls
+ is large
+Circuit becomes strongly inductive at HF
+Impedance magnitude explodes
+Phase stays near +90°
+Mismatch
+Strongly inconsistent with measured data
+
+## ppt/slides/slide12.xml
+Empirical Correction Test
+Experiment
+Reduce 
+ηLls
+ to a much smaller value
+Result
+HF impedance curve:
+Matches experiment very well
+Both magnitude and phase
+Implication
+Original formula likely overestimates 
+ηLls
+
+## ppt/slides/slide13.xml
+Root Cause Analysis
+Observations
+Formula depends only on: 
+Csf
+, fa
+Possible Issues
+Csf
+ definition ambiguity
+fa identification ambiguity
+Missing geometric assumptions
+Current Hypothesis
+Formula is incomplete or context-dependent
+
+## ppt/slides/slide14.xml
+Next Steps
+Planned Work
+Re-derive high-frequency leakage path 
+Refactor parameter extraction codebase
+Improve fitting strategy after model stabilization
+Extend model with additional HF branches
+
+## ppt/slides/slide15.xml
+add
+修饰最后一段关键是加电容，串联？关键是选一个点位，然后算等效电感之后，就可以根据需要的谐振频率来算这个电容的值。当然点位有很多，要看哪个合理，有些都算不出来。然后做出来之后还要多选几组来对比，确认对各种情况差模共模都能胜任。
+
+## ppt/notesSlides/notesSlide1.xml
+10

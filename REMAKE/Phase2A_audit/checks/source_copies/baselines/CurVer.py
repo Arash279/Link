@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import argparse
 import sqlite3
 import time
 from dataclasses import dataclass
@@ -11,8 +10,6 @@ from typing import Dict, Tuple, List, Optional
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-
-from baseline1.workflow.initial_params import DEFAULT_INITIAL_INPUTS, build_initial_param_values
 
 
 @dataclass
@@ -304,8 +301,21 @@ def simulate_complex(f_hz: np.ndarray, p: Params) -> np.ndarray:
     return Z_total(omega, p)
 
 def make_initial_params() -> Params:
-    values = build_initial_param_values(DEFAULT_INITIAL_INPUTS)
-    return Params(**values)
+    # your given initial values
+    return Params(
+        Lls=2.55e-2,
+        Csw=1.012e-9,
+        Rsw=1.3437e4,
+        Llr=2.55e-2,
+        Rrs=28.0,
+        Rcore=4.751e3,
+        Lm=5.5e-2,
+        nLls=1.7806e-10,
+        Csf=2.461e-10,
+        Rsf=2.74e3,
+        Csf0=7.38e-10,
+        Lad=1.3e-7,
+    )
 
 def default_bounds(p0: Params) -> Tuple[np.ndarray, np.ndarray]:
     """
@@ -738,23 +748,13 @@ def plot_compare(
 # 7) Main
 # ============================================================
 
-def build_arg_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Run the CurVer baseline experiment.")
-    parser.add_argument("--no-show", action="store_true", help="Disable matplotlib windows during execution.")
-    parser.add_argument("--seed", type=int, default=None, help="Override the random seed used by the experiment.")
-    return parser
-
-
-def main(show_plots: bool = True, seed: int | None = None):
-    if not show_plots:
-        plt.show = lambda *args, **kwargs: None
-
+def main():
     # ---- user config ----
     DB_PATH = r"D:\Desktop\EE5003\data\AP_1p5.db"
     TABLE = "exp_10"          # ??? exp_13 / exp_17 / exp_21 ??????
     N_SAMPLES = 2000           # ????????????????????????
     SAMPLE_MODE = "log_uniform"  # "log_uniform" or "random"
-    SEED = 0 if seed is None else seed
+    SEED = 0
 
     # multi-start + global -> local
     N_STARTS = 120
@@ -945,5 +945,4 @@ def main(show_plots: bool = True, seed: int | None = None):
 
 
 if __name__ == "__main__":
-    args = build_arg_parser().parse_args()
-    main(show_plots=not args.no_show, seed=args.seed)
+    main()

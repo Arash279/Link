@@ -1,0 +1,50 @@
+diff --git a/Parameter_Fitting/fit_rr.py b/Parameter_Fitting/fit_rr.py
+index 05fb328..5d4a411 100644
+--- a/Parameter_Fitting/fit_rr.py
++++ b/Parameter_Fitting/fit_rr.py
+@@ -6,7 +6,7 @@ from scipy.optimize import least_squares
+ # ======================================================
+ # 配置区
+ # ======================================================
+-DB_PATH = r"D:\Desktop\data\AP_1p5.db"
++DB_PATH = r"D:\Desktop\EE5003\data\AP_1p5.db"
+ TABLES = ["exp_10", "exp_11", "exp_12"]
+ 
+ # 频率范围：低频区间（堵转拟合）
+diff --git a/baseline1/CurVer.py b/baseline1/CurVer.py
+index ca5bce8..f52ce8b 100644
+--- a/baseline1/CurVer.py
++++ b/baseline1/CurVer.py
+@@ -12,6 +12,8 @@ import numpy as np
+ import pandas as pd
+ import matplotlib.pyplot as plt
+ 
++from baseline1.workflow.initial_params import DEFAULT_INITIAL_INPUTS, build_initial_param_values
++
+ 
+ @dataclass
+ class RunStats:
+@@ -302,21 +304,8 @@ def simulate_complex(f_hz: np.ndarray, p: Params) -> np.ndarray:
+     return Z_total(omega, p)
+ 
+ def make_initial_params() -> Params:
+-    # your given initial values
+-    return Params(
+-        Lls=2.55e-2,
+-        Csw=1.012e-9,
+-        Rsw=1.3437e4,
+-        Llr=2.55e-2,
+-        Rrs=28.0,
+-        Rcore=4.751e3,
+-        Lm=5.5e-2,
+-        nLls=1.7806e-10,
+-        Csf=2.461e-10,
+-        Rsf=2.74e3,
+-        Csf0=7.38e-10,
+-        Lad=1.3e-7,
+-    )
++    values = build_initial_param_values(DEFAULT_INITIAL_INPUTS)
++    return Params(**values)
+ 
+ def default_bounds(p0: Params) -> Tuple[np.ndarray, np.ndarray]:
+     """

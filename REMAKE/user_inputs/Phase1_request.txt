@@ -1,0 +1,745 @@
+你现在需要帮助我恢复、审计并重构一个已经中断较长时间的技术研究项目。
+
+## 0. 背景
+
+研究主题大致是：
+
+**高频电机阻抗建模（high-frequency motor impedance modeling）**
+
+我现在已经不再可靠地记得项目中的具体实现细节。过去的 ChatGPT 对话和我的个人记忆都过于冗杂、零散和久远，因此：
+
+**不要把我的记忆当作事实来源。**
+
+目前可信的材料只有本地文件。
+
+完整历史项目位于：
+
+`D:\Desktop\LinkCodex`
+
+其中有一份过去已经完成的课程/研究报告项目：
+
+`D:\Desktop\LinkCodex\EE5003report__Copy_`
+
+该目录包含至少：
+
+- LaTeX `.tex`
+- `.bib`
+- figures / images
+- 论文相关资源
+
+这篇报告很可能是理解整个旧项目技术逻辑的最佳入口，但仍然需要通过代码和数据进行交叉验证。
+
+---
+
+# 1. 总体目标
+
+我的目标不是继续维护这个混乱的历史目录，而是：
+
+1. 理解过去这个项目到底做了什么；
+2. 恢复其技术路线；
+3. 找出真正重要的代码、数据、模型、参数和结果；
+4. 识别废弃实验、重复文件、中间结果和无意义生成物；
+5. 从历史项目中提炼出一个新的、干净的：
+
+`LinkCodex_restart`
+
+用于现在重新开始研究。
+
+旧目录：
+
+`D:\Desktop\LinkCodex`
+
+必须作为历史档案保留。
+
+**不要删除、移动、覆盖或批量重命名旧目录中的任何文件。**
+
+所有重构工作最终只能发生在新的 restart 项目中。
+
+---
+
+# 2. 工作原则
+
+## Evidence first
+
+所有关于旧项目的判断都应尽量引用实际证据：
+
+- 文件路径
+- 源代码
+- 注释
+- LaTeX 正文
+- figure 名称
+- 数据文件
+- 输出结果
+- 参数文件
+- Git history（如果存在）
+- 文件时间戳（只作为辅助证据）
+
+不要根据文件名或我的研究主题自行脑补。
+
+如果无法确定，请明确标记：
+
+- CONFIRMED
+- LIKELY
+- UNCERTAIN
+- UNKNOWN
+
+而不是假装确定。
+
+---
+
+# 3. 第一阶段：只读项目考古
+
+首先不要修改任何东西。
+
+扫描：
+
+`D:\Desktop\LinkCodex`
+
+建立项目 inventory。
+
+请识别至少以下内容：
+
+- MATLAB files
+- Python files
+- notebooks
+- simulation files
+- measurement data
+- CSV / Excel / MAT 等数据
+- generated figures
+- manually prepared figures
+- LaTeX
+- BibTeX
+- PDFs
+- temporary files
+- backup files
+- duplicated directories
+- multiple versions of similar scripts
+- generated output
+- potentially important README / notes
+
+输出一个高层级项目地图。
+
+不要把成千上万个文件机械地全部打印出来。
+
+重点回答：
+
+1. 项目主要由哪些功能模块组成？
+2. 哪些目录似乎属于同一阶段？
+3. 哪些明显是备份/副本/生成结果？
+4. 哪些脚本看起来是真正的 entry point？
+5. 数据从哪里进入？
+6. 最终结果在哪里产生？
+
+---
+
+# 4. 第二阶段：把 EE5003 report 当成项目索引
+
+重点阅读：
+
+`D:\Desktop\LinkCodex\EE5003report__Copy_`
+
+先理解 LaTeX 主文件和章节结构。
+
+提取论文中涉及的：
+
+- research problem
+- motor / DUT
+- impedance definitions
+- equivalent-circuit topology
+- mathematical equations
+- common-mode / differential-mode concepts（如果实际存在）
+- winding / terminal configuration
+- measured quantities
+- frequency range
+- parameter extraction methodology
+- optimization / curve fitting methodology
+- experimental setup
+- measurement equipment
+- validation methodology
+- major figures
+- tables
+- numerical parameters
+- conclusions
+- limitations
+
+然后针对论文中的关键结果进行 **reverse trace**。
+
+例如：
+
+Figure X
+→ 哪个图片文件
+→ 哪个脚本生成
+→ 使用哪个数据文件
+→ 使用哪些参数
+→ 对应哪个模型
+
+如果无法完整追踪，也请明确记录断点。
+
+最终建立一个类似：
+
+`paper result → code → data → model`
+
+的 provenance map。
+
+---
+
+# 5. 第三阶段：恢复真正的研究 pipeline
+
+根据代码 + 数据 + 报告，而不是根据我的描述，尝试重建实际研究流程。
+
+可能类似：
+
+measurement / raw impedance data
+→ preprocessing
+→ equivalent circuit
+→ parameter identification
+→ simulated impedance
+→ comparison with measurement
+→ plotting
+→ paper figure
+
+但这只是一个假设。
+
+你必须根据实际证据确定真正的 pipeline。
+
+重点找出：
+
+### A. 输入
+
+- 原始输入数据是什么？
+- 格式是什么？
+- 哪些是测量数据？
+- 哪些是手工参数？
+- 哪些是其他脚本的输出？
+
+### B. 模型
+
+识别所有出现过的 motor high-frequency impedance models。
+
+记录：
+
+- topology
+- element names
+- parameter definitions
+- equations
+- assumptions
+- CM / DM relationship
+- winding/phase relationship
+- applicable frequency range
+
+如果历史中存在多代模型，请区分：
+
+Model V1
+Model V2
+Model V3
+
+以及它们之间为什么改变。
+
+### C. 参数识别
+
+识别：
+
+- fitted parameters
+- manually chosen parameters
+- optimization algorithms
+- objective functions
+- bounds
+- initial values
+- frequency weighting
+- frequency ranges
+- error metrics
+
+并判断：
+
+哪些方法最终被论文使用，
+哪些只是实验。
+
+### D. 输出
+
+找出：
+
+- impedance curves
+- phase curves
+- parameter tables
+- comparison plots
+- intermediate results
+- final paper figures
+
+---
+
+# 6. 第四阶段：识别真正有价值的文件
+
+不要简单使用“最后修改时间”判断价值。
+
+对重要文件进行分类：
+
+## CANONICAL
+
+当前 restart 项目真正应该保留的核心文件。
+
+例如：
+
+- 核心模型函数
+- 最终参数拟合函数
+- 必需的数据
+- 最终绘图脚本
+- 报告中实际使用的模型
+
+## LEGACY-BUT-INFORMATIVE
+
+不属于最终 pipeline，但有助于理解研究演化。
+
+例如：
+
+- 旧模型
+- 失败的参数识别方案
+- 旧实验
+- 对比算法
+
+这些一般不要放进主 src，但可以保存在：
+
+`legacy/`
+
+或只在文档中映射到原项目。
+
+## REDUNDANT / GENERATED
+
+例如：
+
+- duplicate
+- copy
+- backup
+- cache
+- generated intermediate result
+- identical figure
+- temporary output
+
+这些通常不需要进入 restart。
+
+## UNKNOWN
+
+无法确认意义的文件。
+
+不要擅自丢弃。
+
+---
+
+# 7. 分析代码依赖关系
+
+重点识别真正的执行链。
+
+例如：
+
+`main.m`
+→ `load_measurement.m`
+→ `motor_model.m`
+→ `fit_parameters.m`
+→ `plot_impedance.m`
+
+或者实际项目中的对应结构。
+
+找出：
+
+- entry points
+- reusable functions
+- one-off scripts
+- hidden dependency
+- hard-coded absolute paths
+- duplicated code
+- global variables
+- workspace assumptions
+- manually required steps
+
+特别标记任何阻碍 reproducibility 的设计。
+
+---
+
+# 8. 检查数据 provenance
+
+这是重要任务。
+
+对于核心数据文件：
+
+说明：
+
+- 它是什么
+- 谁读取它
+- 数据列分别是什么
+- 单位是什么
+- 原始数据还是处理后数据
+- 是否能找到生成方法
+- 是否被论文使用
+
+不要擅自改变原始数据。
+
+restart 项目中应该明确区分：
+
+`data/raw`
+
+和
+
+`data/processed`
+
+---
+
+# 9. 设计新的 restart 项目
+
+完成分析之后，提出：
+
+`D:\Desktop\LinkCodex_restart`
+
+的结构。
+
+建议但不限于：
+
+LinkCodex_restart/
+│
+├── README.md
+├── PROJECT_STATUS.md
+├── MODEL_NOTES.md
+├── REPRODUCTION.md
+├── legacy_map.md
+│
+├── src/
+│   ├── models/
+│   ├── fitting/
+│   ├── processing/
+│   └── plotting/
+│
+├── scripts/
+│
+├── data/
+│   ├── raw/
+│   └── processed/
+│
+├── results/
+│
+├── figures/
+│
+├── references/
+│
+└── legacy/
+
+但不要为了符合这个模板而强行拆分代码。
+
+结构应该根据实际项目复杂度设计。
+
+---
+
+# 10. restart 项目的原则
+
+新项目必须满足：
+
+### Minimal
+
+只保留重新开始研究真正需要的内容。
+
+### Traceable
+
+每个重要文件都能说明来源。
+
+例如：
+
+`src/models/model_x.m`
+
+source:
+`D:\Desktop\LinkCodex\xxxxx\model_x_final3.m`
+
+### Reproducible
+
+尽量做到：
+
+raw data
+→ script
+→ model
+→ result
+→ figure
+
+### Understandable
+
+假设我已经忘记整个项目。
+
+README 应该让我能够快速理解：
+
+- 研究问题是什么
+- 过去做到哪里
+- 核心模型是什么
+- 数据在哪里
+- 从哪个脚本开始
+- 下一步应该研究什么
+
+---
+
+# 11. 必须生成的文档
+
+restart 项目至少应该包含：
+
+## README.md
+
+面向“重新进入项目的我”。
+
+包括：
+
+- Project purpose
+- Current state
+- Directory structure
+- Quick start
+- Main scripts
+- Main data
+- Main models
+- Known limitations
+
+---
+
+## PROJECT_STATUS.md
+
+回答：
+
+### What has been completed?
+
+### What was attempted but abandoned?
+
+### What remains uncertain?
+
+### What should be done next?
+
+特别区分：
+
+FACT
+
+和
+
+INFERENCE。
+
+---
+
+## MODEL_NOTES.md
+
+集中描述真正使用的高频电机阻抗模型：
+
+- circuit topology
+- equations
+- parameters
+- physical interpretation
+- fitting strategy
+- frequency range
+- CM / DM relationships
+- unresolved questions
+
+尽量引用旧项目的具体代码路径和论文章节。
+
+---
+
+## REPRODUCTION.md
+
+告诉未来的我：
+
+如何从数据重新得到至少一个核心结果。
+
+例如：
+
+1. load data
+2. run preprocessing
+3. fit model
+4. run simulation
+5. generate comparison figure
+
+如果现在无法完整 reproduction，也明确写出缺失步骤。
+
+---
+
+## legacy_map.md
+
+建立：
+
+OLD PROJECT
+→ RESTART PROJECT
+
+映射。
+
+例如：
+
+旧：
+`xxxx/test_new_new2.m`
+
+新：
+`src/models/hf_motor_model.m`
+
+理由：
+论文 Figure X 实际使用的版本。
+
+以及：
+
+旧：
+`xxxx/test_old.m`
+
+状态：
+legacy / unused
+
+理由：
+属于早期模型，未进入最终报告。
+
+---
+
+# 12. 不要立刻“现代化”代码
+
+目前首先目标是：
+
+**恢复研究，而不是软件工程重写。**
+
+不要因为代码丑就立刻：
+
+- 改写 MATLAB 为 Python
+- 重构所有函数
+- 改变量名
+- 合并模型
+- 换优化算法
+- 重写数学公式
+
+第一版 restart 应优先保持原行为。
+
+只有在确认 baseline 可理解/可运行以后，才考虑进一步 refactor。
+
+---
+
+# 13. 对重复文件要谨慎
+
+如果出现：
+
+model.m  
+model_new.m  
+model_new2.m  
+model_final.m  
+model_final_revised.m
+
+不要仅根据文件名猜哪个是真正版本。
+
+需要结合：
+
+- 谁调用它
+- 论文数据
+- figure
+- output
+- 参数
+- 时间
+-代码内容
+
+判断 provenance。
+
+---
+
+# 14. 操作顺序
+
+请严格按照以下顺序工作：
+
+### Phase 1 — Audit
+
+只读分析。
+
+不要创建 restart 项目。
+
+输出：
+
+- project map
+- important files
+- likely pipeline
+- uncertainty list
+
+### Phase 2 — Technical reconstruction
+
+恢复：
+
+- models
+- data flow
+- fitting flow
+- figure generation
+- paper provenance
+
+### Phase 3 — Restart design
+
+给出：
+
+- proposed directory tree
+- migration plan
+- canonical file list
+
+此时先不要删除任何旧文件。
+
+### Phase 4 — Build
+
+只有完成前三阶段以后，才创建：
+
+`D:\Desktop\LinkCodex_restart`
+
+通过 **COPY** 或新建文件构造它。
+
+绝不破坏旧项目。
+
+### Phase 5 — Validate
+
+尝试运行最小 pipeline。
+
+优先目标：
+
+重现 EE5003 report 中至少一个关键结果/figure。
+
+---
+
+# 15. 每一步都维护一个调查日志
+
+创建：
+
+`PROJECT_AUDIT.md`
+
+记录：
+
+- 已检查内容
+- 发现
+- 推断
+- 未解问题
+- 文件 provenance
+- 下一步
+
+不要让我依赖聊天历史理解你的工作。
+
+项目本身的 markdown 文档应该成为新的长期记忆。
+
+---
+
+# 16. 最终目标
+
+最终，我希望能够打开：
+
+`D:\Desktop\LinkCodex_restart`
+
+然后在较短时间内回答：
+
+1. 这个研究项目研究什么？
+2. 电机高频阻抗模型是什么？
+3. CM / DM 或其他配置之间如何关联？
+4. 测量数据在哪里？
+5. 模型参数在哪里？
+6. 哪个脚本负责拟合？
+7. 哪个脚本负责生成图？
+8. EE5003 report 的主要结果来自哪里？
+9. 哪些历史尝试已经失败/废弃？
+10. 接下来最值得继续研究的问题是什么？
+
+如果 restart 项目仍然需要翻旧目录几十次才能回答这些问题，那么重构就是失败的。
+
+---
+
+现在开始 **Phase 1 — Audit**。
+
+首先只读检查项目，不要修改原项目，也暂时不要大规模复制文件。
+
+先给我：
+
+1. 项目总体结构；
+2. EE5003 report 的技术内容摘要；
+3. 初步识别出的核心代码/数据；
+4. 初步研究 pipeline；
+5. 当前最大的不确定项；
+6. 下一阶段建议重点追踪的文件。
+
+所有结论尽量给出具体路径作为证据。

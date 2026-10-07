@@ -1,0 +1,2 @@
+﻿SSE_raw,RMSE_raw,AIC_raw,BIC_raw,n,p,table,params_path
+14785691318687.48,68424.99191280255,70343.14441367608,70415.83674401387,3158.0,12.0,exp_10,D:\Desktop\LinkCodex\baseline1\hp30_workflow\outputs\stage2_fit_params_exp_10_seed0.json

@@ -1,0 +1,397 @@
+## ppt/slides/slide1.xml
+2026.1.27
+Group meeting
+
+## ppt/slides/slide2.xml
+1
+2
+3
+4
+5
+6
+
+## ppt/slides/slide3.xml
+Attempts to Correct the 10⁷–10⁸ Hz Impedance Behavior
+Goal
+Modify the equivalent circuit to recover the measured 
+capacitive trend
+ in the ultra-high-frequency band.
+Strategy
+Introduce an additional capacitor 
+Cad
+ at different grounding locations.
+Attempt 1: Cad in Parallel with 
+Csf
+₀ (Neutral–GND)
+Cad connected 
+in parallel with 
+Csf
+₀
+Effective location: 
+Δ-
+network 
+b–c edge
+𝑍
+4
+,
+0
+=
+𝑍
+3
+∥
+0
+.
+5
+𝑍
+3
+∥
+𝐶
+𝑠𝑓
+0
+∥
+𝐶
+𝑎𝑑
+ 
+
+## ppt/slides/slide4.xml
+Attempt 1: Cad in Parallel with 
+Csf
+₀ (Neutral–GND)
+Cad
+|Z4₀|
+|Z6|
+|Z5|
+1e−12 F
+1.078 Ω
+1.071 Ω
+9.68e−3 
+Ω
+1.78e−7 F
+4.30e−2 
+Ω
+4.27e−2 
+Ω
+3.86e−4 
+Ω
+1e2 F
+7.96e−11 
+Ω
+7.91e−11 
+Ω
+7.14e−13 
+Ω
+Observation
+Z6 changes from ~1 
+Ω → ~1
+e−10 
+Ω
+Z5 changes from ~1e−2 
+Ω → ~1
+e−12 
+Ω
+ 
+→ 
+Huge local variation
+Term
+Magnitude
+|Z1|
+4.14 kΩ → 0.5·Z1 ≈ 2069 Ω
+|Z2|
+37.38 Ω → 0.5·Z2 ≈ 18.7 Ω
+Combination structure
+𝑍
+total
+=
+𝑍
+6
++
+0
+.
+5
+𝑍
+1
+∥
+𝑍
+5
++
+0
+.
+5
+𝑍
+2
++
+𝑍
+4
+Conclusion
+Z6 is always added to 
+~2000 
+Ω
+Z5 is always added to 
+~18.7 
+Ω
+Their changes are 
+numerically negligible
+* Cad is 
+completely buried
+ by large series terms.
+ 
+
+## ppt/slides/slide5.xml
+Attempt 2: Cad between Phases and Frame (A,B,C → GND)
+Topology
+Cad connected in 
+series with 
+Csf
+₀
+Location: common stator–frame path
+Cad
+|Z4₀|
+|Z6|
+|Z5|
+1e−12 F
+7.96 k
+Ω
+3.66 k
+Ω
+33 Ω
+3.16e−9 F
+3.59 Ω
+3.57 Ω
+0.032 Ω
+1e2 F
+1.08 Ω
+1.07 Ω
+0.0097 Ω
+Observation
+Z6: 
+kΩ
+ → 1 Ω
+Z5: 33 Ω → 0.01 Ω
+→ Cad is now fully effective locally
+Term
+Magnitude
+|Z1|
+4.14 kΩ → 0.5·Z1 ≈ 2.07 kΩ
+|Z2|
+37.38 Ω → 0.5·Z2 ≈ 18.7 Ω
+|Z4|
+≈ 37 Ω
+Structure
+𝑍
+total
+=
+𝑍
+6
++
+0
+.
+5
+𝑍
+1
+∥
+𝑍
+5
++
+0
+.
+5
+𝑍
+2
++
+𝑍
+4
+ 
+Dominance
+Left branch always k
+Ω
+Right branch always ≈ 18.7 
+Ω
+Z4 ≈ 37 
+Ω (
+stable)
+
+## ppt/slides/slide6.xml
+Structural Limitation: Why Cad / Lad Cannot Fix UHF Behavior
+Key Conclusion
+Even when the added element (Cad or Lad) causes 
+orders-of-magnitude changes
+ in the local branches (
+Z6 and Z5
+), the 
+total impedance remains almost unchanged
+.
+This is because their influence is 
+numerically buried
+ by three dominant terms: 
+0.5·Z1 ≈ 2.07 
+kΩ
+, 
+0.5·Z2 ≈ 18.7 Ω
+, 
+Z4 ≈ 37 Ω
+These three terms lock the global impedance in the 
+tens-of-ohms range
+, preventing any effective inductive–capacitive transition at 10⁷–10⁸ Hz.
+Structural Interpretation
+The current topology is 
+structurally stiff
+: Z6 is always added to a 
+kΩ
+-level
+ term (0.5·Z1); Z5 is always added to a 
+tens-of-ohms
+ term (0.5·Z2)
+The series arm 
+Z4
+ is itself a stable, dominant branch
+Therefore, even dramatic changes in Z6 or Z5 
+cannot compete numerically
+.
+Additional Observation
+Replacing 
+Cad with Lad
+ leads to the 
+same outcome
+: Z6 and Z5 still vary strongly, but their effects are again 
+completely masked
+ by
+0.5·Z1, 0.5·Z2, and Z4.
+
+## ppt/slides/slide7.xml
+Analysis of the variation trend of each component of impedance
+
+## ppt/slides/slide8.xml
+Why Tuning Z2 and Z4 Cannot Fix HF Phase (10–100 MHz)
+
+## ppt/slides/slide9.xml
+Why Tuning Z2 and Z4 Cannot Fix HF Phase (10–100 MHz)
+Observation
+Z2 and Z4 were independently scanned
+(real and imaginary parts, wide range)
+Only the 
+phase response
+ was evaluated
+Result:
+Phase remains 
+capacitive
+Or at best approaches 
+0°
+Never becomes 
+inductive
+, unlike experiments
+Conclusion
+In the 10–100 MHz range, 
+Z2 and Z4 are no longer dominant
+They cannot control the port impedance phase
+Physical Reason
+At high frequency, the circuit is dominated by the 
+stator-to-ground capacitive path
+Its impedance decreases rapidly:
+∣
+𝑍
+𝐶
+∣∝
+1
+𝜔
+This forms an almost 
+short-circuit HF channel
+Implication
+Z2 and Z4 vary slowly and stay bounded
+Their effect is negligible compared to the capacitive path
+They only shift curves in 
+mid-frequency (10⁵–10⁷ Hz)
+They 
+cannot change the HF phase sign
+ 
+
+## ppt/slides/slide10.xml
+Why Small Parasitic Inductance Is Required at High Frequency
+Experimental Evidence
+Phase turns from 
+capacitive → inductive
+Strong oscillations appear in 
+10–100 MHz
+Typical of 
+parasitic inductance + distributed effects
+Order-of-Magnitude Argument
+Dominant stator–ground capacitance: 
+nF
+ level
+Only 
+tens of 
+nH
+ series inductance is enough
+to cause phase reversal in 10–100 MHz
+Possible Sources
+Measurement leads
+Ground return loop geometry
+Frame-to-ground path
+ESL of the capacitance itself
+Key Conclusion
+Internal lumped branches (Z2, Z4)
+cannot explain the inductive HF phase
+The dominant source is likely the 
+measurement loop + grounding geometry
+, not the motor internal model
+Implication
+A 
+small series parasitic inductance
+must be added to the dominant capacitive path to reproduce the experimental behavior
+
+## ppt/slides/slide11.xml
+Impedance curve after adding Small Parasitic Inductance
+
+## ppt/slides/slide12.xml
+Impedance curve after adding Small Parasitic Inductance
+
+## ppt/slides/slide13.xml
+Impedance curve after adding Small Parasitic Inductance
+
+## ppt/slides/slide14.xml
+Impedance curve after adding Small Parasitic Inductance
+
+## ppt/slides/slide15.xml
+Problems with the universality of parameters
+
+## ppt/slides/slide16.xml
+Problems with the universality of parameters
+
+## ppt/slides/slide17.xml
+add
+第一个
+: 10
+兆以内 消融实验 和纯解析 对比 
+第二个
+: 100
+兆 也是和
+baseline
+对比 我加了端口 终端 也要仅
+ai
+的 
+第三个
+: 
+和纯
+ai
+对比 
+10
+兆的时候 
+mlp
+ 
+和 
+ga 
+复现 
+三种
+baseline 
+两个
+latest 
+第四个：每个参数动 
+dm
+和
+cm 
+不要单相 看影响 
+2(
+端口
+2)
+短 三角形 共
+8
+个

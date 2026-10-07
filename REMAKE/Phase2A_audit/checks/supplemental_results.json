@@ -1,0 +1,638 @@
+{
+  "figure_pixel_comparison": {
+    "same_shape": true,
+    "exact_pixel_fraction": 1.0,
+    "mean_abs_channel_difference": 0.0,
+    "blue_pixel_match_within_2px": 1.0
+  },
+  "v3_function_ast_identity": {
+    "Zmid": true,
+    "Zmr": true,
+    "Zmin": true,
+    "Z_nLls": true,
+    "Zbra": true,
+    "Zcsf0": true,
+    "Zlad": true,
+    "Z_total": true,
+    "Z1_to_Z9": true,
+    "Y_to_Delta": true,
+    "delta_to_Y": true,
+    "make_initial_params": true,
+    "default_bounds": true,
+    "make_residual_fn": true,
+    "compute_freq_weights": true,
+    "fit_params_global_local": true
+  },
+  "data_quality": {
+    "AP_1p5.db/exp_1": {
+      "n": 1601,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 0,
+      "unsorted_adjacent": 0
+    },
+    "AP_1p5.db/exp_2": {
+      "n": 1601,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_1p5.db/exp_3": {
+      "n": 1601,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 0,
+      "unsorted_adjacent": 0
+    },
+    "AP_1p5.db/exp_4": {
+      "n": 1601,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_1p5.db/exp_5": {
+      "n": 1601,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_1p5.db/exp_6": {
+      "n": 1601,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_1p5.db/exp_7": {
+      "n": 1601,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_1p5.db/exp_8": {
+      "n": 1601,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_1p5.db/exp_9": {
+      "n": 1601,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_1p5.db/exp_10": {
+      "n": 1601,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 0,
+      "unsorted_adjacent": 0
+    },
+    "AP_1p5.db/exp_11": {
+      "n": 1601,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 0,
+      "unsorted_adjacent": 0
+    },
+    "AP_1p5.db/exp_12": {
+      "n": 1601,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 0,
+      "unsorted_adjacent": 0
+    },
+    "AP_1p5.db/exp_13": {
+      "n": 1601,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 0,
+      "unsorted_adjacent": 0
+    },
+    "AP_1p5.db/exp_14": {
+      "n": 1601,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_1p5.db/exp_15": {
+      "n": 1601,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_1p5.db/exp_16": {
+      "n": 1601,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_1p5.db/exp_17": {
+      "n": 1601,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 0,
+      "unsorted_adjacent": 0
+    },
+    "AP_1p5.db/exp_18": {
+      "n": 1601,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 0,
+      "unsorted_adjacent": 0
+    },
+    "AP_1p5.db/exp_19": {
+      "n": 1601,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 0,
+      "unsorted_adjacent": 0
+    },
+    "AP_1p5.db/exp_20": {
+      "n": 1601,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 0,
+      "unsorted_adjacent": 0
+    },
+    "AP_1p5.db/exp_21": {
+      "n": 1601,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 0,
+      "unsorted_adjacent": 0
+    },
+    "AP_7p5.db/exp_1": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_7p5.db/exp_2": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_7p5.db/exp_3": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_7p5.db/exp_4": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_7p5.db/exp_5": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_7p5.db/exp_6": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_7p5.db/exp_7": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_7p5.db/exp_8": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_7p5.db/exp_9": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_7p5.db/exp_10": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 0,
+      "unsorted_adjacent": 0
+    },
+    "AP_7p5.db/exp_11": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 0,
+      "unsorted_adjacent": 0
+    },
+    "AP_7p5.db/exp_12": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 0,
+      "unsorted_adjacent": 0
+    },
+    "AP_7p5.db/exp_13": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 0,
+      "unsorted_adjacent": 0
+    },
+    "AP_7p5.db/exp_14": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 0,
+      "unsorted_adjacent": 0
+    },
+    "AP_7p5.db/exp_15": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 0,
+      "unsorted_adjacent": 0
+    },
+    "AP_7p5.db/exp_16": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_7p5.db/exp_17": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_7p5.db/exp_18": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_7p5.db/exp_19": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_7p5.db/exp_20": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_7p5.db/exp_21": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_30.db/exp_1": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_30.db/exp_2": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_30.db/exp_3": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_30.db/exp_4": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 0,
+      "unsorted_adjacent": 0
+    },
+    "AP_30.db/exp_5": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 0,
+      "unsorted_adjacent": 0
+    },
+    "AP_30.db/exp_6": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 0,
+      "unsorted_adjacent": 0
+    },
+    "AP_30.db/exp_7": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_30.db/exp_8": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_30.db/exp_9": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_30.db/exp_10": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 0,
+      "unsorted_adjacent": 0
+    },
+    "AP_30.db/exp_11": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 0,
+      "unsorted_adjacent": 0
+    },
+    "AP_30.db/exp_12": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 0,
+      "unsorted_adjacent": 0
+    },
+    "AP_30.db/exp_13": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 0,
+      "unsorted_adjacent": 0
+    },
+    "AP_30.db/exp_14": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 0,
+      "unsorted_adjacent": 0
+    },
+    "AP_30.db/exp_15": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 0,
+      "unsorted_adjacent": 0
+    },
+    "AP_30.db/exp_16": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 7,
+      "unsorted_adjacent": 0
+    },
+    "AP_30.db/exp_17": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 0,
+      "unsorted_adjacent": 0
+    },
+    "AP_30.db/exp_18": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 0,
+      "unsorted_adjacent": 0
+    },
+    "AP_30.db/exp_19": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 0,
+      "unsorted_adjacent": 0
+    },
+    "AP_30.db/exp_20": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 0,
+      "unsorted_adjacent": 0
+    },
+    "AP_30.db/exp_21": {
+      "n": 1600,
+      "nonfinite": 0,
+      "nonpositive_f": 0,
+      "nonpositive_Zabs": 0,
+      "duplicate_freq": 0,
+      "unsorted_adjacent": 0
+    }
+  },
+  "historical_topologies": {
+    "fc8ad7f:tmp/tmp.py": {
+      "Zlad": "def Zlad(omega: np.ndarray, p: Params) -> np.ndarray:\n    \"\"\"Zlad = j蠅Lad\"\"\"\n    return 1j * omega * p.Lad",
+      "Z_total": "def Z_total(omega: np.ndarray, p: Params) -> np.ndarray:\n    \"\"\"\n    UPDATED:\n    Z_total = Lad (series) + [ (Z6 + 1/2 Z1) || (Z5 + 1/2 Z2) + Z4 ] + Lad (series)\n    \"\"\"\n    Z1, Z2, _, _, Z4, Z5, Z6, _, _, _ = Z1_to_Z9(omega, p)\n    Z_parallel = par(Z6 + 0.5 * Z1, Z5 + 0.5 * Z2)\n    Z_core_total = Z_parallel + Z4\n    Zlad_par = Zrad(omega, p) + par(Zlad(omega, p), Zcad(omega, p))\n    Z_meas = Zlad_par + Z_core_total + 0.5 * Zlad_par\n    return Z_meas"
+    },
+    "ee0a7f1:tmp/tmp.py": {
+      "Zlad": "def Zlad(omega: np.ndarray, p: Params) -> np.ndarray:\n    \"\"\"Zlad = j蠅Lad\"\"\"\n    return 1j * omega * p.Lad",
+      "Z_total": "def Z_total(omega: np.ndarray, p: Params) -> np.ndarray:\n    \"\"\"\n    UPDATED:\n    Z_total = Lad (series) + [ (Z6 + 1/2 Z1) || (Z5 + 1/2 Z2) + Z4 ] + Lad (series)\n    \"\"\"\n    Z1, Z2, _, _, Z4, Z5, Z6, _, _, _ = Z1_to_Z9(omega, p)\n    Z_parallel = par(Z6 + 0.5 * Z1, Z5 + 0.5 * Z2)\n    Z_core_total = Z_parallel + Z4\n    Z_meas = Zlad(omega, p) + Z_core_total + 0.5 * Zlad(omega, p)\n    return par(Z_meas, Zcad(omega, p))"
+    },
+    "9cf0d55:baselines/CurVer.py": {
+      "Zlad": "def Zlad(omega: np.ndarray, p: Params) -> np.ndarray:\n    \"\"\"Zlad = jωLad\"\"\"\n    return 1j * omega * p.Lad",
+      "Z_total": "def Z_total(omega: np.ndarray, p: Params) -> np.ndarray:\n    \"\"\"\n    UPDATED:\n    Z_total = Lad (series) + [ (Z6 + 1/2 Z1) || (Z5 + 1/2 Z2) + Z4 ] + Lad (series)\n    \"\"\"\n    Z1, Z2, _, _, Z4, Z5, Z6, _, _, _ = Z1_to_Z9(omega, p)\n    Z_parallel = par(Z6 + 0.5 * Z1, Z5 + 0.5 * Z2)\n    Z_core_total = Z_parallel + Z4\n    return Zlad(omega, p) + Z_core_total + 0.5 * Zlad(omega, p)"
+    }
+  },
+  "png_origin": [
+    {
+      "file": "1.png",
+      "software": "Matplotlib version3.9.4, https://matplotlib.org/",
+      "comment": null
+    },
+    {
+      "file": "Add1.png",
+      "software": "Snipaste",
+      "comment": null
+    },
+    {
+      "file": "Add2.png",
+      "software": "Snipaste",
+      "comment": null
+    },
+    {
+      "file": "Add3.png",
+      "software": null,
+      "comment": null
+    },
+    {
+      "file": "Add4.png",
+      "software": null,
+      "comment": null
+    },
+    {
+      "file": "circuit1p.png",
+      "software": null,
+      "comment": null
+    },
+    {
+      "file": "circuit3p_1.png",
+      "software": null,
+      "comment": null
+    },
+    {
+      "file": "circuit3p_2.png",
+      "software": null,
+      "comment": null
+    },
+    {
+      "file": "fig1_rmse_bar.png",
+      "software": "Matplotlib version3.9.4, https://matplotlib.org/",
+      "comment": null
+    },
+    {
+      "file": "fig2_tfit_bar.png",
+      "software": "Matplotlib version3.9.4, https://matplotlib.org/",
+      "comment": null
+    },
+    {
+      "file": "fig3_rmse_vs_time.png",
+      "software": "Matplotlib version3.9.4, https://matplotlib.org/",
+      "comment": null
+    },
+    {
+      "file": "fig4_param_cv_heatmap.png",
+      "software": "Matplotlib version3.9.4, https://matplotlib.org/",
+      "comment": null
+    },
+    {
+      "file": "fig5_model_eval_bar.png",
+      "software": "Matplotlib version3.9.4, https://matplotlib.org/",
+      "comment": null
+    },
+    {
+      "file": "fig_curver.png",
+      "software": "Snipaste",
+      "comment": "Screenshot"
+    },
+    {
+      "file": "fig_curver_gp.png",
+      "software": "Snipaste",
+      "comment": "Screenshot"
+    },
+    {
+      "file": "fig_noL.png",
+      "software": "Snipaste",
+      "comment": "Screenshot"
+    },
+    {
+      "file": "fig_noL_gp.png",
+      "software": "Snipaste",
+      "comment": "Screenshot"
+    },
+    {
+      "file": "fig_nuts_fit.png",
+      "software": "Snipaste",
+      "comment": "Screenshot"
+    }
+  ]
+}

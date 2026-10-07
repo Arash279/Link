@@ -1,0 +1,7 @@
+﻿table,csf_lf_f,csf_hf_f,csf0_calc_f,lf_err,hf_err,lf_found,hf_found
+exp_1,,,,,,False,False
+exp_2,,,,,,False,False
+exp_3,,,,,,False,False
+exp_4,4.709920290621116e-09,,,0.010580929956662656,,True,False
+exp_5,4.816357089175243e-09,,,0.010348206236457765,,True,False
+exp_6,4.657754117712854e-09,,,0.010142340251524577,,True,False

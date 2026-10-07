@@ -1,0 +1,10 @@
+﻿group,table,topology,status,f_lo_hz,f_hi_hz,span_dec,n_points,leq_h,l_sigma_h,err,quality_ok
+y_short,exp_10,Y,NO_WINDOW,,,,,,,,
+y_short,exp_11,Y,NO_WINDOW,,,,,,,,
+y_short,exp_12,Y,NO_WINDOW,,,,,,,,
+y_long,exp_14,Y,NO_WINDOW,,,,,,,,
+y_long,exp_15,Y,NO_WINDOW,,,,,,,,
+y_long,exp_16,Y,NO_WINDOW,,,,,,,,
+delta,exp_18,Delta,OK,100.879,1705.313,1.2280033343155692,324.0,0.00967283736240565,0.0193456747248113,0.170733467504602,False
+delta,exp_19,Delta,OK,100.0,932.128,0.9694755538526025,256.0,0.015303113162637234,0.030606226325274467,0.16960447947134927,False
+delta,exp_20,Delta,NO_WINDOW,,,,,,,,

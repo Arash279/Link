@@ -1,0 +1,145 @@
+## ppt/slides/slide1.xml
+2026.3.3
+Group meeting
+
+## ppt/slides/slide2.xml
+Recent Work Summary
+Objective
+Key question:
+Is the performance gain from better optimization or better model structure?
+Strategy
+baseline groups:
+Same structure, stronger optimizers
+Structure ablation
+Pure data-driven (MLP)
+
+## ppt/slides/slide3.xml
+Current Method 
+Core Algorithm: Two-stage optimization (global + local) (differential_evolution → least_squares), with multiple starting point selection.
+Objective Function: Using the Re/Im residual of complex impedance (instead of log|Z|+phase), and introducing frequency weights (compute_freq_weights), scale normalization (MAD/STD), and robust loss (soft_l1/huber).
+A
+"more
+ robust fit" version, which focuses on improving global search capabilities, outlier resistance, and diagnosing model defects from residual structure.
+
+## ppt/slides/slide4.xml
+Initial version
+Core Algorithm: Single-step local optimization (
+scipy.optimize.least_squares
+).
+Objective Function: Log10(|Z|) concatenated with the phase residual (phase difference using 
+phase_diff_deg
+), scaled with fixed weights W_LOGMAG / W_PHASE.
+The simplest "local least squares" baseline, fast, but prone to getting trapped in local optima and lacks global search or uncertainty estimation.
+
+## ppt/slides/slide5.xml
+NUTS
+Core Algorithm: Based on 
+CurVer
+, Bayesian inference (NUTS in 
+PyMC
+) is added. First, global and local point estimates are obtained, then NUTS sampling is used to obtain the posterior distribution.
+Objective Function: Still based on Re/
+Im
+ residuals, but expressed using a probabilistic model (
+pm.Normal
+ observation residuals), generating MAP and posterior mean.
+A version with "uncertainty estimation" can output parameter distributions and confidence intervals, at the cost of a significant increase in computation.
+
+## ppt/slides/slide6.xml
+GA
+Core Algorithm: Based on 
+CurVer
+, Bayesian inference (NUTS in 
+PyMC
+) is added. First, global and local point estimates are obtained, then NUTS sampling is used to obtain the posterior distribution.
+Objective Function: Still based on Re/
+Im
+ residuals, but expressed using a probabilistic model (
+pm.Normal
+ observation residuals), generating MAP and posterior mean.
+A version with "uncertainty estimation" can output parameter distributions and confidence intervals, at the cost of a significant increase in computation.
+
+## ppt/slides/slide7.xml
+Algorithm Comparison
+Same accuracy across all methods: 
+SSE_raw
+ ≈ 5.45×10^7, 
+RMSE_raw
+ = 130.917 for 
+CurVer
+ / GA / NUTS; 
+AIC_raw
+ / 
+BIC_raw
+ essentially identical; 
+GP residual peak frequencies identical (Re/
+Im
+/Phase) → converged to the same optimum
+Compute cost differs dramatically: 
+CurVer
+: 
+T_fit_total
+ = 4.943 s, 
+model_eval
+ = 20,399; 
+GA: 
+T_fit_total
+ = 36.394 s (~7.4× slower), 
+model_eval
+ = 70,286 (~3.4× more evals); 
+NUTS: 
+T_fit_total
+ = 878.821 s (~178× slower), dominated by 
+T_nuts
+ = 867.419 s
+Conclusion: Genetic Algorithm and Bayesian sampling (NUTS) do not improve fit quality under this model structure.
+
+## ppt/slides/slide8.xml
+Structural ablation
+Pure analytical method
+Pure Fit Method
+Performance very poor; no further comparison needed
+
+## ppt/slides/slide9.xml
+MLP-1: In-band Interpolation
+Setup
+Train on sparse points across entire band
+Test on remaining points
+Result
+✔ Good fit in low/mid frequency
+✘ High-frequency details are smoothed
+Insight
+MLP learns global trend, but suppresses high-curvature structures.
+
+## ppt/slides/slide10.xml
+MLP-2: Cross-band Extrapolation
+Setup
+Train: 10 Hz – 1e7 Hz
+Test: 1e7 – 1e8 Hz
+Observation
+✔ Phase trend (upturn) extrapolated correctly
+✘ High-frequency resonant structures not recovered
+✘ Magnitude dip underestimated
+Interpretation
+MLP performs smooth extrapolation
+but cannot generate new high-frequency dynamics.
+
+## ppt/slides/slide11.xml
+Future Work
+1️⃣ Reproduce 1–2 SOTA Approaches
+2️⃣ Experimental Validation of Model Interpretability
+Approach A — Cross-Power Prediction
+Fit the model using Dataset 1 (Power Level 1)
+Only adjust parameters theoretically dependent on power
+Predict Dataset 2 (Power Level 2)
+Evaluate predictive consistency
+→ Tests whether parameters retain physical meaning
+Approach B — Parameter Sensitivity Analysis
+Fit independently on Dataset 1 and Dataset 2
+Analyze parameter variations vs. power level
+Check consistency with expected physical mechanisms
+→ If parameter trends align with physical behavior,
+the model demonstrates stronger interpretability.
+
+## ppt/notesSlides/notesSlide1.xml
+7

@@ -1,0 +1,261 @@
+5d32a72 2026-05-27T23:58:14+08:00 Auto update: 2026-05-27 23:58:14
+
+M	python git_sync.py
+44cd9ba 2026-05-27T23:54:57+08:00 Before Codex
+
+A	PaperFigure/Csf.py
+A	PaperFigure/NoLad.py
+A	PaperFigure/ScanZ.py
+A	PaperFigure/ScanZ_1e6_1e8.py
+A	PaperFigure/fr_fa.py
+A	PaperFigure/plot_ori.py
+A	docs/Group Meeting/GROUP MEETING 2026.3.11.pdf
+D	exp_10_gp_residual.png
+A	python git_sync.py
+M	tools/plot_for_test.py
+A	try/NUTSVerTry.py
+A	try/NoLad.py
+A	try/exp_10_gp_residual.png
+A	try/only1e7.py
+A	try/pymc_test.py
+A	try/try.py
+A	try/try2.py
+fc8ad7f 2026-03-28T01:27:30+08:00 update
+
+A	baseline1/CurVer.py
+A	baseline1/ablation_de_only.py
+A	baseline1/ablation_ga_ls.py
+A	baseline1/ablation_ls_only.py
+A	baseline1/ablation_no_freq_weights.py
+A	baseline1/ablation_no_reim_scaling.py
+A	baseline1/gp_peak_summary_by_script.csv
+A	baseline1/parameter_summary_by_script.csv
+A	baseline1/parsed_runs.csv
+A	baseline1/parsed_runs_compact.csv
+A	baseline1/socket.py
+A	baseline1/socket_run_log.txt
+A	baseline1/summary.py
+A	baseline1/summary_by_script.csv
+D	baselines/MLP_1.py
+D	baselines/MLP_2.py
+A	baselines/exp_10_gp_residual.png
+A	exp_10_gp_residual.png
+A	tmp/scan.py
+M	tmp/tmp.py
+A	tmp/tmp1.py
+A	tmp/tmp2.py
+A	tmp/tmp3.py
+ee0a7f1 2026-03-11T18:13:42+08:00 update
+
+A	baselines/Anly_Meth.py
+M	baselines/CurVer.py
+A	baselines/CurVer_no_L.py
+A	baselines/GA+Anly.py
+A	baselines/GA.py
+M	baselines/IniVer.py
+A	baselines/MLP_1.py
+A	baselines/MLP_2.py
+M	baselines/NUTSVer.py
+A	baselines/Only_fit.py
+D	baselines/exp_10_gp_residual.png
+M	docs/Group Meeting/2026.1.27.pptx
+A	docs/Group Meeting/2026.3.3.pptx
+A	docs/paper1.pdf
+A	docs/paper2.pdf
+M	tmp.py
+D	tmp/exp_10_gp_residual.png
+M	tmp/tmp.py
+M	tools/plot_for_test.py
+A	tools/scan.py
+4047bed 2026-02-10T02:51:04+08:00 Merge branch 'main' of https://github.com/Arash279/Link
+0c7b453 2026-02-10T02:49:42+08:00 update
+
+M	baselines/CurVer.py
+M	baselines/IniVer.py
+M	baselines/NUTSVer.py
+A	baselines/exp_10_gp_residual.png
+D	docs/paper1.pdf
+D	docs/paper2.pdf
+M	tools/plot_for_test.py
+e9d1688 2026-02-10T01:19:33+08:00 Create README.md
+
+A	README.md
+9cf0d55 2026-02-09T07:02:47+08:00 update
+
+A	baselines/CurVer.py
+A	baselines/IniVer.py
+A	baselines/NUTSVer.py
+A	tmp/Lad_try2_success.py
+A	tmp/exp_10_gp_residual.png
+A	tmp/tmp.py
+R094	plot_for_test.py	tools/plot_for_test.py
+89b6999 2026-02-08T23:40:39+08:00 Protective backup before enabling AI ​​agent
+
+R100	compute_Lm.py	Circuit_Fitting/compute_Lm.py
+R098	exp_10_fit.py	Circuit_Fitting/exp_10_fit.py
+R100	exp_1_fit.py	Circuit_Fitting/exp_1_fit.py
+D	EE5003.md
+R099	test.py	Parameter_Fitting/Cs.py
+R100	Csf.py	Parameter_Fitting/Csf.py
+R100	Llr.py	Parameter_Fitting/Llr.py
+R100	fit_1.py	Parameter_Fitting/fit_1.py
+R100	fit_rr.py	Parameter_Fitting/fit_rr.py
+R100	fit_rs.py	Parameter_Fitting/fit_rs.py
+R100	fr_fa.py	Parameter_Fitting/fr_fa.py
+R100	fr_fa_for1phase.py	Parameter_Fitting/fr_fa_for1phase.py
+A	docs/EE5003.md
+R100	Group Meeting/2026.1.12.pptx	docs/Group Meeting/2026.1.12.pptx
+R100	Group Meeting/2026.1.27.pptx	docs/Group Meeting/2026.1.27.pptx
+R100	Group Meeting/EE5003_rebuild.pdf	docs/Group Meeting/EE5003_rebuild.pdf
+R100	paper1.pdf	docs/paper1.pdf
+R100	paper2.pdf	docs/paper2.pdf
+R100	Ztotal_result.csv	outputs/Ztotal_result.csv
+A	plot_for_test.py
+D	test_plot.py
+M	tmp.py
+R100	Calculate.py	tools/Calculate.py
+R100	Export_CSV.py	tools/Export_CSV.py
+R100	figure_all.py	tools/figure_all.py
+D	try_just_use_this.py
+D	try_just_use_this_fixed.py
+55cb48f 2026-01-27T14:28:26+08:00 update
+
+A	Group Meeting/EE5003_rebuild.pdf
+03c8877 2026-01-27T14:18:15+08:00 update
+
+M	Calculate.py
+A	Group Meeting/2026.1.12.pptx
+A	Group Meeting/2026.1.27.pptx
+D	Mini_Project_1_export/58BC4D04EE751852BE7FFD8C1E00BBE0.jpg
+D	Mini_Project_1_export/ADS cooked book.pdf
+D	Mini_Project_1_export/Assigned Frequency of BPF.pdf
+D	Mini_Project_1_export/EE5303 Mini Project 1.pdf
+D	Mini_Project_1_export/Mini-Project1_Group list.pdf
+D	Mini_Project_1_export/MiniProject1_Time slots(updated).pdf
+D	Mini_Project_1_export/Reading materials 2.pdf
+D	Mini_Project_1_export/Reading materials.pdf
+D	Mini_Project_1_export/Snipaste_2025-10-23_23-31-05.png
+D	Mini_Project_1_export/Snipaste_2025-10-23_23-32-09.png
+D	Mini_Project_1_export/Snipaste_2025-10-23_23-33-23.png
+D	Mini_Project_1_export/Snipaste_2025-10-23_23-34-32.png
+D	Mini_Project_1_export/Snipaste_2025-10-23_23-35-04.png
+D	Mini_Project_1_export/Snipaste_2025-10-23_23-35-23.png
+D	Mini_Project_1_export/Snipaste_2025-10-23_23-36-15.png
+D	Mini_Project_1_export/Snipaste_2025-10-24_00-16-50.png
+D	Mini_Project_1_export/Snipaste_2025-10-24_00-27-54.png
+D	Mini_Project_1_export/Snipaste_2025-10-24_00-28-58.png
+D	Mini_Project_1_export/Snipaste_2025-10-24_00-36-03.png
+D	Mini_Project_1_export/Snipaste_2025-10-24_00-36-44.png
+D	Mini_Project_1_export/Snipaste_2025-10-24_02-32-32.png
+D	Mini_Project_1_export/Snipaste_2025-10-24_02-32-40.png
+D	Mini_Project_1_export/Snipaste_2025-10-24_02-32-45.png
+D	Mini_Project_1_export/Snipaste_2025-10-24_02-40-15.png
+D	Mini_Project_1_export/Snipaste_2025-10-24_02-49-38.png
+D	Mini_Project_1_export/Snipaste_2025-10-24_03-01-31.png
+D	Mini_Project_1_export/UpdatedAccounts_passwords_ADSLab.xlsx
+D	exp_10_Llf.png
+D	exp_11_fr_fa.png
+D	exp_18_fr_fa.png
+D	exp_19_fr_fa.png
+D	exp_1_Csf.png
+A	exp_1_fit.py
+D	exp_20_fr_fa.png
+D	plot_port_Z.m
+D	plot_port_impedance.m
+4a21dfa 2026-01-12T16:41:46+08:00 update scripts and remove unused files
+
+M	Calculate.py
+M	Csf.py
+M	Llr.py
+D	Mini_Project_1_export/Snipaste_2025-10-24_00-16-54.png
+A	Ztotal_result.csv
+D	circuit.py
+M	compute_Lm.py
+A	exp_10_fit.py
+D	figs/series_RLC_vertical_cap.png
+D	figure1.m
+D	figure2.m
+A	figure_all.py
+M	fr_fa.py
+A	fr_fa_for1phase.py
+A	test.py
+A	test_plot.py
+M	tmp.py
+D	tmp1.py
+A	try_just_use_this.py
+A	try_just_use_this_fixed.py
+963bd46 2025-10-24T17:23:44+08:00 Automatic synchronization updates by default
+
+A	sync_to_local.bat
+ab6c21c 2025-10-24T15:29:32+08:00 Automatic synchronization updates by default
+
+M	sync_to_github.bat
+79ecb3f 2025-10-24T15:28:41+08:00 鑷姩鍚屾鏇存柊
+
+A	sync_to_github.bat
+bfa8e71 2025-10-24T15:26:58+08:00 add EE5303 thing
+
+R074	test.py	Export_CSV.py
+A	Mini_Project_1_export/58BC4D04EE751852BE7FFD8C1E00BBE0.jpg
+A	Mini_Project_1_export/ADS cooked book.pdf
+A	Mini_Project_1_export/Assigned Frequency of BPF.pdf
+A	Mini_Project_1_export/EE5303 Mini Project 1.pdf
+A	Mini_Project_1_export/Mini-Project1_Group list.pdf
+A	Mini_Project_1_export/MiniProject1_Time slots(updated).pdf
+A	Mini_Project_1_export/Reading materials 2.pdf
+A	Mini_Project_1_export/Reading materials.pdf
+A	Mini_Project_1_export/Snipaste_2025-10-23_23-31-05.png
+A	Mini_Project_1_export/Snipaste_2025-10-23_23-32-09.png
+A	Mini_Project_1_export/Snipaste_2025-10-23_23-33-23.png
+A	Mini_Project_1_export/Snipaste_2025-10-23_23-34-32.png
+A	Mini_Project_1_export/Snipaste_2025-10-23_23-35-04.png
+A	Mini_Project_1_export/Snipaste_2025-10-23_23-35-23.png
+A	Mini_Project_1_export/Snipaste_2025-10-23_23-36-15.png
+A	Mini_Project_1_export/Snipaste_2025-10-24_00-16-50.png
+A	Mini_Project_1_export/Snipaste_2025-10-24_00-16-54.png
+A	Mini_Project_1_export/Snipaste_2025-10-24_00-27-54.png
+A	Mini_Project_1_export/Snipaste_2025-10-24_00-28-58.png
+A	Mini_Project_1_export/Snipaste_2025-10-24_00-36-03.png
+A	Mini_Project_1_export/Snipaste_2025-10-24_00-36-44.png
+A	Mini_Project_1_export/Snipaste_2025-10-24_02-32-32.png
+A	Mini_Project_1_export/Snipaste_2025-10-24_02-32-40.png
+A	Mini_Project_1_export/Snipaste_2025-10-24_02-32-45.png
+A	Mini_Project_1_export/Snipaste_2025-10-24_02-40-15.png
+A	Mini_Project_1_export/Snipaste_2025-10-24_02-49-38.png
+A	Mini_Project_1_export/Snipaste_2025-10-24_03-01-31.png
+A	Mini_Project_1_export/UpdatedAccounts_passwords_ADSLab.xlsx
+A	circuit.py
+A	compute_Lm.py
+A	figs/series_RLC_vertical_cap.png
+M	figure1.m
+A	figure2.m
+A	fit_rr.py
+A	fit_rs.py
+D	fit_rs_rr.py
+A	plot_port_Z.m
+A	plot_port_impedance.m
+A	tmp.py
+A	tmp1.py
+22db57f 2025-10-15T03:55:43+08:00 Add .gitignore to ignore IDE and build files
+
+A	.gitignore
+A	Calculate.py
+A	fit_1.py
+A	fit_rs_rr.py
+ac82e9a 2025-10-14T21:51:51+08:00 Initial commit
+
+A	Csf.py
+A	EE5003.md
+A	Llr.py
+A	exp_10_Llf.png
+A	exp_11_fr_fa.png
+A	exp_18_fr_fa.png
+A	exp_19_fr_fa.png
+A	exp_1_Csf.png
+A	exp_20_fr_fa.png
+A	figure1.m
+A	fr_fa.py
+A	main.py
+A	paper1.pdf
+A	paper2.pdf
+A	test.py

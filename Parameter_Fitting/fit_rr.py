@@ -6,7 +6,7 @@ from scipy.optimize import least_squares
 # ======================================================
 # 配置区
 # ======================================================
-DB_PATH = r"D:\Desktop\data\AP_1p5.db"
+DB_PATH = r"D:\Desktop\EE5003\data\AP_1p5.db"
 TABLES = ["exp_10", "exp_11", "exp_12"]
 
 # 频率范围：低频区间（堵转拟合）

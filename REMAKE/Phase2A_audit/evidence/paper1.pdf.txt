@@ -1,0 +1,1095 @@
+SOURCE: D:\Desktop\LinkCodex\docs\paper1.pdf
+METADATA: {'/CreationDate': 'D:20070911040442', '/Producer': 'Acrobat Distiller 4.05 for Windows', '/ModDate': "D:20070914130737-04'", '/rgid': 'PB:3173297_AS:618238509604865@1524410955581'}
+## PAGE 1
+See discussions, stats, and author profiles for this publication at: https://www.researchgate.net/publication/3173297
+Universal Induction Motor Model With Low-to-High Frequency-Response
+Characteristics
+Article  in  IEEE Transactions on Industry Applications · October 2007
+DOI: 10.1109/TIA.2007.904401 · Source: IEEE Xplore
+CITATIONS
+194
+READS
+8,923
+5 authors, including:
+Behrooz Mirafzal
+Kansas State University
+154 PUBLICATIONS   4,397 CITATIONS   
+SEE PROFILE
+Gary leonard Skibinski
+Rockwell Automation
+92 PUBLICATIONS   5,861 CITATIONS   
+SEE PROFILE
+Rangarajan Tallam
+Rockwell Automation
+62 PUBLICATIONS   2,926 CITATIONS   
+SEE PROFILE
+Dave Schlegel
+Rockwell Automation
+34 PUBLICATIONS   3,568 CITATIONS   
+SEE PROFILE
+All content following this page was uploaded by Behrooz Mirafzal on 22 April 2018.
+The user has requested enhancement of the downloaded file.
+
+## PAGE 2
+IEEE TRANSACTIONS ON INDUSTRY APPLICATIONS, VOL. 43, NO. 5, SEPTEMBER/OCTOBER 2007 1233
+Universal Induction Motor Model With Low-to-High
+Frequency-Response Characteristics
+Behrooz Mirafzal,Member, IEEE, Gary L. Skibinski, Rangarajan M. Tallam,Senior Member, IEEE,
+David W. Schlegel,Member, IEEE, and Richard A. Lukaszewski,Senior Member, IEEE
+Abstract—A three-phase induction motor model that depicts the
+motor behavior over a wide range of frequencies from 10 Hz to
+10 MHz is presented in this paper. The model is universal in
+the sense that common-mode, differential-mode, and bearing cir-
+cuit models are combined into one three-phase equivalent circuit
+model. The proposed model is basically an extension of the low-
+frequency IEEE Standard 112 circuit model. The proposed model
+was experimentally simulated and veriﬁed with results presented.
+Index Terms —Bearing current, common mode (CM), differ-
+ential mode (DM), electromagnetic interference (EMI), high-
+frequency model, induction motor, pulsewidth-modulated (PWM)
+voltage source inverter, reﬂected wave, transient overvoltage.
+I. I NTRODUCTION
+I
+NDUSTRIAL applications of adjustable-speed drives
+(ASDs) using pulsewidth-modulated (PWM) voltage-source
+inverters with steep voltage pulse rise times (tr) have been
+common place since 1980. What has evolved are more so-
+phisticated three-phase control algorithms, along with power
+devices having faster rise times ( < 100 ns) allowing higher
+control bandwidth and reducing inverter switching losses and
+magnetic ﬁlter volume, and faster switching cycles (4–20 kHz)
+to reduce motor current ripple harmonics, torque ripple, and
+acoustical noise, which consequently improve system perfor-
+mance. However, the fast rise time of the voltage transition also
+excites undesirable system secondary parasitic effects, such as
+reﬂected wave differential overvoltage spikes on motor termi-
+nals that reduce the motor insulation life, common-mode (CM)
+current that creates system electromagnetic interference (EMI)
+issues, and motor-bearing currents that drastically reduce the
+operating life [1].
+A single inverter switching event may produce motor tran-
+sients up to twice the dc-bus voltage due to mismatch be-
+tween the cable characteristic impedance and the motor surge
+impedance, which leads to reﬂected waves [1]–[3]. Critical
+cable lengths at which the theoretical twice voltage magnitude
+Paper IPCSD-07-023, presented at the 2006 Industry Applications Society
+Annual Meeting, Tampa, FL, October 8–12, and approved for publication
+in the IEEE T RANSACTIONS ON INDUSTRY APPLICATIONS by the Elec-
+tric Machines Committee of the IEEE Industry Applications Society. Man-
+uscript submitted for review October 31, 2006 and released for publication
+April 26, 2007.
+The authors are with the Allen–Bradley Drives Division, Rockwell
+Automation, Mequon, WI 53092 USA (e-mail: bmirafzal@ra.rockwell.com;
+glskibinski@ra.rockwell.com; rmtallam@ra.rockwell.com; dwschlegel@ra.
+rockwell.com; ralukaszewski@ra.rockwell.com).
+Color versions of one or more of the ﬁgures in this paper are available online
+at http://ieeexplore.ieee.org.
+Digital Object Identiﬁer 10.1109/TIA.2007.904401
+occurs also depends on pulse rise time. ASDs using gate turnoff
+thyristor ( tr =2 µs), bipolar junction transistor ( tr =0 .25−
+1 µs), and the latest insulated-gate bipolar transistor (IGBT,
+tr =0 .05− 0.25 µs) devices have corresponding critical cable
+lengths of 300 m ( ∼1000 ft), 150 m ( ∼500 ft), and less than
+15 m ( ∼50 ft). A faster IGBT rise time, along with high
+peak voltages in most applications, creates a nonlinear voltage
+gradient on the ﬁrst turn and ﬁrst coil of the stator winding
+[4], [5]. Internal winding voltages may exceed the insulation
+capability, which leads to interturn short circuit failure and
+subsequently to phase-to-phase or phase-to-ground catastrophic
+faults [6], [7].
+Accurate simulation of the motor line-to-line overvoltage
+requires a distributed parameter transmission line rather than
+a lumped parameter model for the cable [8]–[11]. If inverter
+output ﬁlters are used, then simple R –L motor models may
+be adequate [12]; however, these motor models are unable to
+capture the high-frequency content present in the PWM voltage
+pulse on unﬁltered outputs. Initially, only single transmission
+line cable simulation models were available, which limits
+the high-frequency differential-mode (DM) motor models that
+matched the induction motor transfer function to also be single
+line based [9], [13], [14]. These models matched the motor line-
+to-line impedance transfer function with a low-frequency R –L
+circuit below the ﬁrst resonance and a parallel R –C branch
+for higher frequency content to sufﬁciently predict the motor
+overvoltage waveform. Improvements in single-line models
+were made with the addition of CM and DM impedances
+in parallel with the machine d–q low-frequency model [15],
+[16]. One disadvantage of impedance matching schemes on
+single-line models is that the resulting elements have no di-
+rect correlation to machine geometry or known low-frequency
+motor parameters.
+Recently, three-phase transmission line models [17] have
+become available, so a full three-phase simulation using a three-
+phase motor model with accurate low-to-high frequency re-
+sponse content is now possible. Three-phase PWM modulators
+can interact with cable and motor models, which create up to
+three times the bus voltage at the motor terminals, depending on
+the dwell time spacing between line-to-line voltage pulses [18].
+The dwell time must be estimated ofﬂine before a single-line
+model can be used. Thus, it is advantageous to simulate a three-
+phase modulator that directly interacts with three-phase cable
+and motor circuits for any inverter operating point. Various
+three-phase control algorithms such as PWM sine triangle,
+sine triangle with third harmonic, space vector, and two-phase
+modulation can then be studied for instantaneous line-to-line
+0093-9994/$25.00 © 2007 IEEE
+
+## PAGE 3
+1234 IEEE TRANSACTIONS ON INDUSTRY APPLICATIONS, VOL. 43, NO. 5, SEPTEMBER/OCTOBER 2007
+TABLE I
+5-, 20-, AND 100-hp INDUCTION MOTORS ’D ESIGN SPECIFICS
+TABLE II
+5-, 20-, AND 100-hp INDUCTION MOTORS ’P ARAMETERS
+PER PHASE AT POWER FREQUENCY (60 Hz)
+and line-to-ground waveform simulations. Lastly, use of active
+front-end converters with its switching action nonsynchronized
+with the inverter makes single-line models less accurate for
+determining the line-to-line and line-to-ground voltage stress
+on long cables [19]. Thus, a three-phase universal motor model
+is required.
+Network simulation and modeling have become more impor-
+tant for EMI evaluation to existing International Electrotech-
+nical Commission standards [20]. Implementing three-phase
+motor and cable models that have sufﬁcient low-to-high fre-
+quency response is simpler than converting three-phase system
+components into equivalent single-line CM and DM models
+[21]–[24]. The proposed three-phase model is suitable for both
+time-domain and wide-spectrum frequency-domain analyses in
+DM and CM circuits to fully understand EMI problems.
+To study motor-bearing current issues, single-line indepen-
+dent CM models have been extensively used in the literature to
+analyze shaft voltage and bearing current [25]–[32]. It is shown
+that existing bearing current models are only slightly modiﬁed
+for retroﬁt in the proposed three-phase universal motor model.
+In this paper, a three-phase model for induction motors is
+presented to study the motor terminal overvoltage phenomena.
+The model is universal due to the fact that CM, DM, and bearing
+models are all combined into one circuit.
+In Section II, the impedance variation versus frequency up to
+10 MHz is examined using two three-phase induction motors,
+namely 5 and 20 hp, with a random wound stator winding
+in the Y- and ∆ -connections, respectively. In Section III, the
+low- and high-frequency modeling of induction motors are
+generally discussed as an introduction to the proposed model.
+In Section IV, the proposed three-phase model for a wide
+frequency range is introduced, and the DM and CM frequency
+responses are examined using the experimentally obtained data
+of three 460-V four-pole induction motors, namely 5, 20, and
+100 hp (Tables I and II). In Section V, the experimental and
+simulation results obtained from running the 100-hp motor by
+Fig. 1. Measured 5-hp induction motor DM impedance (magnitude) val-
+ues versus frequency for two different winding connections, namely, 230
+and 460 V .
+Fig. 2. Measured 5- and 20-hp induction motor DM impedance (magnitude)
+values versus frequency for a 460-V winding connection.
+a voltage source PWM inverter through 40 m of shielded cable
+are presented to validate the proposed model.
+II. I NDUCTION MOTOR TRANSFER FUNCTION
+In this section, the induction motor impedance versus fre-
+quency characteristics are examined, and the effects of motor
+geometry and winding connection on the impedance response
+are analyzed.
+A. DM Transfer Function of Induction Motor
+Fig. 1 shows the experimentally obtained DM impedance
+versus frequency of a 5-hp induction motor investigated for
+460- and 230-V stator winding connections, which respec-
+tively correspond to internal series and parallel connections.
+Also, Fig. 2 shows the experimentally obtained DM impedance
+
+## PAGE 4
+MIRAFZAL et al.: INDUCTION MOTOR MODEL WITH LOW-TO-HIGH FREQUENCY-RESPONSE CHARACTERISTICS 1235
+versus frequency of both 5- and 20-hp motors for a 460-V stator
+winding connection only.
+Fig. 1 demonstrates that the motor stray capacitors are mainly
+a function of motor geometry. Low-frequency motor impedance
+values below the ﬁrst resonance are mainly L–R equivalent
+circuits. In this region, the impedance of the series 460-V
+connection has four times the value of the parallel 230-V
+connection since a winding inductance varies as N 2 (see Fig. 1
+at 100 Hz). Fig. 1 also shows that the ﬁrst resonance frequency
+of the 5-hp series connection is almost half the resonance
+frequency (fr)of the parallel motor connections.
+The fr of the motor impedance is deﬁned as where the
+impedance has its maximum magnitude and is calculated by
+fr =1 /(2π√LC ), where L and C are the effective inductance
+and capacitance values, respectively. The effective inductance
+L for a series connection is four times the value in a parallel
+connection, and fr is half that of the parallel connection.
+Accordingly, the conclusion is that the motor stray capacitance
+does not signiﬁcantly vary with changes in stator winding
+conﬁguration. That is, in this case, the effective capacitance
+value C is mainly a function of the motor geometry or the
+motor frame size. It will be shown in Section IV that Y- and
+∆ -connections have impacts on the equivalent capacitance
+value at high frequencies.
+The second objective of this section is to introduce the low-
+impedance antiresonance phenomenon observed in the case of
+the 20-hp motor at 4.1 MHz in Fig. 2. The motor impedance
+at this resonance frequency is 10 Ω . This DM low impedance
+at 4.1 MHz will be approximately equivalent to 2.2 Ω in the
+CM circuit. This provides a very low impedance path for the
+CM leakage current at the low-impedance antiresonance. Thus,
+modeling of this phenomenon is of signiﬁcance for EMI analy-
+sis in long cable motor drive systems. It is shown later that the
+so-called antiresonance is actually caused by the inductance of
+the ﬁrst few turns of the winding. These observations are further
+discussed in Section IV, where the proposed motor model is
+derived based on the IEEE Standard 112 (T-equivalent) circuit.
+B. Testing of DM Transfer Function
+DM testing was performed with the phase-A motor lead
+as one probe and the phase-B and phase-C motor leads tied
+together to form the second probe. The measurements were
+taken using HP4284 (20 Hz to 1.0 MHz), HP4285 (75 kHz to
+30 MHz), and AP200 (20 Hz to 15 MHz) LCR meters in Z –θ
+(impedance magnitude and phase angle) mode [33], [34]. The
+recommended test procedure is to use an ungrounded motor
+frame. It was observed that grounding the motor frame resulted
+in signiﬁcant measurement errors at high frequency. This is
+attributed to errors in the instrument’s impedance calculation
+procedure due to the LCR meter’s two-lead source voltage
+driving capacitive current to ground that does not return on the
+two leads [35].
+C. Testing of CM Transfer Function
+CM testing was performed with the motor frame as one probe
+and the phase-A,- B, and -Cmotor leads tied together to form
+Fig. 3. IEEE 112 recommended per-phase low-frequency equivalent circuit.
+the second probe. Impedance measurements versus calculated
+DM and CM transfer functions using the proposed induction
+motor model are demonstrated later in Section IV-E.
+III. M ODELING INDUCTION MOTOR
+FREQUENCY RESPONSE
+In this section, existing lumped- and distributed-parameter
+models for the analysis of the low- and high-frequency behavior
+of induction motors are described.
+A. Low-Frequency Response of Induction Motor
+The low-frequency response of the polyphase induction mo-
+tor has historically been studied since its origin. The IEEE
+Standard 112 was established to obtain test methods and pa-
+rameters for a low frequency (50, 60, and 400 Hz) per phase
+T-equivalent induction motor model in Fig. 3 [36]. The rotor
+circuit and neutral are actually physically isolated from the line
+side stator neutral by the air gap in Fig. 3. Also, the rotor fre-
+quency (slip frequency) is different from the stator (or line) fre-
+quency. Users desire this low-frequency transfer function model
+to obtain the line side electrical quantities (frequency, current,
+power factor, and efﬁciency) for the given mechanical output
+quantities (power, horsepower, and torque). For convenience of
+analysis, rotor electrical quantities have thus been referred by
+stator-to-rotor turns ratio to the stator with animpliedelectrical
+connection to the stator neutral. In the low-frequency range,
+the applied voltage is uniformly distributed through the stator
+winding coils. Substantial literature exists on obtaining these
+model parameters from mathematical calculations, heuristic
+equations, and ﬁnite-element analysis (FEA). IEEE Standard
+112 is a universally accepted test method to verify the ac-
+curacy of these model parameters that are readily obtainable
+by all users.
+B. Mid-Frequency Response of Induction Motor
+An accurate mid-frequency response (400 Hz to 20 kHz), as
+related to PWM ac drives, would be correlated with the carrier
+frequency motor ripple current and its associated heating in the
+motor copper and core laminations.
+C. High-Frequency Response of Induction Motor
+The high-frequency response of the polyphase induc-
+tion motor has recently been studied. High-frequency motor
+
+## PAGE 5
+1236 IEEE TRANSACTIONS ON INDUSTRY APPLICATIONS, VOL. 43, NO. 5, SEPTEMBER/OCTOBER 2007
+Fig. 4. Distributed high-frequency parameter model for stator windings.
+models can be mainly divided into two classes, i.e., distributed
+and lumped parameter models. The initial need concerned the
+analysis of high-frequency high-magnitude surge effects on
+the utility-connected motor stator windings [4], [8]. Analy-
+sis methods typically include use of a distributed parameter
+model in Fig. 4 to analyze the distribution of surge voltage
+within the winding. FEA methods have been used to obtain
+a distributed parameter model for the analysis of the over-
+voltage and voltage ringing phenomena at the terminals of
+induction motors, which are associated with the interaction
+of motor surge impedance, long cable surge impedance, and
+PWM drive operation [36]. This paper showed that the rotor
+circuit is not involved in any high-frequency-related effects
+due to the minimal ﬂux penetration into the rotor circuit at
+high frequencies. Investigations of [5] further show that the
+high-frequency-voltage rise-time-related effects of ASDs on the
+DM-reﬂected wave voltage at the motor terminals is mainly
+conﬁned to the ﬁrst few turns and at most the ﬁrst coil group
+in a multicoil motor winding. This suggests that the low-
+frequency rotor circuit parameters need not be modiﬁed since
+it has no effect at high frequencies. Then, to obtain a high-
+frequency model, the ﬁrst of many distributed sections of
+Fig. 4 is integrated into the existing low-frequency portion
+of Fig. 3.
+High-frequency motor models have a response that is
+predominantly capacitive. These circuits are needed for the
+analysis of CM leakage current that occurs due to the inter-
+action of line-to-ground stator winding slot capacitance with
+PWM drives. This is the main cause of EMI in ASD sys-
+tems [20]. Also, the bearing current and shaft voltage mod-
+els are capacitive in nature [25]–[32]. The existing problem
+in the ﬁeld today is that researchers are proposing various
+individual high-frequency circuits [9], [15], [16], [21]–[24]
+to describe the reﬂected wave, CM current, and bearing cur-
+rent/shaft voltage. Indeed, many of them only address one
+issue and in addition ignore the low-frequency desired elec-
+trical stator quantities and rotor mechanical output quantities.
+Most of these high-frequency circuit models typically have
+parameters with no direct correlation to the induction motor
+geometry, since they are curve ﬁtted to match a desired transfer
+function.
+Thus, this paper proposes a three-phase universal induc-
+tion motor model that is an extension of the standard
+T-equivalent circuit. This model uniﬁes CM, DM, and bearing
+circuit models over the 10-Hz–10-MHz frequency range and
+has extended parameters that are realizable based on machine
+Fig. 5. Proposed per-phase universal induction motor model.
+geometry. The proposed motor model is introduced in the next
+section.
+IV . PROPOSED MODEL
+To construct an accurate low-to-high frequency range trans-
+fer function model of the induction motor, one signiﬁcant
+objective of this paper was to build the needed mid-to-high
+frequency circuit model extension around the existing and accu-
+rate physical realizable quantities of the standard low-frequency
+equivalent circuit.
+A. Proposed per-Phase Universal Induction Motor Model
+Motor behavior at steady-state conditions and low frequen-
+cies is best described by the well-known standard T-equivalent
+circuit in Fig. 3. In the low-frequency range, the voltage
+is distributed uniformly through the stator winding turns. In
+the medium-frequency range, the motor behavior can be best
+represented by a distributed parameter model in which the
+impact of rotor circuit is negligible and the motor behavior
+alternates between being capacitive and inductive. However, in
+this paper, motor behavior from 10 Hz to 10 MHz is studied.
+In this frequency range, typically one antiresonance and two
+resonances are observed, as detailed in Section II.
+In order to model the aforementioned resonance and antires-
+onance frequencies, three capacitors C
+sf−eﬀective, C sf−0, and
+C sw are proposed as additions to the T-equivalent motor model
+in Fig. 3 to represent the mid-to-high frequency range of motor
+behavior characteristics. C sf capacitance is the total stator-to-
+frame capacitance. C sf−eﬀective is the effective stator-to-frame
+capacitance of the ﬁrst slot per phase in Fig. 5. C sf−0 is the
+stator-to-frame capacitance in the Y neutral. C sw capacitance
+is the stator interturn capacitance per phase. Fig. 5 shows the
+proposed motor model in which the resonance frequencies are
+obtained by shorting all resistors and solving the quadratic
+equation α(ω
+2
+r )2 − βω 2
+r +1=0 .T h u s ,w eh a v e
+fr1 and fr2 = 1
+2π
+√(
+β ±
+√
+β2 − 4α
+)
+/2α (1)
+where α = L lsL lrC sw C sf, β =( L ls+ L lr)C sf + L lsC sw , and
+fr1 <f r2.
+
+## PAGE 6
+MIRAFZAL et al.: INDUCTION MOTOR MODEL WITH LOW-TO-HIGH FREQUENCY-RESPONSE CHARACTERISTICS 1237
+Fig. 6. Measured (Slip =1 ) versus calculated 5-hp 460-V induction motor
+DM impedances (magnitude) versus frequency.
+Fig. 7. Measured (Slip =1 ) versus calculated 5-hp 460-V induction motor
+DM impedances (phase angle) versus frequency.
+It should be noted that in (1), the effect of the magnetizing
+inductance is negligible since L m is in parallel with the rotor
+leakage inductance L lrand the fact that L m ≫ L lr.
+As a result of including C sf−eﬀective and C sw capacitors
+into the standard T-equivalent circuit, this circuit represents the
+motor behavior over a wide range of frequencies, as shown in
+Figs. 6 and 7. In order to verify the proposed motor model,
+two induction motors were randomly selected and tested using
+a frequency analyzer. Measured results under LCR test have
+s =1 , and the frequency responses obtained from the proposed
+model calculations are compared in Figs. 6 and 7. In these
+ﬁgures, the motor’s impedance frequency response, magnitude,
+and phase angle are shown over a wide range of frequencies
+from 100 Hz to 10 MHz. These ﬁgures also show the calculated
+impedance frequency response for rotor full load slip s =
+0.027. As observed, motor speed (or motor load level) has no
+signiﬁcant impact on motor impedance over the mid-to-high
+Fig. 8. Measured 1-hp 460-V induction motor impedance (magnitude) versus
+frequency: the inﬂuence of removing the rotor on the DM impedance transfer
+function [14].
+frequency range. The proposed model curves closely match
+the high-frequency DM curve as well as the ﬁrst and second
+resonance points. The T-Equivalent circuit shows correct motor
+impedance only up to fr, as expected, due to the lack of
+resonance capacitors. This observation is explored further in
+Section VI.
+A key issue is being able to match both DM and CM transfer
+functions for all frequencies in the proposed model knowing
+skin and proximity effects versus frequency exist. In the fol-
+lowing subsection, the effect of rotor circuit will be discussed
+followed by a parameter identiﬁcation procedure that insures
+both DM and CM transfer functions are correct.
+B. Rotor Inﬂuence at High Frequency in the Proposed Model
+Fig. 8 shows that the basic L–R series impedance below
+resonance is lowered due to the removal of L lr and R r/s.
+Reﬂected wave overvoltage and EMI analysis is concerned with
+frequencies correlated with voltage pulse rise time deﬁned by
+1/(πt
+r). Typical ASD rise times of 20 ns–2 µs result in a
+frequency range of 150 kHz to 16 MHz. Fig. 8 demonstrates
+that the DM impedance is strictly dictated by stator parameters,
+so the low-frequency rotor circuit can be left as is in the new
+proposed model without error as could also be concluded from
+Figs. 6 and 7 under full-load and no-load conditions.
+C. Parameter Identiﬁcation Procedure for Proposed Model
+1) Stator ResistanceR
+s:To insure that the fundamental
+frequency (50, 60, or 400 Hz) current ﬂow in the model
+results in correct output fundamental power and torque, the
+R
+s value must be the manufacturer’s hot or cold resistance
+of the winding. Wire copper losses at harmonic frequencies,
+carrier frequency, and reﬂected wave ring frequencies must be
+accounted for in the R
+sw damping term.
+2) Core Loss ResistanceR core: R core and L m appear to
+have an effect on rounding the reﬂected wave ringing wave
+
+## PAGE 7
+1238 IEEE TRANSACTIONS ON INDUSTRY APPLICATIONS, VOL. 43, NO. 5, SEPTEMBER/OCTOBER 2007
+Fig. 9. Stator winding capacitances. (a) Csf capacitance-to-ground. (b) Stator Csf−slot slot capacitance-to-ground.
+shape. For one speciﬁc manufacturer, the standard 460-V
+60-Hz four-pole motor R core values versus horsepower size
+were found to follow R core = 6300 (hp)−0.6958 . The impor-
+tance of R core is greater at higher horsepower, where it affects
+the terminal reﬂection coefﬁcient by approaching the 50- to
+120-Ω cable surge impedance values deﬁned in [3].
+3) Rotor ResistanceR r, Rotor InductanceL lr, and Slips:
+Section IV-B justiﬁes using the manufacturer T-equivalent cir-
+cuit values as is for the proposed motor model. There is
+rotor inductance skin effect and deep bar skin effects of rotor
+resistance, but these variations do not appreciably change the
+shape of the DM impedance curve versus frequency.
+4) Magnetizing InductanceL
+m :The IEEE Standard 112
+fundamental frequency circuit value is used. It should be noted
+that the effect of the magnetizing inductance is negligible since
+it is in parallel with the rotor leakage inductance in helping
+deﬁne (1) resonance frequencies.
+5) Stator Leakage InductanceL
+ls:The IEEE Standard 112
+fundamental frequency circuit value is also used. However, the
+reduction of L lsinductance at harmonic and carrier frequencies
+is recognized to be a secondary effect. This may account for
+not having perfect matching of the DM transfer function over
+the entire frequency range.
+6) Stator First Turn Leakage InductanceηL
+ls:This term is
+one of the critical parameters in deﬁning the DM motor high-
+frequency impedance, predicting the antiresonance point of
+Fig. 2, and setting correct EMI leakage current to ground in
+the CM circuit. The term ηL
+ls is used to account for the
+fact that only a fraction of the total stator leakage inductance
+is attributed to the high-frequency antiresonance point ( ∼3–
+10 MHz), speciﬁcally the ﬁrst few turns in the ﬁrst slot
+of the entry winding. Thus, ηL
+ls is (the ﬁrst few turns in
+the ﬁrst slot/total turns per phase)2 × L ls. Winding data and
+machine geometry could be obtained from the manufacturer.
+The antiresonance point and ηLls are further discussed in
+Section IV-D.
+If the value of ηLls is too high, then this inductance isolates
+the rest of the winding from the cable, and what appears in the
+reﬂected wave DM simulation is a wave shape that takes on the
+appearance of an ideal open circuit. If ηL
+ls is high, then this
+inductance also isolates the C sf−slot term, and the current-to-
+ground peak and ring wave shape will not be correct in the CM
+simulation.
+7) Total Stator-to-Frame Capacitance per PhaseC sf−total:
+Fig. 9(a) shows a physical representation of C sf stator winding
+capacitance to frame ground. For frequencies greater than the
+ﬁrst resonant frequency (fr1), the stator slot winding-to-frame
+capacitance (C sf−slot) plays an important role in describing
+the DM and CM motor behavior at high frequencies, while
+C sf−total plays a role in matching the CM transfer function
+at low frequency. C sf−total is calculated from the machine
+geometry by analyzing each slot capacitance to ground and
+multiplying by the number of stator slots. Each stator slot can
+be approximately considered as a rectangular-shaped conductor
+with L
+stack stator length, w slotaverage width, and dslotaverage
+depth [see Fig. 9(b)]. Assuming all sides of this conductor
+are equipotential, the capacitance value between the conductor
+(stator windings in each slot) and the motor frame can be
+obtained as
+C
+sf−slot= εoL slotL stack
+ktδ1
+εr1
++ δ2
+εr2
++ δ3
+εr3
+(2)
+where L slot is the stator slot circumference that can be ap-
+proximated as L slot≈ 2dslot+1 .5w slot, and δ1(0.38 <δ 1 <
+0.63mm)and δ2(0.38 <δ 2 < 0.63mm)are the thicknesses of
+the slot wall and wire insulations [see Fig. 9(b)] with relative
+permittivity of ε
+r1 (3.0 <ε r1 < 3.2) and εr2 (3.5 <ε r2 <
+4.0), respectively. The slot wall insulation is 0.35–0.6 mm
+(∼0.014–0.024 in) Class F Duroid polyester ﬁber paper with
+heat-resistant resin. As seen in Fig. 9(b), the top stick insulation
+is double along some part of the stator wall. Accordingly, a
+correction thickness factor of 1.0 <k t < 1.5 is deﬁned here
+to take into account this extra insulation thickness. A third
+important factor in Fig. 9(b) is the possibility of a random small
+air gap (0.02 <δ 3 < 0.3 mm)between the slot liner-to-frame.
+The effective C sf−total and C sf−slot may change by 2 : 1 with
+
+## PAGE 8
+MIRAFZAL et al.: INDUCTION MOTOR MODEL WITH LOW-TO-HIGH FREQUENCY-RESPONSE CHARACTERISTICS 1239
+Fig. 10. Measured stator winding capacitances-to-frame for the 5-hp motor.
+TABLE III
+5-, 20-, AND 100-hp INDUCTION MOTORS ’
+CALCULATED CAPACITANCE VALUES
+liner air gaps, which makes calculations less precise. For a
+motor with N slot stator slots and a double-layerwinding, the
+total stator winding to frame capacitance can be obtained as
+C sf−total =( N slot× C sf−slot)/2. (3)
+8) Stator-to-Frame CapacitanceC sf−slot andC sf−eﬀective:
+Fig. 10 shows the measured frequency variation of C sf for one
+motor lead and C sf for all three leads tied together with respect
+to frame ground. Note that the one-lead capacitance is much
+lower in the 100-kHz to 16-MHz range than the low-frequency
+value, and that it is also constant. This is explained using the
+distributed parameter model in Fig. 4. At low frequencies, the
+entire summation of multiple sections contributes to C
+sf,b u t
+at high frequencies, only one section is functional, and the
+rest are impedance isolated. The 300-pF value for frequencies
+greater than 100 kHz agrees with the calculated C
+sf−eﬀective
+for one slot in Table III and veriﬁes the single-slot theory
+for DM high-frequency response. Note that the three-lead CM
+measurement in Fig. 10 for frequencies greater than 100 kHz
+is approximately three times the single-lead value. This is
+because the ﬁrst distributed sections of all three leads are the
+only sections contributing in parallel, so the three-lead value is
+approximately three times the one-lead value. Note also that
+the one-lead and three-lead measurements at low frequency
+are not three times but the same value. This is because the
+single-lead value can go through the motor neutral and pick up
+the stator-to-frame capacitance in the other two phases. In the
+Fig. 11. Delta-wound machines have twice effective slot capacitances-to-
+ground.
+10- to 100-kHz range, the three-lead value is picking up more
+end-terminal-distributed sections so its value is higher than the
+one-lead measurement.
+Another machine geometry factor in Fig. 11 is that a
+∆ -connection has twice C sf−slot compared to a Y-connection.
+Moreover, the number of parallel circuits may also change the
+effective stator-to-frame capacitance value C sf−eﬀective.
+9) CM Stator-to-Frame CapacitanceC sf−0:Based on prior
+discussion, C sf−0 is the remaining stator CM capacitance-to-
+ground lumped in the neutral Y . Accordingly, the following
+value is used in the proposed three-phase model:
+C sf−0 = C sf−total− 3C sf−eﬀective. (4)
+10) Stator Turn-to-Turn Winding CapacitanceC sw :This
+parameter can be determined in a number of ways. The ﬁrst
+heuristic method is based on many tests performed in a previous
+work on more than 50 different motors [14], and noting that
+the second resonance frequency is approximately twice or less
+than the ﬁrst resonance frequency. That is, the interturn stray
+capacitance can be obtained as a function of C
+sf−eﬀective,
+C sw =( fr2/fr1)2C sf−eﬀective. The second method is to solve
+(1) for C sw assuming fr1 is known.
+11) Stator Turn-to-Turn Damping Resistance in Winding
+R sw :This term accounts for the skin and proximity effect of
+the wire and high-frequency core loss. Quite simply, at ﬁrst
+resonance peak (Fig. 2), the DM impedance measured is equal
+to (3/2)R sw , i.e., the damping resistance for a parallel resonant
+circuit. It has been found that the core loss resistor R core
+does not have a signiﬁcant impact on damping. Calculation of
+wire skin and proximity effects for the wire thickness used is
+possible but beyond the scope of this paper. The wire skin and
+proximity effect factors at the resonant frequency multiplied by
+the R
+dc value results in a series value that could be converted
+to a parallel R sw value.
+12) Stator Initial Frame-to-Ground Damping Resistance
+µR s:This component is the ac resistance of the fractional part
+of the total stator R s due to the ηLls segmentation described.
+The 60-Hz µR s value is proportional to the stator resistance,
+and a multiplying factor of 10–20 is used for ac skin and prox-
+imity effects. In addition, it also encompasses the resistivity
+of steel laminations from the slots to where the motor ground
+wire in the junction box is connected. This value needs further
+research and was not accounted for in this paper. The term
+
+## PAGE 9
+1240 IEEE TRANSACTIONS ON INDUSTRY APPLICATIONS, VOL. 43, NO. 5, SEPTEMBER/OCTOBER 2007
+Fig. 12. Tapped stator winding from [5] used to justify the antiresonance
+point. (a) Measured stator winding voltage from end turn to ﬁrst few turns
+[5]. (b) Measured stator winding end voltage to tap in per unit versus tap turn
+#/total turns.
+µR s affects the peak CM current as well as the damping of
+oscillations in the CM current to ground.
+D. Antiresonance Phenomenon
+This section investigates the correlation between tapped
+stator testing with the 4.5-MHz antiresonance phenomenon
+observed in Fig. 2. A six-pole 7.5-hp 460-V tapped stator motor
+in [5] was random wound with 19 turns per coil and 18 coils in
+series per phase for a total of 342 turns per phase. The 1- µs,
+200-ns, and 50-ns pulse voltage rise times in Fig. 12(a) cor-
+respond to equivalent frequencies of 318 kHz, 1.6 MHz, and
+6.3 MHz. The 1- µs and 0.2- µs rise times do not excite the
+antiresonant frequency, but the 50-ns rise time can excite the
+5-MHz antiresonance point, which results in the oscillation of
+200 ns (5 MHz, Fig. 12). DM antiresonance also occurred in
+the other motors tested.
+Fig. 12(b) shows that the ﬁrst few turns (four turns) divided
+by the total number of turns (342) result in “ x =0 .02” axis
+entry and a high 0.35-pu peak of line-to-line reﬂected wave
+voltage for 50-ns impulse-type voltage rise times. The ﬁrst
+coil group at 0.16 pu has already obtained the highest peak
+voltage possible. These data justify that correct reﬂected wave
+Fig. 13. Measured (dotted line) versus calculated (solid line) 20-hp 460-V in-
+duction motor DM impedance (magnitude and phase) values versus frequency.
+Fig. 14. Measured (dotted line) versus calculated (solid line) 100-hp 460-V
+induction motor DM impedance (magnitude and phase) values versus
+frequency.
+waveforms are obtained by using just C sf−slot deﬁned by the
+ﬁrst coil and ﬁrst slot.
+E. DM/CM Transfer Function Veriﬁcation of Proposed Model
+To verify the proposed motor model, 20- and 100-hp in-
+duction motors were tested. The measured motor DM im-
+pedance frequency response using a frequency analyzer, which
+shows magnitudes and phase angles, are plotted over a wide
+100-Hz to 10-MHz frequency range. Figs. 13 and 14 show good
+comparison between the test results and the proposed model
+calculated frequency response in both “ Magnitude and Phase
+Angle.”
+Of interest is the mismatch between the LCR -measured
+(then s =1 ) DM impedance of the 100-hp ∆ -connection and
+the proposed model impedance using the exact low-frequency
+
+## PAGE 10
+MIRAFZAL et al.: INDUCTION MOTOR MODEL WITH LOW-TO-HIGH FREQUENCY-RESPONSE CHARACTERISTICS 1241
+Fig. 15. Measured (dotted line) versus calculated (solid) 5-hp 460-V induc-
+tion motor CM impedance (magnitude and phase) values versus frequency.
+T-equivalent circuit components in the 20-Hz to 10-kHz range.
+The measured dc resistance with a milliohm meter was found
+to match the IEEE 112 R s parameter. One explanation is
+that DM testing with two leads shorted to one LCR input
+and with another motor lead tied to the other LCR input
+energizes only two windings in a ∆ -connection as opposed to a
+Y-connection where all three motor leads are energized. Also,
+the small exciting voltage (20 mV–2 V) from the LCR meter
+may bias the stator core in the very widely nonlinear part of
+the dc magnetization curve, which results in an incorrect L m
+value. The DM impedance was indeed changing at frequencies
+less than 1 kHz as the LCR source voltage was varied. The
+proposed modiﬁed T-model with s =1 assumes that the rotor
+leakage inductance L lr is much less than L m so that the input
+inductance is approximately equal to L ls+ L lr. In reality, at
+low ﬂux levels, the rotorN s/N r transformation may be isolated
+so that the input inductance appears mostly as the sum of L ls
+and a widely varying L m .
+The measured versus proposed model that calculated the CM
+frequency response in Figs. 15 and 16 for 5 and 100 hp also
+shows a good match. The lumpedC
+sf−0 in the neutral of Fig. 17
+matches the low-frequency response, while C sf−slot matches
+the high-frequency response. The resonance impedance wave
+shape is similar but not exact in frequency value due to single
+lumped parameter selection.
+F. Proposed Three-Phase Universal Induction Motor Model
+Fig. 17 shows a three-phase version of the proposed uni-
+versal induction motor model with the addition of the bearing
+current–shaft voltage model to the stator neutral.
+G. Bearing Current/Shaft Voltage Model Addition
+Fig. 18 shows prior CM equivalent system single-line models
+for shaft voltage/bearing current investigation [25]. Although
+small differences occur, this model has general agreement with
+other single-line-bearing models [26]–[31]. The inverter drive
+Fig. 16. Measured (dotted line) versus calculated (solid) 100-hp 460-V induc-
+tion motor CM impedance (magnitude and phase) values versus frequency.
+is shown as a stator neutral-to-ground zero-sequence voltage
+source (Vsng ). The prior motor-bearing model in Fig. 18 con-
+sists of CM motor capacitances: CM stator-to-frame (C sf),C M
+stator-to-rotor (C sr)across the air gap, and CM rotor-to-frame
+(C rf). Test procedures to obtain these motor zero-sequence
+parameters from the machine geometry as well as parameter
+variation with the motor’s output power (in horsepower) were
+outlined in [36]. The bearing model combines the bearing
+ball/race resistance (R
+b) in series with a parallel combination
+of the bearing oil ﬁlm capacitance (C b)and a nonlinear device
+(Z l) accounting for the random charging and discharging of
+the rotor shaft due to asperity point contacts puncturing the
+oil ﬁlm [38].
+The proposed universal induction motor model for shaft
+voltage/bearing current investigation consists of a three-phase
+PWM inverter modulator, three-phase cable impedance, and
+modiﬁcation to prior motor-bearing CM model circuit. The
+advantage of the new concept is that the three-phase modulated
+zero-sequence voltage generation V
+sng vector directly interacts
+with the cable and motor circuits for any inverter operating
+point. The prior model Vsng waveform was ofﬂine estimated
+for a single operating point and recreated in the CM model.
+The proposed motor-bearing circuit concept is as follows.
+Since Vsng is the stator neutral-to-ground zero-sequence voltage
+source, the prior CM-bearing model in Fig. 18 can be placed
+at the identical V
+sng point in the proposed three-phase model
+(Fig. 17). The bearing voltage ratio (BVR) previously derived
+remains the same, since
+BVR = Vrg
+Vsng
+= C sr
+C sr + C b + C rf
+(5)
+shows that BVR is the divider ratio only between motor CM
+capacitances C b, C sr, and C rf from the Vsng source. The Vrg
+shaft voltage will remain as typically 10% to 15% of the stator
+neutral voltage switching pattern [38]. Modiﬁcation from the
+prior bearing model is through removing the old CM C sf from
+Vsng and splitting into ﬁrst slot C sf−slot values in each phase
+
+## PAGE 11
+1242 IEEE TRANSACTIONS ON INDUSTRY APPLICATIONS, VOL. 43, NO. 5, SEPTEMBER/OCTOBER 2007
+Fig. 17. Proposed three-phase universal induction motor model.
+Fig. 18. Prior shaft voltage/bearing current single-line zero-sequence
+model [25].
+in Fig. 5 and C sf−0 value lumped as a Y neutral component in
+Fig. 17. This performs the same bearing model function as well
+as providing accurate motor CM ground current waveforms and
+matching CM transfer function versus frequency.
+V. V
+ERIFICATION OF THE THREE -PHASE MODEL
+A. Model Veriﬁcation: Measured Versus Simulated Waveforms
+A 100-hp motor was tested in Fig. 19 with a voltage-source
+PWM inverter with carrier frequency of 4 kHz through 40 m
+of #2 American wire gauge shielded cable. The system was
+also simulated with Matlab SimPowerSystems [17] using a
+distributed-parameter three-phase cable model that exists in the
+toolbox and the proposed universal three-phase motor model
+in Fig. 17. The cable model in Matlab is based on Bergeron’s
+traveling-wave method [8]. The cable parameter identiﬁcation
+procedures for three-phase cables are found in [11]. The motor
+is assumed to operate at constant speed. Simulation results and
+corresponding test results are shown in Figs. 20–23.
+Fig. 20(a) shows the simulated motor voltage. The reﬂected
+wave overvoltage due to the fast rise time IGBT is approx-
+imately 200% of the dc-bus voltage. Fig. 20(b) shows the
+experimentally obtained data. The simulation results are in very
+good agreement with the experimental data for peak values,
+waveform shape, and ringing frequencies. It is interesting how
+the added capacitors C
+sf−eﬀective are involved with the line-to-
+line transient voltage.
+Fig. 21(a) shows the CM current at the motor terminals from
+simulation, and Fig. 21(b) shows that with the experimental
+results. As seen, the CM current obtained from simulation is in
+good agreement with the experimental data. Accordingly, the
+proposed three-phase motor model can be used for both DM
+and CM system analyses. The ring frequency obtained from
+simulation closely matches the experimental data having 1.5µs
+(667 kHz) with some very high ring frequency (5 MHz) spikes
+that are excited. Damping times are 7 µs in both simulated and
+measured waveforms. The peak simulation values are two times
+higher since a ferrite CM saturating inductor (∼ 3A I
+sat)used
+in the drive was not simulated. Also, the motor steel lamination
+resistivity in the stack was not determined and modeled.
+
+## PAGE 12
+MIRAFZAL et al.: INDUCTION MOTOR MODEL WITH LOW-TO-HIGH FREQUENCY-RESPONSE CHARACTERISTICS 1243
+Fig. 19. Typical drive/long cable/motor system with distributed-parameter cable model of Matlab and proposed three-phase induction motor model.
+Fig. 20. (a) Motor voltage obtained from simulation results of the inverter
+(risetime = 200 ns)—cable (40 m)—induction motor (100 hp) system shown
+in Fig. 19. (b) Motor voltage obtained from experimental results of the inverter
+(risetime = 200 ns)—cable (40 m)—induction motor (100 hp) system shown
+in Fig. 19.
+The stator neutral-to-ground voltage is simulated in
+Fig. 22(a) along with the shaft-to-ground voltage [Fig. 22(b)],
+which shows the BVR of 15% that is in agreement with that
+tested in prior work on bearing currents [25].
+The line current is shown in Fig. 23(a) over one cycle.
+The signiﬁcance being that not only is the fundamental low-
+frequency current for the operating point obtainable but also the
+Fig. 21. (a) CM current simulated at 100-hp motor input terminals. (b) CM
+current measured at 100-hp motor input terminals.
+ASD carrier-based mid-frequency range ripple current and the
+high-frequency CM and DM motor line-charging current spikes
+are simultaneously visible in the expanded waveform shown in
+Fig. 23(b).
+VI. O
+BSERV ATIONS AND FUTURE WORK
+This paper has developed a universal induction motor model
+based on a generic per phase model topology and using machine
+
+## PAGE 13
+1244 IEEE TRANSACTIONS ON INDUSTRY APPLICATIONS, VOL. 43, NO. 5, SEPTEMBER/OCTOBER 2007
+Fig. 22. (a) CM voltage at 100-hp motor input terminals. (b) Shaft voltage
+Vrg of 100-hp motor showing BVR divider action.
+speciﬁcs to assist in determining the model parameters. An
+observation from magnitude and phase angle plots in Figs. 6
+and 7 for the IEEE Standard 112 T-equivalent circuit with slip
+equal to 1 shows that the corresponding phase angle goes from
+85
+◦ at low frequency, then dips to 70 ◦ at 47.4 kHz, and then
+rises back to 85 ◦ at higher frequency. The 47.4 kHz exactly
+corresponds to fr1. Accordingly, the implication is that fr1
+can be predicted even without knowing the stray capacitance
+values C sf and C sw from the impedance phase angle of the
+IEEE Standard 112 T-equivalent circuit while the slip is equal
+to 1. Future research needs to determine if this phenomenon is
+an anomaly or appears on every motor.
+VII. C ONCLUSION
+In this paper, a new model for induction motors has been
+presented. The proposed model represents the motor’s behavior
+over a wide range of frequencies and can be used for low
+frequencies as well as reﬂected wave, bearing current, and CM
+studies. Experimental results have been presented to validate
+the motor model for long cable applications on ASDs. The
+Fig. 23. (a) Line current simulation of the 100-hp motor showing fundamental
+current, ripple current, and CM to ground current. (b) Expanded line current
+simulation of the 100-hp motor showing fundamental current, ripple current,
+and CM-to-ground current.
+proposed model may also be used for the analysis of utility-
+generated surges on ac-line-connected motors.
+ACKNOWLEDGMENT
+The authors would like to thank M. Melﬁ and C. Jamison
+of Rockwell Automation/Reliance Electric for providing the
+induction motor parameters and D. Kirschnik of Rockwell
+Automation/Allen–Bradley Mequon Drives for test support.
+R
+EFERENCES
+[1] R. Kerkman, G. Skibinski, and D. Schlegel, “Unintended consequence of
+low risetime IGBTs,” presented at the International Electric Machines and
+Drives Conf. (IEMDC), Madison, WI, Jun. 2003.
+[2] E. Persson, “Transient effects in application of PWM inverters to induc-
+tion motors,” IEEE Trans. Ind. Appl., vol. 28, no. 5, pp. 1095–1101,
+Sep./Oct. 1992.
+[3] G. Skibinski, “Design methodology of a cable terminator to reduce re-
+ﬂected voltage on AC motors,” in Conf. Rec. IEEE IAS Annu. Meeting,
+San Diego, CA, Oct. 6–10, 1996, pp. 153–161.
+[4] A. Narang, B. K. Gupta, E. P. Dick, and D. K. Sharam, “Measurement
+and analysis of surge distribution in motor stator windings,” IEEE Trans.
+Energy Convers., vol. 4, no. 1, pp. 126–134, Mar. 1989.
+
+## PAGE 14
+MIRAFZAL et al.: INDUCTION MOTOR MODEL WITH LOW-TO-HIGH FREQUENCY-RESPONSE CHARACTERISTICS 1245
+[5] M. Melﬁ, A. M. J. Sung, S. Bell, and G. L. Skibinski, “Effect of
+surge voltage risetime on the insulation of low-voltage machines fed by
+PWM converters,” IEEE Trans. Ind. Appl., vol. 34, no. 4, pp. 766–775,
+Jul./Aug. 1998.
+[6] G. Skibinski, J. Erdman, J. Pankau, and J. Campbell, “Assessing AC
+motor dielectric withstand capability to reﬂected wave stress using
+corona testers,” in Conf. Rec. IEEE IAS Annu. Meeting, San Diego, CA,
+Oct. 6–10, 1996, pp. 694–702.
+[7] S. Bell and J. Sung, “Will your motor survive a new adjustable
+speed drive,” in Proc. IEEE PCIC, Philadelphia, PA, Sep. 23–25, 1996,
+pp. 125–130.
+[8] H. W Dommel, “Digital computer solution of electromagnetic transients
+in single and multiple networks,”IEEETrans.PowerApp.Syst.,v o l .P A S -
+88, no. 4, pp. 388–398, Apr. 1969.
+[9] G. Skibinski, R. J. Kerkman, D. Leggate, J. Pankau, and D. Schlegel,
+“Reﬂected wave modeling techniques for PWM AC motor drives,” in
+Proc. IEEE APEC, 1998, pp. 1021–1029.
+[10] D. Hyypio, “Simulation of cable and winding response to steep fronted
+voltage waves,” in Conf. Rec. IEEE IAS Annu. Meeting, Orlando, FL,
+Oct. 8–12, 1995, pp. 800–806.
+[11] G. Skibinski, R. Tallam, R. Reese, B. Buchholz, and R. Lukaszewski,
+“Common-mode and differential-mode analysis of 3 phase cables for
+PWM AC drives,” in Conf. Rec. IEEE IAS Annu. Meeting,T a m p a ,F L ,
+Oct. 6, 2006, pp. 880–888.
+[12] A. von Jouanne, P. Enjeti, and W. Gray, “The effect of long motor leads on
+PWM inverter fed AC motor drive systems,” inProc.IEEEAPEC, Dallas,
+TX, Mar. 6–9, 1995, pp. 592–597.
+[13] D. Schlegel, G. Wrate, R. Kerkman, and G. Skibinski, “Resonant tank
+motor model for voltage reﬂection simulations with PWM drives,” in
+Proc. IEEE IEMDC, Seattle, W A, May 9–12, 1999, pp. 463–465.
+[14] D. Schlegel, “Development of a high frequency induction motor model
+for reﬂected wave simulations,” inMasters Design Project. Milwaukee,
+WI: Milwaukee School Of Engineering, Apr. 1999.
+[15] E. Zhong, T. A. Lipo, and S. Rossiter, “Transient modeling and analysis of
+motor terminal voltage on PWM inverter-fed AC motor drives,” in Conf.
+Rec. IEEE IAS Annu. Meeting, Oct. 1998, pp. 773–780.
+[16] A. F. Moreira, T. A. Lipo, G. Venkataramanan, and S. Bernet, “High-
+frequency modeling for cable and induction motor overvoltage studies
+in long cable drives,” IEEE Trans. Ind. Appl., vol. 38, no. 5, pp. 1297–
+1306, Sep./Oct. 2002.
+[17] Matlab SimPowerSystems. Natick, MA: The Math Works, Inc, 2006.
+[18] R. Kerkman, D. Legagte, and G. Skibinski, “Interaction of drive modula-
+tion and cable parameters on ac motor transients,” inConf.Rec.IEEEIAS
+Annu. Meeting, Oct. 1996, pp. 143–152.
+[19] A. M. de Broe, A. L. Julian, and T. A. Lipo, “Neutral-to-ground voltage
+minimization in a PWM-rectiﬁer/inverter conﬁguration,” in Proc. 6th
+Int. Conf. Power Electron. Variable Speed Drives, Sep. 23–25, 1996,
+pp. 564–568.
+[20] G. Skibinski, R. J. Kerkman, and D. Schlegel, “EMI emissions of modern
+PWM AC drives,”Ind. Appl. Mag., vol. 5, no. 6, pp. 47–81.
+[21] A. Consoli, G. Oriti, A. Testa, and A. Julian, “Induction motor modeling
+for common mode and differential mode emission evaluation,” in Conf.
+Rec. IEEE IAS Annu. Meeting, 1996, pp. 595–599.
+[22] M. Schinkel, S. Weber, S. Gutkowski, W. John, and H. Reichl, “Efﬁcient
+HF modeling and model parameterization of induction machines for time
+and frequency domain simulations,” in Proc. IEEE APEC, Dallas, TX,
+2006, pp. 1181–1186.
+[23] A. Boglietti and E. Carpaneto, “Induction motor high frequency
+model,” in Conf. Rec. IEEE IAS Annu. Meeting, Phoenix, AR,
+Oct. 1999, pp. 1551–1558.
+[24] A. Boglietti and E. Carpaneto, “An accurate induction motor high fre-
+quency model for electromagnetic compatibility analysis,” Electr. Power
+Components Syst., vol. 29, no. 3, pp. 191–205, Mar. 2001.
+[25] R. Kerkman, D. Schlegel, and G. Skibinski, “Characteristics of shaft
+voltage and bearing currents,” Ind. Appl. Mag., vol. 3, no. 6, pp. 21–32,
+Nov./Dec. 1997.
+[26] S. Chen, T. Lipo, and D. Fitzgerald, “Modeling of motor bearing currents
+in PWM inverter drives,”Trans.Ind.Appl., vol. 32, no. 6, pp. 1365–1370,
+Nov./Dec. 1996.
+[27] A. Muetze and A. Binder, “Calculation of motor capacitances for
+prediction of discharge bearing currents in machines of inverter based
+drive systems,” in Proc. IEEE IEMDC, San Antonio, TX, May 2005,
+p. 264.
+[28] P. Link, “Minimizing electric bearing current in ASD systems,”IEEEInd.
+Appl. Mag., vol. 5, no. 4, pp. 55–65, Jul./Aug. 1999.
+[29] K. Iimori, K. Shinohara, and M. Aikou, “A common mode equivalent
+circuit usable for calculating CM current and bearing current of induction
+motor driven by PWM inverter,” Trans. Inst. Electr. Eng. Jpn., vol. 125,
+no. 5, p. 438, 2005.
+[30] J. Ollila, T. Hammar, J. Lisakkala, and H. Tuusa, “A new reason for bear-
+ing current damages in variable speed drives,” inProc.EPE. Trondheim,
+Norway, Sep. 1997.
+[31] S. Gutkowski, S. Weber, M. Schinkel, W. John, and H. Reichl, “Trou-
+bleshooting and ﬁxing of inverter driven induction motor bearing
+currents in existing plants of large size an evaluation of possible miti-
+gation techniques in practical applications,” in Proc. IEEE APEC, 2006,
+pp. 225–230.
+[32] R. Naik, T. Nondahl, M. Melﬁ, R. Schiferl, and J. Wang, “Shaft voltage
+prediction in induction motors fed by PWM ac drives,” IEEE Trans. Ind.
+Appl., vol. 39, no. 5, pp. 1294–1300, Sep./Oct. 2003.
+[33] HewlettPackard/Agilent Model HP4284A LCR Meter, 20 Hz–1 MHz.
+[Online]. Available: www.agilent.com
+[34] AP Instruments Model 200 Analog Network Analyzer, 0.01 Hz–15 MHz,
+p. 95 492, Windsor, CA. [Online]. Available: www.apinstruments.com
+[35] D. Maky, D. Novotny, and C. Thompson, “The inﬂuence of winding
+capacitance on high frequency time harmonic losses in Induction motors,”
+inConf. Rec. IEEE IAS Annu. Meeting, Oct. 1992, p. 33.
+[36] IEEE Standard Test Procedure for Polyphase Induction Motors and Gen-
+erators,IEEE Standard 112, 1991.
+[37] G. Suresh, H. A. Toliyat, D. A. Rendusara, and P. N. Enjeti, “Predicting
+the transient effects of PWM voltage waveform on the stator windings of
+random wound induction motors,” IEEE Trans. Power Electron., vol. 14,
+no. 1, pp. 23–30, Jan. 1999.
+[38] D. Busse, J. Erdman, R. J. Kerkman, D. Schlegel, and G. Skibinski,
+“System electrical parameters and their effects on bearing currents,”IEEE
+Trans. Ind. Appl., vol. 33, no. 2, pp. 577–584, Mar./Apr. 1997.
+Behrooz Mirafzal (S’01–M’05) received the B.Sc.
+degree in electrical engineering from Isfahan Univer-
+sity of Technology, Isfahan, Iran, in 1994, the M.Sc.
+degree (with ﬁrst class honors) in electrical engineer-
+ing from the University of Mazandaran, Mazandaran,
+Iran, in 1997, and the Ph.D. degree in electrical
+engineering from Marquette University, Milwaukee,
+WI, in 2005.
+From 1997 to 2000, he was a Research Engineer
+and a Lecturer with several academic institutions
+in Isfahan, Iran. Since 2005, he has been a Senior
+Development Engineer with the Motion Group, Rockwell Automation/
+Allen–Bradley, Mequon, WI. He has published 20 articles in professional
+journals and conference proceedings. He is the holder of one U.S. patent. He
+is currently involved in research and development related to servo motor drive
+systems. His research interests include power electronic applications, motor
+drive systems, and fault diagnostics in electric machines and drives.
+Dr. Mirafzal is a member of Sigma Xi and the Electric Machines Committee
+of the IEEE Industry Applications Society.
+Gary L. Skibinski received the B.S.E.E. and
+M.S.E.E. degrees from the University of Wisconsin,
+Milwaukee, in 1976 and 1980, respectively, and
+the Ph.D. degree from the University of Wisconsin,
+Madison, in 1992.
+From 1976 to 1980, he was an Electrical Engineer
+with Eaton Corporation, where he worked on naval
+nuclear power. From 1981 to 1985, he was a Senior
+Project Engineer with the Allen–Bradley Company,
+where his work concerned servo controllers. During
+the Ph.D. program, he was a Consultant in UPS and
+switch-mode power supply products with R.T.E. Corporation. He is currently
+an Engineering Consultant with the Allen–Bradley Company, Rockwell Au-
+tomation, Inc., Mequon, WI. He has published over 80 articles in professional
+journals and conference proceedings with 18 receiving prize awards. He is the
+holder of 18 U.S. patents. His current interests include power semiconductors,
+power electronic applications, and high-frequency high-power converter cir-
+cuits for ac drives.
+
+## PAGE 15
+1246 IEEE TRANSACTIONS ON INDUSTRY APPLICATIONS, VOL. 43, NO. 5, SEPTEMBER/OCTOBER 2007
+Rangarajan M. Tallam (S’97–M’01–SM’07) re-
+ceived the B.Tech. degree in electrical engineering
+from the Indian Institute of Technology, Madras,
+India, in 1997, and the M.S.E.E. and Ph.D. degrees
+in electrical engineering from the Georgia Institute
+of Technology (Georgia Tech), Atlanta, in 1999 and
+2001, respectively.
+From 2001 to 2005, he was a Senior Research
+Engineer with the Advanced Technology Division,
+Rockwell Automation, Milwaukee, WI, where he
+conducted research on active rectiﬁers and multilevel
+converters. He is currently a Senior Project Engineer with the Standard Drives
+Development Group, Rockwell Automation, Mequon, WI. He is the holder
+of two U.S. patents. His research interests are in switching power converter
+technology, motor control, and ac drive systems.
+Dr. Tallam is a member of the IEEE Industry Applications, IEEE Power
+Electronics, and IEEE Industrial Electronics Societies.
+David W. Schlegel (S’89–M’98) received the
+B.S.E.E.T. degree in electrical power engineer-
+ing technology and the M.S.E. degree from the
+Milwaukee School of Engineering, Milwaukee, WI,
+in 1996 and 2001, respectively.
+From 1979 to 2001, he was with Allen–Bradley,
+Rockwell Automation, where his last position was
+a Senior Development Engineer in advanced devel-
+opment. During this time, he made contributions to
+ac drive performance and the understanding of drive
+application issues. From 2001 to 2005, he was with
+ABB Inc., New Berlin, WI, where he was a Senior Development Engineer in
+R&D. While at ABB, he made contributions to the ASC550 drive development.
+Since 2005, he has been a Project Engineer in continuing engineering with
+Allen–Bradley, Rockwell Automation, Mequon, WI. He is responsible for 1336
+and PowerFlex adjustable-speed drive product line engineering. His current
+interests include the modeling of ac drive system components, mitigation of
+application issues, and enhancing/maintaining drive performance.
+Richard A. Lukaszewski (S’75–M’76–SM’04) re-
+ceived the B.S.E.E. degree from Milwaukee School
+of Engineering, Milwaukee, WI, in 1976, and the
+M.S. degree in engineering from the University of
+Wisconsin, Milwaukee, in 2004.
+From 1976 to 1992, he was with Louis
+Allis/MagneTek, where he worked in drive systems
+engineering and later in drive development engineer-
+ing, and on SCR-based current source inverters and
+bipolar and IGBT voltage source inverters. Since
+1992, he has been with the Standard Drives Division,
+Rockwell Automation, Mequon, WI, where he is currently a Program Manager.
+His team helped develop Rockwell Automation’s ﬂagship motor drive products
+from the 1336 generation to the present PowerFlex products. He is also the
+coauthor of several technical papers presented at IEEE Industry Applications
+Society (IAS) Conferences.
+Mr. Lukaszewski has been a member of the IAS for 33 years and is currently
+a Senior Member. He is also involved with several committees within the IAS.
+He served in the Milwaukee Chapter of the IEEE IAS Section from 1980 to
+1984. He was the Section Chairman of the Milwaukee Chapter when it won
+the “Best Large Chapter” Award presented at the 1984 IEEE IAS Annual
+Meeting in Chicago, IL. He was also the past Chair of the Power Devices and
+Components Committee (PEDCC) of the IAS. He currently serves as the Chair
+of the Industrial Power Conversion Systems Department (IPCSD) of the IAS.
+He is also a Registered Professional Engineer in the State of Wisconsin.
+View publication stats

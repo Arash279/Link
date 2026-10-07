@@ -3,8 +3,8 @@ import subprocess
 import datetime
 
 # ==================== 配置区域 ====================
-# 1. 你的项目绝对路径
-PROJECT_PATH = r"D:\Desktop\Link"
+# 1. 使用本脚本所在目录，移动或重命名项目后无需修改路径
+PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 # 2. 注释开关：True 表示使用自定义注释，False 表示使用自动生成的通用注释
 USE_CUSTOM_COMMENT = False

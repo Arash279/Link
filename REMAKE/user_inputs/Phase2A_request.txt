@@ -1,0 +1,665 @@
+基于你刚刚完成的 Phase 1 Audit，现在进入一个新的阶段：
+
+# Phase 2A — Open Questions, Hypothesis Building, and Human Review
+
+这一阶段的目标不是立即确定唯一正确答案，而是：
+
+1. 系统列出目前仍未解决的主要问题；
+2. 根据整个项目结构、代码、报告、数据、日志和历史文档进一步调查；
+3. 对每个问题提出一个或多个可能解释；
+4. 尝试判断哪个解释目前最合理；
+5. 清楚地区分“事实”“推断”“猜测”；
+6. 最后把结论交给我人工复核。
+
+非常重要：
+
+**不要把你推测出的最佳解释自动当作最终正解。**
+
+即使某个解释非常合理，也必须保留：
+
+- supporting evidence
+- conflicting evidence
+- alternative explanations
+- confidence
+- what would falsify this hypothesis
+
+---
+
+# 1. 先建立完整的 Open Questions Register
+
+首先根据 Phase 1 审计，以及进一步浏览项目后发现的问题，创建一个：
+
+`OPEN_QUESTIONS.md`
+
+不要只复制 Phase 1 中的六条不确定项。
+
+请主动检查整个项目，寻找所有会影响“restart 项目技术真实性”的关键歧义。
+
+重点包括但不限于：
+
+## A. 模型身份
+
+- EE5003 report 的主模型究竟是哪一个版本？
+- 11 参数、12 参数、14 参数模型之间是什么演化关系？
+- 14 参数 V3 是否真的就是报告最终模型？
+- `try.py`、`try2.py`、`NUTSVerTry.py` 是否实现完全相同的 deterministic model？
+- 是否还存在其他未被 Phase 1 识别的模型版本？
+- `1.5 × Z_ad` 的物理/电路来源是什么？
+
+## B. 电路拓扑
+
+重点解决目前已经发现的冲突：
+
+正文描述：
+`Rad + (Lad || Cad)`
+
+而代码和图似乎是：
+`Lad || (Rad + Cad)`
+
+请不要直接选择其中之一。
+
+尝试通过：
+
+- main.tex 其他章节
+- circuit images
+- code
+- comments
+- old notes
+- Git history
+- parameter names
+- fitting behavior
+- equations
+- figure generation scripts
+
+判断：
+
+1. 哪个拓扑实际被用于报告数值？
+2. 正文是否只是公式/文字笔误？
+3. 是否曾经存在两个不同版本？
+4. 是否可能图片和代码反而是后来版本？
+
+输出证据链。
+
+---
+
+# 2. 每个问题使用统一模板
+
+对每一个 open question，用如下格式记录：
+
+## Qxx — Question
+
+### Why it matters
+
+解释为什么这个问题会影响 restart 项目。
+
+### Confirmed evidence
+
+只放可以直接从文件证明的事实。
+
+必须给出具体路径、代码行、数据、日志或图。
+
+### Candidate hypothesis A
+
+解释。
+
+Supporting evidence:
+- ...
+
+Conflicting evidence:
+- ...
+
+### Candidate hypothesis B
+
+解释。
+
+Supporting evidence:
+- ...
+
+Conflicting evidence:
+- ...
+
+必要时可以有 C、D。
+
+### Current best interpretation
+
+给出目前你认为最合理的解释。
+
+但必须标记：
+
+- HIGH confidence
+- MEDIUM confidence
+- LOW confidence
+
+并写：
+
+**This is a working hypothesis, not a confirmed conclusion.**
+
+### How to verify
+
+说明最有效的验证方法。
+
+例如：
+
+- 找到某个输出文件
+- hash 对比
+- 用保存参数重新生成 curve
+- 从 PNG 提取元数据
+- Git history
+- 检查日志
+- 运行某个脚本
+- 比较预测值
+
+---
+
+# 3. 特别优先调查以下问题
+
+根据 Phase 1，目前至少优先回答以下问题。
+
+## Q1. EE5003 report 主结果究竟对应哪个模型？
+
+目前证据：
+
+- 报告 AIC/BIC 暗示约 14 参数；
+- circuit diagram 与 V3 相符；
+- `try/try.py` 等实现 14 参数模型；
+- 报告 RMSE_raw ≈ 130.872；
+- 12 参数历史结果约 130.920；
+- 当前 workflow 约 130.938。
+
+请继续调查。
+
+不要因为 RMSE 接近就认为它们相同。
+
+尽量建立：
+
+`fig_curver.png`
+→ model implementation
+→ parameter vector
+→ dataset
+→ frequency filter
+→ objective
+→ generated impedance curve
+
+如果无法完全闭合，也要说明能闭合到哪一层。
+
+---
+
+## Q2. `fig_curver.png` 是怎么生成的？
+
+检查：
+
+- 所有 plotting scripts
+- `PaperFigure`
+- `try`
+- `baseline1`
+- logs
+- CSV outputs
+- code 中出现的 filename
+- LaTeX figure references
+
+搜索：
+
+`fig_curver`
+`Curver`
+`savefig`
+相关 figure title / legend / axis label。
+
+如果没有找到直接生成器：
+
+尝试比较不同模型的输出特征与图中曲线。
+
+可以提出：
+
+“最可能由 X 生成”
+
+但必须注明置信度。
+
+---
+
+## Q3. 报告的最终参数在哪里？
+
+尝试寻找：
+
+- CSV
+- JSON
+- stdout log
+- Python constants
+- copied values
+- LaTeX table
+- figure annotations
+- serialized output
+
+如果没有显式保存最终参数：
+
+尝试判断是否可以根据现有候选结果重新恢复。
+
+但：
+
+**不要在这一阶段覆盖任何历史结果。**
+
+---
+
+## Q4. 12 参数模型和 14 参数模型的真实关系是什么？
+
+重点判断：
+
+- 12 参数是否是正式 baseline？
+- 14 参数是否是后来报告扩展？
+- 14 参数是否先于 workflow？
+- workflow 是否反而是后来为了整理项目重新制作的简化版本？
+- 消融实验为何围绕 12 参数模型，而最终报告可能使用 14 参数？
+
+检查：
+
+- Git timestamps
+- comments
+- markdown notes
+- report text
+- code import relationship
+- output modification times
+
+尝试构造一个：
+
+### Model evolution timeline
+
+例如：
+
+V1 → V2 → V3 → workflow cleanup
+
+但只有证据支持时才这样写。
+
+---
+
+## Q5. 报告中的消融实验是否与主模型严格一致？
+
+这是很重要的问题。
+
+目前：
+
+report representative result ≈ 14 parameters
+
+historical ablation CurVer = 12 parameters
+
+请判断报告中的：
+
+- no-L
+- GA
+- analytic initialization
+- NUTS
+- other ablations
+
+究竟：
+
+A. 都使用 12 参数模型；
+B. 使用 14 参数模型；
+C. 部分 12、部分 14；
+D. 报告把不同开发阶段的结果组合在一起。
+
+不要为了让论文“逻辑完美”而强行统一。
+
+如果历史证据表明报告确实混用了不同模型阶段，请明确指出。
+
+---
+
+## Q6. `1.5 × Z_ad` 从哪里来？
+
+目前代码中有：
+
+`1.5 * Z_ad`
+
+并说明与 B/C shorting 有关。
+
+请寻找其来源：
+
+- 三相等效关系
+- exp_10 wiring
+- old derivation
+- markdown
+- equation
+- comments
+- papers
+
+尝试给出电路上的解释。
+
+但如果没有完整推导，请区分：
+
+CONFIRMED:
+代码这么写。
+
+INFERRED:
+可能来自某种 star / phase reduction。
+
+不要自己创造理论推导然后把它归因于旧项目。
+
+---
+
+## Q7. exp_10 为什么成为主要拟合对象？
+
+调查：
+
+- 是否因为报告主模型对应这个接线？
+- 是否因为数据质量更好？
+- 是否因为它对应某种差模/相间阻抗？
+- exp_11 / exp_12 是否理论上等价？
+- 有没有 phase symmetry 检查？
+- 是否使用多个配置共同提取参数、最终只在 exp_10 拟合？
+
+尝试恢复研究者当时的逻辑。
+
+---
+
+## Q8. 参数初始化到底是怎样工作的？
+
+Phase 1 已发现：
+
+- 报告描述 analytic initialization；
+- code 计算 `eta_Lls`；
+- 但 `nLls` 使用手工值；
+- `Rs=8.703 Ω` 固定；
+- 当前提取 fr/fa 与默认值并不完全一致。
+
+请完整追踪：
+
+measurement
+→ feature extraction
+→ analytic equations
+→ initial guess
+→ fixed parameters
+→ optimizer
+
+建立参数表：
+
+| Parameter | physical meaning | source | extracted? | fixed? | optimized? | bounds | final/report value |
+
+如果同一参数在不同模型中状态不同，也要分别列。
+
+---
+
+## Q9. 哪些“测量数据”真的是 raw measurement？
+
+目前 SQLite 数据是代码真正使用的输入，但 provenance 不完整。
+
+请继续搜索项目中的：
+
+- instrument names
+- VNA
+- impedance analyzer
+- calibration
+- fixture
+- de-embedding
+- export
+- Touchstone
+- CSV source
+- database generation
+
+如果仍找不到，请明确结论：
+
+“SQLite database is the earliest available project data”
+
+而不是：
+
+“SQLite is raw instrument data”。
+
+---
+
+## Q10. 30 HP / 其他电机验证是否真正有效？
+
+检查：
+
+- hp30 workflow
+- InitialGuessConfig
+- `hp=1.5` reuse
+- data paths
+- fitted parameters
+- outputs
+- report claims
+
+判断：
+
+- 是真正的跨电机验证；
+- 只是代码试跑；
+- 配置存在 bug；
+- 结果不可作为验证证据。
+
+---
+
+# 4. 主动寻找隐藏问题
+
+除了上述十项，你还需要主动提出新的问题。
+
+尤其关注：
+
+- parameter unit inconsistency
+- rad/s vs Hz
+- degree vs radian
+- duplicated code with behavioral divergence
+- hard-coded paths
+- frequency truncation
+- interpolation
+- data ordering
+- Re/Im reconstruction
+- phase unwrap
+- optimizer seed
+- weighting
+- bounds
+- fixed priors
+- metric definitions
+- AIC/BIC implementation
+- NUTS likelihood
+- GP residual interpretation
+- figure/data mismatch
+- output overwriting
+- stale CSVs
+- results produced by older code but viewed with newer scripts
+
+如果发现这些问题，请加入 Open Questions Register。
+
+---
+
+# 5. 允许进行“受控推断”
+
+这一阶段允许你根据项目结构进行分析和推测。
+
+例如：
+
+如果：
+
+- 文件 A 在 3 月出现；
+- 文件 B 在 5 月出现；
+- report 使用 B 的 topology；
+- workflow 后来又回到 A-like 12 parameter model；
+
+可以提出：
+
+“workflow 很可能是后来为了构造稳定 pipeline，而不是报告生成时的原始代码。”
+
+但必须写成：
+
+### Working hypothesis
+
+而不是：
+
+### Fact
+
+并给出证据。
+
+---
+
+# 6. 不要只使用时间戳
+
+时间戳只能作为辅助证据。
+
+判断模型演化时优先使用：
+
+1. code behavior
+2. imports
+3. comments
+4. report equations
+5. output structure
+6. git history
+7. markdown research notes
+8. timestamps
+
+防止 copied files 导致时间顺序误判。
+
+---
+
+# 7. 尝试“解答”，但不要替我做最终决定
+
+对于每个问题，你最终都应该有：
+
+### Best current answer
+
+例如：
+
+> Best current answer:
+> Report main result most likely uses the 14-parameter V3 topology implemented in `try/try.py`, while the later structured workflow uses the 12-parameter V2 model.
+>
+> Confidence: MEDIUM-HIGH.
+>
+> However, the exact parameter vector and figure-generation provenance remain unconfirmed.
+
+这种形式是可以的。
+
+不可以写：
+
+> The report definitely uses try.py.
+
+除非证据已经真正闭合。
+
+---
+
+# 8. 建立“需要我人工复核”的清单
+
+最终生成：
+
+`HUMAN_REVIEW.md`
+
+不要让我重新读整个审计。
+
+把最需要我凭记忆、研究意图或专业判断确认的问题列出来。
+
+每项尽量设计成可以回答：
+
+YES / NO / NOT SURE
+
+或者少量选择题。
+
+例如：
+
+## HR-01
+
+报告最后增加的 `Cad_lad` + `Rad_lad` 支路，是否确实是你最终决定采用的模型？
+
+Evidence suggests: YES
+
+Confidence: MEDIUM-HIGH
+
+Your answer:
+[ ] Yes
+[ ] No
+[ ] Not sure
+
+---
+
+## HR-02
+
+12 参数 `baseline1/CurVer.py` 是否是为了做消融/稳定 benchmark，而不是报告最终模型？
+
+Evidence suggests: YES
+
+Confidence: MEDIUM
+
+Your answer:
+[ ] Yes
+[ ] No
+[ ] Not sure
+
+---
+
+这样让我可以快速复核，而不是再次考古。
+
+---
+
+# 9. 最终交付格式
+
+这一阶段结束时给我四个主要产物：
+
+## 1. OPEN_QUESTIONS.md
+
+完整问题与证据。
+
+## 2. MODEL_EVOLUTION.md
+
+尝试恢复：
+
+V1
+→ V2
+→ V3
+→ later workflow
+
+如果真实结构不是这样，就按实际证据修改。
+
+## 3. CURRENT_BEST_RECONSTRUCTION.md
+
+用较短篇幅总结：
+
+“如果今天必须根据现有证据解释这个项目，我们目前认为它是怎样工作的。”
+
+但所有重要推断标记置信度。
+
+## 4. HUMAN_REVIEW.md
+
+只列真正需要我确认的问题。
+
+---
+
+# 10. 暂时不要做的事情
+
+这一阶段：
+
+- 不创建最终 restart 目录；
+- 不删除历史文件；
+- 不移动文件；
+- 不批量重命名；
+- 不重写模型；
+- 不把 12 参数或 14 参数版本指定为 canonical；
+- 不修改报告；
+- 不修 bug；
+- 不为了“让 pipeline 工作”而偷偷改变历史代码。
+
+如果需要运行代码进行验证：
+
+优先：
+
+- copy to temporary working area
+- read-only input
+- new output path
+
+不要污染历史输出。
+
+---
+
+# 11. 核心原则
+
+你现在扮演的不是“代码整理助手”，而是：
+
+**研究项目调查员。**
+
+目标不是创造一个漂亮故事，而是恢复最可能的真实历史。
+
+如果证据显示这个项目曾经：
+
+- 同时存在多个模型；
+- 报告混用了不同阶段结果；
+- 某些消融并不严格可比；
+- 某些 figure 无法复现；
+- workflow 是后来重新整理出来的；
+
+这些都可以接受。
+
+请如实记录。
+
+最终由我决定哪些解释成为 restart 项目的正式技术叙事。
+
+现在开始 Phase 2A。

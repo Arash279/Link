@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import argparse
 import sqlite3
 import time
 from dataclasses import dataclass
@@ -11,8 +10,6 @@ from typing import Dict, Tuple, List, Optional
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-
-from baseline1.workflow.initial_params import DEFAULT_INITIAL_INPUTS, build_initial_param_values
 
 
 @dataclass
@@ -37,7 +34,7 @@ STATS = RunStats()
 
 def par(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     """Parallel of two impedances (vectorized)."""
-    return a * b / (a + b)
+    return 1.0 / (1.0 / a + 1.0 / b)
 
 def par3(a: np.ndarray, b: np.ndarray, c: np.ndarray) -> np.ndarray:
     """Parallel of three impedances (vectorized)."""
@@ -67,12 +64,12 @@ def mag_phase_to_complex(mag: np.ndarray, phase_deg: np.ndarray) -> np.ndarray:
 
 
 # ============================================================
-# 1) Parameter vector (11D) + mapping
+# 1) Parameter vector (13D) + mapping
 # ============================================================
 
 PARAM_NAMES: List[str] = [
     "Lls", "Csw", "Rsw", "Llr", "Rrs", "Rcore",
-    "Lm", "nLls", "Csf", "Rsf", "Csf0", "Lad"   # 添加 Lad
+    "Lm", "nLls", "Csf", "Rsf", "Csf0", "Lad", "Cad"   # 娣诲姞 Lad, Cad
 ]
 
 N_PARAMS: int = len(PARAM_NAMES)
@@ -90,7 +87,8 @@ class Params:
     Csf: float
     Rsf: float
     Csf0: float
-    Lad: float   # 新增 Lad
+    Lad: float   # 鏂板 Lad
+    Cad: float   # shunt capacitance across measurement terminals
 
     @staticmethod
     def from_vector(x: np.ndarray) -> "Params":
@@ -115,7 +113,7 @@ class Params:
 Rs = 8.703  # stator resistance (Ohm), added in series with Zmid parallel branch
 
 def Zmid(omega: np.ndarray, p: Params) -> np.ndarray:
-    """Zmid = (jωLls) || (1/jωCsw) || Rsw  + Rs"""
+    """Zmid = (j蠅Lls) || (1/j蠅Csw) || Rsw  + Rs"""
     Z_L = 1j * omega * p.Lls
     Z_C = 1.0 / (1j * omega * p.Csw)
     Z_R = p.Rsw + 0j
@@ -123,7 +121,7 @@ def Zmid(omega: np.ndarray, p: Params) -> np.ndarray:
     return Z_par + Rs
 
 def Zmr(omega: np.ndarray, p: Params) -> np.ndarray:
-    """Zmr = (jωLlr + Rrs) || Rcore || (jωLm)"""
+    """Zmr = (j蠅Llr + Rrs) || Rcore || (j蠅Lm)"""
     Z_series = 1j * omega * p.Llr + p.Rrs
     Z_core   = p.Rcore + 0j
     Z_Lm     = 1j * omega * p.Lm
@@ -134,24 +132,28 @@ def Zmin(omega: np.ndarray, p: Params) -> np.ndarray:
     return Zmid(omega, p) + Zmr(omega, p)
 
 def Z_nLls(omega: np.ndarray, p: Params) -> np.ndarray:
-    """Z_nLls = jω nLls"""
+    """Z_nLls = j蠅 nLls"""
     return 1j * omega * p.nLls
 
 def Zbra(omega: np.ndarray, p: Params) -> np.ndarray:
-    """Zbra = 1/(jωCsf) + Rsf  (Csf series Rsf)"""
+    """Zbra = 1/(j蠅Csf) + Rsf  (Csf series Rsf)"""
     return 1.0/(1j*omega*p.Csf) + p.Rsf
 
 def Zcsf0(omega: np.ndarray, p: Params) -> np.ndarray:
-    """Zcsf0 = 1/(jωCsf0)"""
+    """Zcsf0 = 1/(j蠅Csf0)"""
     return 1.0/(1j*omega*p.Csf0)
 
 def Zlad(omega: np.ndarray, p: Params) -> np.ndarray:
-    """Zlad = jωLad"""
+    """Zlad = j蠅Lad"""
     return 1j * omega * p.Lad
+
+def Zcad(omega: np.ndarray, p: Params) -> np.ndarray:
+    """Zcad = 1/(j蠅Cad)"""
+    return 1.0 / (1j * omega * p.Cad)
 
 def Y_to_Delta(Za: np.ndarray, Zb: np.ndarray, Zc: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
-    Y -> Δ, vectorized.
+    Y -> 螖, vectorized.
     Returns edges Z1(a-b), Z2(a-c), Z3(b-c)
     """
     S = Za*Zb + Zb*Zc + Zc*Za
@@ -162,7 +164,7 @@ def Y_to_Delta(Za: np.ndarray, Zb: np.ndarray, Zc: np.ndarray) -> Tuple[np.ndarr
 
 def delta_to_Y(Zab: np.ndarray, Zbc: np.ndarray, Zca: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
-    Δ -> Y, vectorized.
+    螖 -> Y, vectorized.
     Returns star arms Za(node a), Zb(node b), Zc(node c)
     """
     S = Zab + Zbc + Zca
@@ -177,14 +179,14 @@ def Z1_to_Z9(omega: np.ndarray, p: Params):
     Zb = Zmin(omega, p)         # b
     Zc = Zbra(omega, p)         # c
 
-    # --- Y -> Δ (same as before) ---
+    # --- Y -> 螖 (same as before) ---
     Z1, Z2, Z3 = Y_to_Delta(Za, Zb, Zc)
 
     # --- Z4_0 = Z3 || (1/2 Z3) || Zcsf0 (same as before) ---
     Z4_0 = par3(Z3, 0.5 * Z3, Zcsf0(omega, p))
 
     # ============================================================
-    # UPDATED: redefine Δ edges and do ONE Δ -> Y
+    # UPDATED: redefine 螖 edges and do ONE 螖 -> Y
     #
     # Your mapping:
     #   Z2 : a-b edge
@@ -212,7 +214,8 @@ def Z_total(omega: np.ndarray, p: Params) -> np.ndarray:
     Z1, Z2, _, _, Z4, Z5, Z6, _, _, _ = Z1_to_Z9(omega, p)
     Z_parallel = par(Z6 + 0.5 * Z1, Z5 + 0.5 * Z2)
     Z_core_total = Z_parallel + Z4
-    return Zlad(omega, p) + Z_core_total + 0.5 * Zlad(omega, p)  # 首尾加1.5个 Lad（BC端口的两个短接）
+    Z_meas = Zlad(omega, p) + Z_core_total + 0.5 * Zlad(omega, p)
+    return par(Z_meas, Zcad(omega, p))
 
 # ============================================================
 # 3) Load experiment data from SQLite
@@ -221,7 +224,7 @@ def Z_total(omega: np.ndarray, p: Params) -> np.ndarray:
 def load_experiment_from_db(db_path: str, table: str = "exp_10", max_freq: float = 1e8) -> pd.DataFrame:
     """
     Expect columns: Freq, Zabs, Phase (deg)
-    默认只读取频率区间 (0, max_freq]，max_freq 默认 1e8 Hz
+    榛樿鍙鍙栭鐜囧尯闂?(0, max_freq]锛宮ax_freq 榛樿 1e8 Hz
     """
     conn = sqlite3.connect(db_path)
     try:
@@ -233,7 +236,7 @@ def load_experiment_from_db(db_path: str, table: str = "exp_10", max_freq: float
     df = df.dropna().copy()
     df = df.sort_values("Freq")
     df = df[df["Freq"] > 0]
-    df = df[df["Freq"] <= max_freq]  # 限制上限到 1e8 Hz（默认）
+    df = df[df["Freq"] <= max_freq]  # 闄愬埗涓婇檺鍒?1e8 Hz锛堥粯璁わ級
     return df
 
 
@@ -266,7 +269,7 @@ def sample_freq_points(
         idx = np.searchsorted(logf, grid)
         idx = np.clip(idx, 0, N - 1)
         idx = np.unique(idx)
-        # 如果 unique 之后点数少，再补一点
+        # 濡傛灉 unique 涔嬪悗鐐规暟灏戯紝鍐嶈ˉ涓€鐐?
         if idx.size < n_samples:
             rng = np.random.default_rng(seed)
             extra = rng.choice(np.setdiff1d(np.arange(N), idx), size=min(n_samples-idx.size, N-idx.size), replace=False)
@@ -304,8 +307,22 @@ def simulate_complex(f_hz: np.ndarray, p: Params) -> np.ndarray:
     return Z_total(omega, p)
 
 def make_initial_params() -> Params:
-    values = build_initial_param_values(DEFAULT_INITIAL_INPUTS)
-    return Params(**values)
+    # your given initial values
+    return Params(
+        Lls=2.55e-2,
+        Csw=1.012e-9,
+        Rsw=1.3437e4,
+        Llr=2.55e-2,
+        Rrs=28.0,
+        Rcore=4.751e3,
+        Lm=5.5e-2,
+        nLls=1.7806e-10,
+        Csf=2.461e-10,
+        Rsf=2.74e3,
+        Csf0=7.38e-10,
+        Lad=1.3e-7,
+        Cad=1e-11,
+    )
 
 def default_bounds(p0: Params) -> Tuple[np.ndarray, np.ndarray]:
     """
@@ -330,6 +347,11 @@ def default_bounds(p0: Params) -> Tuple[np.ndarray, np.ndarray]:
     # ensure strictly positive
     lo = np.maximum(lo, 1e-18)
     hi = np.maximum(hi, lo * 1.001)
+
+    # Cad bounds (F): 1e-12 ~ 2e-10
+    i_cad = PARAM_NAMES.index("Cad")
+    lo[i_cad] = 1e-12
+    hi[i_cad] = 2e-10
     return lo, hi
 
 def compute_freq_weights(
@@ -499,21 +521,21 @@ def compute_aic_bic(rss: float, n: int, p: int) -> Tuple[float, float]:
     return aic, bic
 
 def evaluate_raw_space_metrics(Z_sim: np.ndarray, Z_data: np.ndarray, p: int) -> Dict[str, float]:
-    # --- 原始误差 ---
+    # --- 鍘熷璇樊 ---
     err_re = Z_sim.real - Z_data.real
     err_im = Z_sim.imag - Z_data.imag
 
-    # --- 原始空间 SSE ---
+    # --- 鍘熷绌洪棿 SSE ---
     sse = float(np.sum(err_re**2 + err_im**2))
 
-    # 样本数（Re + Im 视为两个观测维度）
+    # 鏍锋湰鏁帮紙Re + Im 瑙嗕负涓や釜瑙傛祴缁村害锛?
     n = 2 * int(len(Z_data))
 
-    # --- RMSE（复平面）---
+    # --- RMSE锛堝骞抽潰锛?--
     rmse = float(np.sqrt(sse / n))
 
     # --- AIC / BIC ---
-    # 假设高斯误差，σ² 用 SSE/n 估计
+    # 鍋囪楂樻柉璇樊锛屜兟?鐢?SSE/n 浼拌
     sigma2 = sse / n
 
     if sigma2 <= 0:
@@ -738,23 +760,13 @@ def plot_compare(
 # 7) Main
 # ============================================================
 
-def build_arg_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Run the CurVer baseline experiment.")
-    parser.add_argument("--no-show", action="store_true", help="Disable matplotlib windows during execution.")
-    parser.add_argument("--seed", type=int, default=None, help="Override the random seed used by the experiment.")
-    return parser
-
-
-def main(show_plots: bool = True, seed: int | None = None):
-    if not show_plots:
-        plt.show = lambda *args, **kwargs: None
-
+def main():
     # ---- user config ----
     DB_PATH = r"D:\Desktop\EE5003\data\AP_1p5.db"
     TABLE = "exp_10"          # ??? exp_13 / exp_17 / exp_21 ??????
     N_SAMPLES = 2000           # ????????????????????????
     SAMPLE_MODE = "log_uniform"  # "log_uniform" or "random"
-    SEED = 0 if seed is None else seed
+    SEED = 0
 
     # multi-start + global -> local
     N_STARTS = 120
@@ -780,6 +792,7 @@ def main(show_plots: bool = True, seed: int | None = None):
     DO_VAL = False
     VAL_BLOCKS = 6
     VAL_HOLDOUT = 1
+    DO_RESIDUAL_ANALYSIS = False  # validation residuals / RSS + GP residual analysis
 
     # ---- load experiment ----
     exp = load_experiment_from_db(DB_PATH, TABLE)
@@ -897,7 +910,7 @@ def main(show_plots: bool = True, seed: int | None = None):
     )
 
     # ---- optional validation split ----
-    if DO_VAL:
+    if DO_VAL and DO_RESIDUAL_ANALYSIS:
         train_idx, val_idx = block_split_indices(f_fit.size, VAL_BLOCKS, VAL_HOLDOUT, seed=SEED)
         f_train = f_fit[train_idx]
         Z_train = Z_fit[train_idx]
@@ -934,16 +947,19 @@ def main(show_plots: bool = True, seed: int | None = None):
         print(f"Validation RSS (block split): {rss_val:.6g} (n={residual_val.size})")
 
     # ---- GP residual analysis ----
-    gp_residual_analysis(
-        f_all,
-        Z_all,
-        p_opt,
-        out_prefix="exp_10_gp_residual",
-        csv_path=r"D:\Desktop\tmp\curver_gp_residual.csv",
-    )
+    if DO_RESIDUAL_ANALYSIS:
+        gp_residual_analysis(
+            f_all,
+            Z_all,
+            p_opt,
+            out_prefix="exp_10_gp_residual",
+            csv_path=r"D:\Desktop\tmp\curver_gp_residual.csv",
+        )
 
 
 
 if __name__ == "__main__":
-    args = build_arg_parser().parse_args()
-    main(show_plots=not args.no_show, seed=args.seed)
+    main()
+
+
+

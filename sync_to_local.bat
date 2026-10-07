@@ -1,53 +1,28 @@
 @echo off
-REM ==========================================
-REM Sync current "Link" GitHub repository
-REM Repository: https://github.com/Arash279/Link.git
-REM Author: ChatGPT (GPT-5)
-REM ==========================================
-
 setlocal
-
-REM Expected repo directory name
-set REPO_DIR=Link
-set REPO_URL=https://github.com/Arash279/Link.git
-
-REM Get current directory name
-for %%I in ("%cd%") do set CURRENT_DIR=%%~nxI
-
-echo.
-echo === GitHub Repository Sync Script ===
-echo Repository URL: %REPO_URL%
-echo Current Directory: %cd%
-echo.
-
-REM Check if current directory is "Link"
-if /I not "%CURRENT_DIR%"=="%REPO_DIR%" (
-    echo [ERROR] This script must be placed and run inside the "%REPO_DIR%" folder.
-    echo Current folder: "%CURRENT_DIR%"
-    echo Expected folder: "%REPO_DIR%"
-    pause
-    exit /b 1
+cd /d "%~dp0"
+if errorlevel 1 goto :failed
+if not exist ".git" (
+    echo [ERROR] No Git repository at "%~dp0".
+    goto :failed
 )
-
-REM Ensure Git is available
 git --version >nul 2>&1
-if %errorlevel% neq 0 (
-    echo [ERROR] Git is not installed or not in PATH.
-    pause
-    exit /b 1
-)
-
-REM Pull latest changes
-echo Updating repository...
+if errorlevel 1 goto :failed
+echo Repository: %cd%
+git remote get-url origin
+if errorlevel 1 goto :failed
+if /I "%~1"=="--check" goto :check
 git pull
-if %errorlevel% neq 0 (
-    echo [ERROR] Update failed. Please check your network or local modifications.
-    pause
-    exit /b 1
-)
-
-echo.
-echo === Repository successfully updated! ===
+if errorlevel 1 goto :failed
+echo [OK] Synchronization completed.
 pause
-endlocal
+exit /b 0
 
+:failed
+echo [ERROR] Synchronization stopped. See the error above.
+if /I not "%~1"=="--check" pause
+exit /b 1
+
+:check
+git status --short --branch
+exit /b %errorlevel%

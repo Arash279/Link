@@ -1,0 +1,332 @@
+{
+  "date": "2026-10-07",
+  "file_count": 54,
+  "total_bytes": 2480389,
+  "all_copies_sha256_verified": true,
+  "files": [
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\CURRENT_BEST_RECONSTRUCTION.md",
+      "destination": "Phase2A_audit/CURRENT_BEST_RECONSTRUCTION.md",
+      "bytes": 5068,
+      "sha256": "6519d5a526aa9d9d7741543c1295323dde22361f92d0cd4c1938428bab06ec94"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\HUMAN_REVIEW.md",
+      "destination": "Phase2A_audit/HUMAN_REVIEW.md",
+      "bytes": 5309,
+      "sha256": "92a93d17e65cd1b3487d08a2ab2c3cb35dcb85e78972c7b7a3136d3002ff2596"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\HUMAN_REVIEW_INTEGRATION.md",
+      "destination": "Phase2A_audit/HUMAN_REVIEW_INTEGRATION.md",
+      "bytes": 3850,
+      "sha256": "95d1e228680d3adeb554d16c6578a045f97ccca686d841e57a467d610574b968"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\MODEL_EVOLUTION.md",
+      "destination": "Phase2A_audit/MODEL_EVOLUTION.md",
+      "bytes": 5608,
+      "sha256": "cd7ca96edf02c51ce12a0015df347402356db41b5bbeef2afefab41ff08139b2"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\OPEN_QUESTIONS.md",
+      "destination": "Phase2A_audit/OPEN_QUESTIONS.md",
+      "bytes": 65928,
+      "sha256": "5bd53b744a59707cd7162b5c4735b601e755895412b6af8cfa9591c7e9034de6"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\PROJECT_AUDIT.md",
+      "destination": "Phase2A_audit/PROJECT_AUDIT.md",
+      "bytes": 6708,
+      "sha256": "04df39314ab34f15a5ce857a07581c007125149310c1beb574435ee75657d350"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\checks\\controlled_results.json",
+      "destination": "Phase2A_audit/checks/controlled_results.json",
+      "bytes": 6343,
+      "sha256": "3a4c1e57df97241a1205ae35ffc664cb7490ae09e627a336543953294ec9eeae"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\checks\\parameter_register_v3.csv",
+      "destination": "Phase2A_audit/checks/parameter_register_v3.csv",
+      "bytes": 2346,
+      "sha256": "10113a7d6e9da50ebef06b4e80e994f3de71b51d49c9a6ba6a71b0bd08043d7c"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\checks\\recovered_curver_gp_residual.csv",
+      "destination": "Phase2A_audit/checks/recovered_curver_gp_residual.csv",
+      "bytes": 77314,
+      "sha256": "ff70def24a1734280687205a0992a0a51178a8d24bfade331a1e2515fea1a853"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\checks\\recovered_nutsver_gp_residual.csv",
+      "destination": "Phase2A_audit/checks/recovered_nutsver_gp_residual.csv",
+      "bytes": 77314,
+      "sha256": "ff70def24a1734280687205a0992a0a51178a8d24bfade331a1e2515fea1a853"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\checks\\supplemental_results.json",
+      "destination": "Phase2A_audit/checks/supplemental_results.json",
+      "bytes": 16658,
+      "sha256": "85abeb4ad34765f6c1a6a5a8440cd52849cff63e58cd15c182c4e943385c4497"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\checks\\v3_rerun_curve.csv",
+      "destination": "Phase2A_audit/checks/v3_rerun_curve.csv",
+      "bytes": 136562,
+      "sha256": "0013c4814d93b9b450b0f0f24d6d130abcea6806e5977d5051fca750bb2ddcec"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\checks\\v3_rerun_plot.png",
+      "destination": "Phase2A_audit/checks/v3_rerun_plot.png",
+      "bytes": 153997,
+      "sha256": "27c38e14834630aa019a9992f57381fb62600cb12c96914f4aa3b36deea3e448"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\checks\\mplconfig\\fontlist-v390.json",
+      "destination": "Phase2A_audit/checks/mplconfig/fontlist-v390.json",
+      "bytes": 119454,
+      "sha256": "ed0d318b208c165e0e5b90c37c48a9de104b4b985e12b0bcdc5673d5313d179a"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\checks\\source_copies\\baselines\\CurVer.py",
+      "destination": "Phase2A_audit/checks/source_copies/baselines/CurVer.py",
+      "bytes": 30735,
+      "sha256": "e630038e387f1a6222618e7d7d6e3c80d309aa4d39230f360be581745d4173bb"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\checks\\source_copies\\try\\NUTSVerTry.py",
+      "destination": "Phase2A_audit/checks/source_copies/try/NUTSVerTry.py",
+      "bytes": 39316,
+      "sha256": "ea95f6a76b64aed588b1be3daf41cd38b287500b6da938ef59386fa28c6e8d33"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\checks\\source_copies\\try\\try.py",
+      "destination": "Phase2A_audit/checks/source_copies/try/try.py",
+      "bytes": 31229,
+      "sha256": "2066bd7528881e3cb43b24229c537133fc86aa05cf9b39a33101d583069a8060"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\checks\\source_copies\\try\\try2.py",
+      "destination": "Phase2A_audit/checks/source_copies/try/try2.py",
+      "bytes": 30356,
+      "sha256": "34c1e00df0b9c033cacb278b0694ef6e01fe72726846fb67c2fd5e85d6539eb9"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\evidence\\2026.1.12.pptx.txt",
+      "destination": "Phase2A_audit/evidence/2026.1.12.pptx.txt",
+      "bytes": 4377,
+      "sha256": "83a3d39ebfe1317f8f96550916a62d545fa987a77516c3685b29f0513f2095e7"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\evidence\\2026.1.27.pptx.txt",
+      "destination": "Phase2A_audit/evidence/2026.1.27.pptx.txt",
+      "bytes": 6180,
+      "sha256": "cbe33c09e813325097705b56dd01fa7ed12ec132ffe2c1ce90d4c5106e2ce760"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\evidence\\2026.3.3.pptx.txt",
+      "destination": "Phase2A_audit/evidence/2026.3.3.pptx.txt",
+      "bytes": 4701,
+      "sha256": "e24300643b8eb35f9e957d325657a63ec3ff5802e5629a2e56f73c12225002b1"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\evidence\\9cf0d55_baselines_CurVer.py",
+      "destination": "Phase2A_audit/evidence/9cf0d55_baselines_CurVer.py",
+      "bytes": 31832,
+      "sha256": "c1b986ece89181ac810fd2f1a1c7fb87a63fb7331e6dff7d0bcc8812f30abbe2"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\evidence\\code_inventory.json",
+      "destination": "Phase2A_audit/evidence/code_inventory.json",
+      "bytes": 622571,
+      "sha256": "14b01af9288836a256986bfe00b2731dbdc695e7a23ea5280115b59da9a4c0da"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\evidence\\controlled_check.log",
+      "destination": "Phase2A_audit/evidence/controlled_check.log",
+      "bytes": 6486,
+      "sha256": "658ebd392d2b8a330653fbaf1f66249550965045cd0193de10f32c1155b47dd8"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\evidence\\ee0a7f1_tmp_tmp.py",
+      "destination": "Phase2A_audit/evidence/ee0a7f1_tmp_tmp.py",
+      "bytes": 31473,
+      "sha256": "5d6efd876019eca997c4d393b728111cafe7e6884a8d19886d8acc562c246110"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\evidence\\EE5003_rebuild.pdf.page1.png",
+      "destination": "Phase2A_audit/evidence/EE5003_rebuild.pdf.page1.png",
+      "bytes": 222629,
+      "sha256": "b5fe353503c4dc7569f13df92e8fbb4cbfabdc627a8a9259c2005db346d258d6"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\evidence\\EE5003_rebuild.pdf.txt",
+      "destination": "Phase2A_audit/evidence/EE5003_rebuild.pdf.txt",
+      "bytes": 18244,
+      "sha256": "4f1c3d9de58705b397330100785f76680f917997c9bd285a1e0f77f1daa25543"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\evidence\\external_manifest.json",
+      "destination": "Phase2A_audit/evidence/external_manifest.json",
+      "bytes": 1886,
+      "sha256": "f1e735bb1928df11e753a35e5191e0e4a135ec7f88dffb1cc53c4e4f095f2920"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\evidence\\fc8ad7f_tmp_tmp.py",
+      "destination": "Phase2A_audit/evidence/fc8ad7f_tmp_tmp.py",
+      "bytes": 32202,
+      "sha256": "80ba9a9852eacca903c6a15becb22aedf56d631b2912dff5c942307cfacdbab1"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\evidence\\final_validation.json",
+      "destination": "Phase2A_audit/evidence/final_validation.json",
+      "bytes": 302,
+      "sha256": "1ae3463db6433dc67cc4277b4832f4fcc0204cd3cc29ed5471acdd28a402d3de"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\evidence\\git_diff.txt",
+      "destination": "Phase2A_audit/evidence/git_diff.txt",
+      "bytes": 1551,
+      "sha256": "377aa408518da38e0204a4b4884fa3a599f92f08c70a2da4e6cda462eab198d2"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\evidence\\git_history.txt",
+      "destination": "Phase2A_audit/evidence/git_history.txt",
+      "bytes": 8217,
+      "sha256": "49a7d00fc9691da72878b113b6127fce163d5e03de5db0e221d9d690d1478001"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\evidence\\git_status.txt",
+      "destination": "Phase2A_audit/evidence/git_status.txt",
+      "bytes": 334,
+      "sha256": "bf1b41320133316261cf2e51b86f8a995edc3904372cad3275e8853a6340af5d"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\evidence\\GROUP MEETING 2026.3.11.pdf.page1.png",
+      "destination": "Phase2A_audit/evidence/GROUP MEETING 2026.3.11.pdf.page1.png",
+      "bytes": 288862,
+      "sha256": "66e0c3d5b70ed07e443e76563ba7a3ebc27912c340b4e76df88e661c533ac360"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\evidence\\GROUP MEETING 2026.3.11.pdf.txt",
+      "destination": "Phase2A_audit/evidence/GROUP MEETING 2026.3.11.pdf.txt",
+      "bytes": 5317,
+      "sha256": "d8eb3e4f9810ee611a26c391731215e7f499132e982e7643c81b5608820b6638"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\evidence\\HUMAN_REVIEW_Answered_2026-10-06.md",
+      "destination": "Phase2A_audit/evidence/HUMAN_REVIEW_Answered_2026-10-06.md",
+      "bytes": 6129,
+      "sha256": "9ef97fe327f50a6022cc5c016b07e4a7ad2272808da0a89f76bc9c7be7dfa561"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\evidence\\human_review_validation.json",
+      "destination": "Phase2A_audit/evidence/human_review_validation.json",
+      "bytes": 1037,
+      "sha256": "fb72682f42632f9facd46d4e331fd4e009e17ca7783d7c8c7b077c8ea868b03e"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\evidence\\paper1.pdf.txt",
+      "destination": "Phase2A_audit/evidence/paper1.pdf.txt",
+      "bytes": 60652,
+      "sha256": "9d4dd98a4d939dc26fbf5456ca29c425a8680efcf64ca167c90aa66445f0567b"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\evidence\\paper2.pdf.txt",
+      "destination": "Phase2A_audit/evidence/paper2.pdf.txt",
+      "bytes": 40930,
+      "sha256": "bd822ad2eae86d61c70e5815dc967db207f3bdb33b47dc05f16e69a70372a412"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\evidence\\png_metadata.json",
+      "destination": "Phase2A_audit/evidence/png_metadata.json",
+      "bytes": 8899,
+      "sha256": "3e55800208c1c961e0ace20f7364413e3aeb761413ca3a59a6dfabc6720db1f4"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\evidence\\source_manifest_before.json",
+      "destination": "Phase2A_audit/evidence/source_manifest_before.json",
+      "bytes": 66317,
+      "sha256": "ed1be9034ba9ef37fab1e285061400d85ecec0c7bea7c0db3d9edf109e1e72f7"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\evidence\\pre_human_review_2026-10-06\\CURRENT_BEST_RECONSTRUCTION.md",
+      "destination": "Phase2A_audit/evidence/pre_human_review_2026-10-06/CURRENT_BEST_RECONSTRUCTION.md",
+      "bytes": 4573,
+      "sha256": "3cf685197056ff1e944594108243e74873a19744ddf1bd872e22d99dd517b32a"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\evidence\\pre_human_review_2026-10-06\\HUMAN_REVIEW.md",
+      "destination": "Phase2A_audit/evidence/pre_human_review_2026-10-06/HUMAN_REVIEW.md",
+      "bytes": 4940,
+      "sha256": "f9aebffeecf04d626a34436d53bf5bfadd6a91eab7a1c3a2ddc594d2c647a102"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\evidence\\pre_human_review_2026-10-06\\MODEL_EVOLUTION.md",
+      "destination": "Phase2A_audit/evidence/pre_human_review_2026-10-06/MODEL_EVOLUTION.md",
+      "bytes": 5113,
+      "sha256": "6a61f6a4784658d379af41b29099ca237b7522928751f05772bdc586bdaa1fc5"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\evidence\\pre_human_review_2026-10-06\\OPEN_QUESTIONS.md",
+      "destination": "Phase2A_audit/evidence/pre_human_review_2026-10-06/OPEN_QUESTIONS.md",
+      "bytes": 62641,
+      "sha256": "493b9cf65fc09d64ae3ff4cdd9ff93c520adc3d878b56e31f593162c21f4af17"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\evidence\\pre_human_review_2026-10-06\\PROJECT_AUDIT.md",
+      "destination": "Phase2A_audit/evidence/pre_human_review_2026-10-06/PROJECT_AUDIT.md",
+      "bytes": 6091,
+      "sha256": "2b8d2107e3a4a00e00fb2f3b0fb4aa8f70fadd7ae82da1c4760466d6770a6fe8"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\scripts\\build_documents.py",
+      "destination": "Phase2A_audit/scripts/build_documents.py",
+      "bytes": 56068,
+      "sha256": "025abbb15e5babc7ac54dce4627c5aa8e1b05195707c51ccd1d7c56ffff13fb2"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\scripts\\collect_evidence.py",
+      "destination": "Phase2A_audit/scripts/collect_evidence.py",
+      "bytes": 3918,
+      "sha256": "191e1b06f1b4fadede52cd71f6015b42acdafb17a184237100e84261fb453890"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\scripts\\controlled_check.py",
+      "destination": "Phase2A_audit/scripts/controlled_check.py",
+      "bytes": 6902,
+      "sha256": "c079b49011a970f15fc626a1cb55b6d86d26035445a07525ab9ada61cf94fa87"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\scripts\\incorporate_review.py",
+      "destination": "Phase2A_audit/scripts/incorporate_review.py",
+      "bytes": 9672,
+      "sha256": "7b62a09f2b58ba1997ab9779b1fb2e1ff37ebfa4048750429f5193de7bf26d34"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\ChatGPT\\LinkCodex\\Phase2A_audit\\scripts\\verify_audit.py",
+      "destination": "Phase2A_audit/scripts/verify_audit.py",
+      "bytes": 2438,
+      "sha256": "c3ec863ec14417bc31129dd16bdc0557505b898699ebddd69086ac532cb89c17"
+    },
+    {
+      "source": "C:\\Users\\35789\\.codex\\attachments\\1815cee0-8777-4446-839f-f34d8b016e5e\\已粘贴的文本.txt",
+      "destination": "user_inputs/Phase1_request.txt",
+      "bytes": 13369,
+      "sha256": "e848c39e744e43bf2be5dbcebcbe6c0083b854fb10d6c9c0cd78c67e6576989b"
+    },
+    {
+      "source": "C:\\Users\\35789\\.codex\\attachments\\0bae8ae9-ef1e-4e60-92c8-1fcb4e40e207\\已粘贴的文本.txt",
+      "destination": "user_inputs/Phase2A_request.txt",
+      "bytes": 13312,
+      "sha256": "1dd5826e5c886d06c8ef0b31299299d415e07d4bad2d7dbb37a8dde7ce9982bd"
+    },
+    {
+      "source": "C:\\Users\\35789\\Documents\\Obsidian Vault\\HUMAN_REVIEW_Answered.md",
+      "destination": "user_inputs/HUMAN_REVIEW_Answered.md",
+      "bytes": 6129,
+      "sha256": "9ef97fe327f50a6022cc5c016b07e4a7ad2272808da0a89f76bc9c7be7dfa561"
+    }
+  ]
+}

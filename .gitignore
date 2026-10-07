@@ -17,3 +17,8 @@ venv/
 # System files
 .DS_Store
 Thumbs.db
+
+# Generated workflow artifacts
+baseline1/workflow_outputs/
+baseline1/experimental_reim_workflow/outputs/
+baseline1/mag_phase_workflow/outputs/

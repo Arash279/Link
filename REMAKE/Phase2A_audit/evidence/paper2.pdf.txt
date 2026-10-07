@@ -1,0 +1,773 @@
+SOURCE: D:\Desktop\LinkCodex\docs\paper2.pdf
+METADATA: {'/CreationDate': "D:20090105200118+08'00'", '/Title': 'untitled', '/Producer': 'Acrobat Distiller 7.0 (Windows)', '/ModDate': "D:20090116123030-05'", '/rgid': 'PB:224373953_AS:663160709206016@1535121242324'}
+## PAGE 1
+See discussions, stats, and author profiles for this publication at: https://www.researchgate.net/publication/224373953
+Determination of Parameters in the Universal Induction Motor Model
+Article  in  IEEE Transactions on Industry Applications · March 2009
+DOI: 10.1109/TIA.2008.2009481 · Source: IEEE Xplore
+CITATIONS
+113
+READS
+1,762
+3 authors:
+Behrooz Mirafzal
+Kansas State University
+154 PUBLICATIONS   4,397 CITATIONS   
+SEE PROFILE
+Gary leonard Skibinski
+Rockwell Automation
+92 PUBLICATIONS   5,861 CITATIONS   
+SEE PROFILE
+Rangarajan Tallam
+Rockwell Automation
+62 PUBLICATIONS   2,926 CITATIONS   
+SEE PROFILE
+All content following this page was uploaded by Behrooz Mirafzal on 24 August 2018.
+The user has requested enhancement of the downloaded file.
+
+## PAGE 2
+142 IEEE TRANSACTIONS ON INDUSTRY APPLICATIONS, VOL. 45, NO. 1, JANUARY/FEBRUARY 2009
+Determination of Parameters in the
+Universal Induction Motor Model
+Behrooz Mirafzal, Senior Member , IEEE, Gary L. Skibinski, and Rangarajan M. Tallam, Senior Member , IEEE
+Abstract—A systematic procedure to determine the parame-
+ters of a previously proposed low- to high-frequency induction
+motor model is presented. An analysis of the high-frequency
+behavior with regard to the impact of magnetic core selection,
+parasitic interturn and winding-to-frame capacitors, and skin
+effects of windings is investigated in greater detail for the proposed
+universal model of an induction motor. The model is universal
+in the sense that it is derived by extending the low-frequency
+standard T-equivalent circuit (IEEE Standard 112) to include
+high-frequency effects under both common- and differential-mode
+domains and can be used for transient reﬂected-wave studies and
+electromagnetic interference emissions in motor drive systems. A
+test-based method and an analytical approach, which are useful
+in application and design stages, respectively, are presented to
+determine the frequency characteristics of the induction motor.
+Findings of the investigation were veriﬁed experimentally with
+results presented in this paper.
+Index Terms —Electromagnetic interference (EMI), high-
+frequency model, induction motor, reﬂected wave, transient
+overvoltage.
+I. I NTRODUCTION
+I
+N AC motor-drive systems, which generally consist of an
+ac–ac converter, a cable, and an ac electric motor, fast semi-
+conductor devices (e.g., insulated-gate bipolar transistors) are
+desirable in order to reduce switching losses and consequently
+obtain higher efﬁciency in a compact package. Fast switching
+means shorter voltage rise time, which can lead to the reﬂected-
+wave phenomenon as well as high-frequency leakage currents
+through the system’s stray capacitors [1]–[7]. Reﬂected waves
+cause voltage spikes at the motor terminals, and the high-
+frequency leakage currents cause electromagnetic interference
+(EMI). These two phenomena are commonly modeled as two
+decoupled single-line circuits, namely, differential mode (DM)
+and common mode (CM); however, the secondary (consequent)
+phenomena may be overlooked in this type of analysis.
+Paper IPCSD-08-037, presented at the 2007 Industry Applications Society
+Annual Meeting, New Orleans, LA, September 23–27, and approved for
+publication in the IEEE T RANSACTIONS ON INDUSTRY APPLICATIONS by
+the Electric Machines Committee of the IEEE Industry Applications Society.
+Manuscript submitted for review August 1, 2007 and released for publication
+April 18, 2008. Current version published January 21, 2009.
+B. Mirafzal was with Allen-Bradley Drives Division, Rockwell Automation,
+Mequon, WI 53092 USA. He is now with the Department of Electrical and
+Computer Engineering, Florida International University, Miami, FL 33174
+USA (e-mail: behrooz.mirafzal@ﬁu.edu).
+G. L. Skibinski and R. M. Tallam are with Allen-Bradley Drives Divi-
+sion, Rockwell Automation, Mequon, WI 53092 USA (e-mail: glskibinski@
+ra.rockwell.com; rmtallam@ra.rockwell.com).
+Color versions of one or more of the ﬁgures in this paper are available online
+at http://ieeexplore.ieee.org.
+Digital Object Identiﬁer 10.1109/TIA.2008.2009481
+Moreover, three-phase pulsewidth modulators (PWMs) can
+interact with cable and motor models, creating up to three
+times the bus voltage at the motor terminals, depending on
+the dwell-time spacing between line-to-line voltage pulses
+[8]. Dwell time must be estimated ofﬂine before a single-line
+model can be used. Thus, it is advantageous to simulate a
+three-phase modulator that directly interacts with three-phase
+cable and motor circuits for any inverter operating point.
+Various three-phase control algorithms such as PWM sine
+triangle, sine triangle with third harmonic, space vector, and
+two-phase modulation can then be studied for instantaneous
+line-to-line and line-to-ground waveform simulation. Lastly,
+the use of active front-end converters, with its switching action
+unsynchronized with the inverter, make single-line models less
+accurate for determining line-to-line and line-to-ground voltage
+stress on long cables [9]. Thus, a three-phase system model has
+advantages versus a single-line model in many ac motor-drive
+studies.
+There are many investigations on modeling induction motors
+at high frequencies such as [1]–[8]. The existing problem in the
+ﬁeld today is that researchers are proposing various individual
+high-frequency circuits to describe reﬂected wave, CM current,
+bearing current, and shaft voltage. Many of these circuits only
+address one issue and, in addition, ignore the low-frequency
+desired electrical stator quantities and rotor mechanical output
+quantities. In [2], the authors have proposed a high-frequency
+motor model that is built around the low-frequency d–q model.
+A close examination of the impedance response plots does not
+show a very good match between simulation and experimental
+results over a wide frequency range. A similar high-frequency
+motor model is also proposed in [5] and [6], albeit with better
+correlation between simulation and experiment. In the model
+proposed in [7], the motor slip cannot be varied; hence, its
+application to three-phase system simulations would be limited
+as it is desirable to observe transients and low-frequency effects
+in a single waveform. In an ac motor drive, as the load is varied,
+the PWM pulse pattern is adjusted to regulate the voltage,
+and this has an effect on reﬂected-wave and CM transients.
+Moreover, the useful frequency range of these models [2],
+[5]–[7] is limited to below the motor’s antiresonance frequency.
+The model proposed in this paper includes the effect of anti-
+resonance, which is important for high-frequency EMI studies
+and reﬂected-wave transients in ac motor-drive systems with
+short cables.
+Fig. 1 shows the concept of building a universal model for
+induction motors based on the standard T-equivalent circuit
+(IEEE Standard 112) that was introduced in a previous in-
+vestigation [4]. One signiﬁcant objective in constructing this
+0093-9994/$25.00 © 2009 IEEE
+
+## PAGE 3
+MIRAFZAL et al.: DETERMINATION OF PARAMETERS IN UNIVERSAL INDUCTION MOTOR MODEL 143
+Fig. 1. Proposed universal model of induction motor per phase.
+Fig. 2. Physical inductor, 800 turns of AWG 30, for two different cases:
+Case (a) with magnetic core and Case (b) without magnetic core.
+accurate low- to high-frequency-range transfer function model
+of an induction motor was to build the needed mid- to high-
+frequency circuit model extension around the existing and accu-
+rate physical realizable quantities of the standard low-frequency
+equivalent circuit. Low-frequency T-equivalent circuit model
+parameters can be calculated from rotor-locked and no-load
+tests or in a design stage from mathematical calculations and
+ﬁnite element analysis [9], [10]. The main objective of this
+paper is to provide a systematic approach for obtaining the
+high-frequency components, which make it universal in a sense
+that it represents the motor’s frequency response up to 10 MHz
+for both the CM and DM applications. It should be noted that
+this model represents the motor behavior while powered by a
+PWM-based drive at a steady state condition or at a constant
+speed.
+In addition to this section, this paper contains ﬁve sections.
+In Section II, the impact of magnetic cores, parasitic interturn
+and winding-to-frame capacitors, and the skin and proximity
+effects of windings are studied using a simple electromagnetic
+circuit of an inductor. In Section III, the impact of Δ - and
+Y-connections on the effective winding-to-frame parasitic ca-
+pacitors is investigated on a 100-hp induction motor. In
+Section IV, the ﬁndings of Section III are used to show how
+the parameters of the universal model of induction motors are
+determined using the motor frequency response.
+Fig. 3. Simple inductor equivalent circuits for two different cases: Case (a)
+with magnetic core and Case (b) without magnetic core.
+Fig. 4. Measured inductor impedance values versus frequency for two differ-
+ent cases: Case (a) with magnetic core and Case (b) without magnetic core.
+II. F REQUENCY CHARACTERISTICS OF
+BASIC ELECTROMAGNETIC CIRCUIT
+The frequency response of a simple inductor, shown in Fig. 2,
+is investigated in this section. This simple electromagnetic
+circuit can be used as the basis for the modeling and analysis of
+any electric machine. Moreover, the rotor circuit of electric ma-
+chines does not have any contribution at high frequencies since
+no ﬂux penetrates the rotor magnetic circuit [3]. Accordingly,
+a model developed for a simple inductor can be applied for
+the modeling and analysis of more complicated electromagnetic
+devices such as induction machines.
+In Fig. 3, the proposed equivalent circuits of the winding
+shown in Fig. 2 are presented. The two equivalent circuits
+represent two cases, namely, Case (a), winding with magnetic
+core, and Case (b), winding without magnetic core. In Figs. 4
+and 5, the impedance magnitudes and phase angles are shown
+for the aforementioned case studies. As can be observed, both
+the magnitudes and phases of the winding impedance at high
+frequencies are the same. Accordingly, it can be concluded that
+the winding impedance at high frequencies would be indepen-
+dent of the magnetic core materials. It should be noted that,
+in this particular magnetic device, the thickness of the bobbin
+is large such that the winding-to-frame capacitance value be-
+comes much smaller than the interturn capacitance value. The
+
+## PAGE 4
+144 IEEE TRANSACTIONS ON INDUSTRY APPLICATIONS, VOL. 45, NO. 1, JANUARY/FEBRUARY 2009
+Fig. 5. Measured inductor impedance phase angles versus frequency for
+two different cases: Case (a) with magnetic core and Case (b) without mag-
+netic core.
+second observation is that the resonance bandwidth in Case (a)
+is wider than the corresponding bandwidth in Case (b)
+which is the inherent impact of the magnetic core losses.
+As can be seen, the proposed equivalent circuit is built around
+the conventional magnetic equivalent circuit which is valid for
+low frequencies. The additional elements to the conventional
+circuit are winding stray capacitance Cw, antiresonance resis-
+tance Rcw, and antiresonance leakage inductance Lcw.T h e
+winding resistance value Rs as well as the magnetizing in-
+ductance Lm, leakage inductance Llw, and core-loss equivalent
+resistance Rcore can be calculated from simple tests at the rated
+current and frequency. Notice that the magnetizing inductance,
+core-loss equivalent resistance, and winding resistance can be
+also analytically calculated from design speciﬁcations [6]. It
+should be noted that the skin effect below the ﬁrst resonance
+frequency is somewhat signiﬁcant. However, the skin effect on
+the winding’s resistance at high frequencies is very signiﬁcant
+and should be taken into account. Therefore, it is included
+as R
+cw in this model. Winding parasitic capacitance Cw, can
+be obtained directly from knowing the resonance frequency
+and the magnetizing inductance. In the design stage, this
+capacitance value can best be estimated from ﬁnite element
+analysis. Then, the antiresonance leakage inductance L
+cw and
+antiresonance resistance Rcw are obtained from knowing the
+frequency and impedance value of the second resonance, the
+so-called antiresonance frequency fa point.
+For the inductor shown in Fig. 2, the coil has 800 turns
+and a 29- Ω dc resistance, and the core has two parallel air
+gaps with (0.062 in) 1.575-mm heights and (0.75 in2) 484-mm2
+cross sections. Using this information, the low-frequency com-
+ponents can be calculated for Case (a) . However, the LCR
+measurements can also be used to obtain the values of the low-
+frequency as well as high-frequency components. It should be
+noted that the winding-to-frame stray capacitance is negligible
+due to the existence of a relatively thick bobbin in this case
+study. Accordingly, C
+w represents merely the interturn stray
+capacitance. This leads to the following procedure to obtain
+all circuit parameters shown in Fig. 3 from the impedance
+measurements shown in Figs. 4 and 5. These steps will be
+slightly different for electromagnetic devices in which the
+TABLE I
+INDUCTOR MODEL PARAMETER DETERMINATION ,
+CASE (a) WITH THE MAGNETIC CORE
+TABLE II
+INDUCTOR MODEL PARAMETER DETERMINATION ,
+CASE (b) WITHOUT THE MAGNETIC CORE
+winding-to-frame stray capacitance is not negligible, which will
+be presented in Section IV.
+1) Obtain the frequency and corresponding impedance mag-
+nitude in which the impedance phase angle has its maxi-
+mum value.
+2) Obtain the frequency and impedance magnitude at the
+ﬁrst resonance point.
+3) Obtain the frequency and impedance magnitude at the
+antiresonance f
+a point.
+It should be emphasized that the accuracy in estimating the
+ﬁrst resonance frequencyfr is very important in calculating the
+capacitance value ofCw. In order to reduce the estimation error
+of the ﬁrst resonance frequency, both the amplitude |Z|max
+and phase angle ϕ =0 ◦ of impedance have to be taken into
+account. Because of the wide bandwidth in the ﬁrst resonance in
+Case (a), the chance of having an error in capturing the correct
+resonance frequency will be much higher than in Case (b) .
+Parameter determination data are given for Cases (a) and (b)
+in Tables I and II, respectively. Figs. 6 and 7 show that the
+modeled versus measured results are in good agreement.
+A similar procedure can be applied for induction motors in
+order to calculate the high-frequency elements. However, in the
+case of induction motors, the parasitic winding-to-frame capac-
+itance value is the dominant stray capacitance. This difference
+will be elaborated in the next section.
+III. F
+REQUENCY CHARACTERISTICS
+OF INDUCTION MOTORS
+In the low frequency range, the motor model at steady
+state conditions is best described by the T-equivalent circuit.
+It has been shown that the so-called universal model, which is
+
+## PAGE 5
+MIRAFZAL et al.: DETERMINATION OF PARAMETERS IN UNIVERSAL INDUCTION MOTOR MODEL 145
+Fig. 6. (Dotted line) Modeled and (solid line) measured inductor impedance
+values versus frequency for two different cases: Case (a) with magnetic core
+and Case (b) without magnetic core.
+Fig. 7. (Dotted line) Modeled and (solid line) measured inductor impedance
+phase angles versus frequency for two different cases: Case (a) with magnetic
+core and Case (b) without magnetic core.
+Fig. 8. Measured test setup of 100-hp inductor motor.
+built around the T-equivalent circuit, is valid for up to several
+megahertz [4]. In this universal model, shown in Fig. 1, ﬁve
+elements are added. The challenge is how these new compo-
+nents can be determined. In this section, the high-frequency
+behavior of induction motors is studied by testing a 100-hp
+induction motor shown in Fig. 8. In this motor, all six leads
+of the stator windings were available. This makes it possible to
+Fig. 9. Measured terminal to frame capacitance values in nanofarads and their
+corresponding impedance phase angles in degrees of the 100-hp motor.
+Fig. 10. Measured terminal impedance of single-phase winding of the 100-hp
+motor versus frequency.
+investigate and study the impact of a single phase, as well as
+Δ - and Y-connections on the effective winding-to-frame para-
+sitic capacitors Csf .
+In Fig. 9, the measured winding-to-frame capacitance values
+versus frequency are shown for three different cases, single
+phase, Y-connection, and Δ -connection. These values were
+measured at the motor terminal with respect to the motor’s
+frame. As can be observed, the winding-to-frame capacitance
+values for both Y- andΔ -connections are the same for frequen-
+cies below 10 kHz. However, at frequencies around 1 MHz,
+the capacitance value of the Y-connection becomes equal to the
+single-phase measured impedance. Notice that the capacitance
+value in the case ofΔ -connection is twice the value of the other
+two cases at high frequencies. It should be noted that, in the mid
+frequency range, the measured capacitance value is an apparent
+value that includes the effect of the winding inductances and
+should not be used.
+In Fig. 10, the measured winding impedances versus fre-
+quency for three different cases are shown, namely, Case (1) ,
+a single phase of the motor windings; Case (2), the same single
+phase with one end shorted to the motor frame; and Case (3),
+one end of the same phase and frame while the other end
+
+## PAGE 6
+146 IEEE TRANSACTIONS ON INDUSTRY APPLICATIONS, VOL. 45, NO. 1, JANUARY/FEBRUARY 2009
+Fig. 11. Winding-to-frame and phase-to-phase stray capacitors.
+was completely isolated from the frame. As can be seen, the
+measured impedances of Cases (2) and (3) are the same at high
+frequencies, while the measured impedance ofCase (1) is twice
+the other two cases around 1 MHz.
+With reference to Fig. 11, let us assume that the impedance
+of phase B is measured according to Case (2) when one end
+is shorted to the frame. This means that only the slot-to-frame
+capacitor of one end of phase B is involved in this measurement.
+Whereas for Case (1) , two end slots have contribution to the
+impedance values, and the rest are electrically isolated because
+of the high impedance of the winding at high frequencies.
+There is a fundamental difference between the sources of
+the effective stray capacitors in inductors and ac motors. In an
+inductor, particularly with a relatively thick bobbin, the turn-to-
+turn parasitic capacitors will bypass the winding leakage and
+magnetizing inductances at high frequencies. However, in the
+case of ac motors, the winding coils are distributed discretely in
+stator core slots. Moreover, these windings are very close to the
+surface of slots. Accordingly, the stray winding-to-frame capac-
+itance is much bigger than the coil-to-coil stray capacitance. In
+other words, the winding-to-frame parasitic capacitance plays
+the key role, not the interturn parasitic capacitance. That means
+that the high-frequency currents ﬁnd another path through the
+frame to bypass the winding inductances.
+The question is that what is the effective winding-to-frame
+capacitance value in the universal model? The effective ca-
+pacitance value is the capacitance value measured between one
+motor terminal and frame at a high frequency where the cor-
+responding impedance phase angle has its relatively minimum
+value, close to −90
+◦. However, if this capacitance value needs
+to be calculated analytically, then the Y- andΔ -connections has
+to be taken into account, in addition to the slot geometry and
+coil design speciﬁcations [4].
+In Fig. 12, the DM impedances of Y- and Δ -connections
+of the 100-hp motor are shown versus frequency. Based on
+the previous discussions, the effective winding-to-frame capac-
+itance in a Δ -connection is twice the Y-connection at high
+frequencies. Also, the effective inductance ratio between Y- and
+Δ -connections (converted to Y-connection) is theoretically
+equal to 3 at low frequencies. Accordingly, the resonance fre-
+quency ratio of the Y- versus Δ -connection would be theoreti-
+Fig. 12. Measured DM impedances of Y- and Δ -connections of the 100-hp
+motor versus frequency.
+cally equal to√(2/3) = 0.8. This is in good agreement with the
+measured values shown in Fig. 12, in which this ratio is ∼0.7.
+The difference between the measured and expected ratio is due
+to the fact that, for a Δ -connection, the DM inductance at low
+frequencies is slightly less than the expected value. The reason
+is that one phase in theΔ -connection is shorted in the DM mea-
+surement. Accordingly, the effective inductance ratio for the
+D M so fY -a n dΔ -connections will be slightly greater than 3.
+For example, the 100-hp motor has a ratio of (13.78/4.15) =
+3.32 at 250 Hz, see Fig. 12.
+IV . H
+IGH -FREQUENCY ELEMENTS OF
+UNIVERSAL MODEL OF INDUCTION MOTORS
+In this section, a systematic approach for determining the
+additional parameters required in Fig. 1 to the conventional
+T-equivalent circuit parameters is presented using two different
+methodologies. A direct measurement approach to determine
+parameter values and calculations based on machine geome-
+try was performed previously in [4]. This approach required
+adequate machine-geometry information which is not readily
+available. The two new methods presented only involve simple
+LCR CM and DM measurements of the motor under test.
+A. Analytical Approach to Determine High-Frequency Model
+Parameters From Measured Impedance Response
+These additional components are ηL
+ls, a fraction of total
+stator Lls attributed to ﬁrst few turns of ﬁrst slot, effective
+winding-to-frame stray capacitance Csf of ﬁrst slot, interturn
+winding capacitor Csw, loss equivalent resistor Rsw at the ﬁrst
+resonance point Rsf , high-frequency stator copper skin effect
+resistance at fa, and frame inductance Lf and frame resis-
+tance Rf from the slot to the J-box ground reference point. It
+should be noted that magnetizing inductance Lm and core-loss
+resistance Rcore are the only parameters in the universal motor
+model which cannot be calculated from LCR measurements.
+However, these two parameters can be obtained from a no-
+load test or from the motor manufacturer. The manufacturer’s
+data converted into a single-phase Y-equivalent circuit for the
+100-hp motor studied herein, terminated as a Δ -connection, is
+given in Table III.
+
+## PAGE 7
+MIRAFZAL et al.: DETERMINATION OF PARAMETERS IN UNIVERSAL INDUCTION MOTOR MODEL 147
+TABLE III
+PARAMETERS OF 5-, 20-, AND 100-hp INDUCTION MOTORS PER PHASE
+(IN A Y-EQUIV ALENT ) AT POWER FREQUENCY (60 Hz)
+The effective winding-to-frame stray capacitance Csf can
+be obtained from the test results shown in Fig. 9. As one can
+s e ei nF i g .9 ,t h eCsf for both Y- and Δ -connections is equal
+to 21.13 nF for frequencies below 1 kHz. However, the
+stator-to-frame capacitance at high frequencies in the
+Δ -connection is twice the Y-connection, both having much
+lower values in comparison with their values at low frequencies.
+The main resonance frequency of the so-called universal model
+of induction motor are obtained by shorting all series resistors,
+opening all parallel resistors, and solving the quadratic
+equation α(ω
+2
+r)2 − βω2
+r +1=0 , where α = LlsLlrCswCsf
+and β =( Lls + Llr)Csf + LlsCsw yields
+fr = 1
+2π
+√
+(β −
+√
+β2 − 4α)/2α. (1)
+It should be noted that, in (1), the effect of the magnetizing
+inductance is negligible, since Lm is in parallel with the rotor
+leakage inductance Llr and Lm ≫ Llr. Assuming that, in the
+proposed motor model, the rotor leakage inductance referred to
+stator L
+lr is equal to the stator windings’ leakage inductance
+Lls (i.e., Llr ≈ Lls), (1) can be simpliﬁed as
+ω2
+rLls = 1
+Csw
++ 1
+2
+1
+Csf
+−
+√
+1
+C2sw
++ 1
+4
+1
+C2
+sf
+. (2)
+Solving (2) for the interturn winding capacitor Csw yields
+Csw = 2ω2
+rLlsCsf − 1
+ω2rLls (ω2rLlsCsf − 1). (3)
+If the stator winding terminals are connected in the form of a
+Δ -connection, Csw in a Y-equivalent circuit is obtained from
+the following:
+Csw = 2(2ωr)2LlsCsf − 1
+(2ωr)2Lls ((2ωr)2LlsCsf − 1). (4)
+Knowing the effective winding-to-frame stray capacitance
+Csf from LCR measurements as explained in the previous
+section, the interturn winding capacitor Csw can be calculated
+from (3) and (4) for Y- and Δ -connections, respectively. It
+should be noted that the motor frequency response is mainly
+affected by Csw at midfrequencies. Accordingly, in order to
+estimate the Csw value at midfrequencies, Csw is calculated for
+both Csf values at low as well as high frequencies, and then, the
+Fig. 13. Equivalent Y-connection for both actual Y- and Δ -connections of the
+stator windings of three-phase induction motors.
+average value is chosen as an effective value forCsw. The stator
+high-frequency skin effect resistance Rsf and inductance ηLls
+are obtained from knowing antiresonance frequency fa and
+the DM impedance value at the so-called antiresonance point
+from (5)
+Rsf =( 2/3)|Z|anti-r (5)
+ηLls = 1
+Csf(2πfa)2 . (6)
+The value of Rsw can be estimated from the DM impedance
+value |Z|max at the ﬁrst resonance point as follows:
+Rsw =( 2/3)|Z|max −| Rcore∥(j2πfrLlr)| . (7)
+The three-phase universal motor model is shown in Fig. 13
+for a steady state condition or constant speed. The Zmr pa-
+rameter block corresponds to the low-frequency T-equivalent
+parameters in the dotted box of Fig. 1. The model block BB at
+the neutral point to ground corresponds to the previous bearing
+model of [4].
+In order to include the total winding-to-frame stray capaci-
+tance value at low frequencies, theC
+sf-0 must be added between
+the neutral point and frame. This capacitance is calculated as
+follows:
+C
+sf-0 =
+(
+Csf(LF, one-lead-to-frame)
+− 3Csf(HF, one-lead-to-frame)
+)
+. (8)
+The following steps are needed to calculate the high-
+frequency parameters in the universal induction motor model
+as well as the stator and rotor leakage inductances, using
+measurements obtained from an LCR meter.
+1) Obtain the frequency and the corresponding impedance
+magnitude at which the impedance phase angle has its
+maximum value, see Fig. 12.
+2) Obtain the frequency and impedance magnitude |Z|max
+at the ﬁrst resonance point fr, see Fig. 12.
+
+## PAGE 8
+148 IEEE TRANSACTIONS ON INDUSTRY APPLICATIONS, VOL. 45, NO. 1, JANUARY/FEBRUARY 2009
+TABLE IV
+INDUCTION MOTOR MODEL PARAMETER DETERMINATION ,M EASURED
+DATA OF THE 100-hp MOTOR (Y-CONNECTION FOR STATOR WINDINGS )
+TABLE V
+INDUCTION MOTOR MODEL PARAMETER DETERMINATION ,M EASURED
+DATA OF THE 100-hp MOTOR (Δ -CONNECTION FOR STATOR WINDINGS )
+TABLE VI
+PARAMETERS OF 100-hp INDUCTION MOTOR OBTAINED FROM
+THE MEASURED DATA PROVIDED IN TABLES IV AND V
+3) Obtain the frequency and impedance magnitude |Z|anti-r
+at the antiresonance point fa, see Fig. 12.
+4) Obtain the winding (one-lead) to frame capacitance at
+high frequencies, which is the effective high-frequency
+stator to frame capacitance Csf(HF) , see Fig. 9.
+5) Obtain the winding (one-lead) to frame capacitance at low
+frequencies, which is the so-called total stator to frame
+capacitance C
+sf(LF) , see Fig. 9.
+Using (3)–(8) and obtaining the data required in the afore-
+mentioned ﬁve steps in Tables IV and V, the 100-hp motor
+parameters are then calculated for both Y- and Δ -connections
+and given in Table VI.
+In Figs. 14–17, the measured and calculated DM impedance
+magnitudes and phase angles of the 100-hp induction motor for
+Fig. 14. (Gray) Measured versus (dashed) modeled DM impedance (magni-
+tude) of the 100-hp motor (Δ -connection) versus frequency (slip =1 ).
+Fig. 15. (Gray) Measured versus (dashed) modeled DM impedance (phase
+angle) of the 100-hp motor (Δ -connection) versus frequency (slip =1 ).
+Fig. 16. (Gray) Measured versus (dashed) modeled DM impedance (magni-
+tude) of the 100-hp motor (Y-connection) versus frequency(slip =1 ).
+both Δ - and Y-connections are demonstrated. As can be seen,
+the calculated values are in good agreement with the measure-
+ments, particularly at low- and high-frequency spans shown in
+Figs. 14 and 16. The difference between the measurement and
+the calculated results in the midfrequency span is mainly due
+to the decrease in the magnetic core (steel) permeability, which
+leads to a signiﬁcant decrease in the magnetizing inductance
+
+## PAGE 9
+MIRAFZAL et al.: DETERMINATION OF PARAMETERS IN UNIVERSAL INDUCTION MOTOR MODEL 149
+Fig. 17. (Gray) Measured versus (dashed) modeled DM impedance (phase
+angle) of the 100-hp motor (Y-connection) versus frequency(slip =1 ).
+Fig. 18. (Gray) Measured versus modeled CM impedance (magnitude) of the
+100-hp motor (Δ -connection) versus frequency (slip =1 ).
+Fig. 19. (Gray) Measured versus modeled CM impedance (phase angle) of
+the 100-hp motor (Δ -connection) versus frequency (slip =1 ).
+Lm. However, the magnetizing inductance can be assumed
+constant at the low-frequency span and is not effectively a part
+of a circuit at the high frequencies. It should be noted that
+the high-frequency currents leak to the ground mainly through
+ηL
+ls, Csf , Rsf , Rf , and Lf . Accordingly, the magnetizing
+inductance has an insigniﬁcant impact on the effective motor
+impedance at high frequencies, see Fig. 13.
+Fig. 20. (Gray) Measured versus modeled CM impedance (magnitude) of the
+100-hp motor (Y-connection) versus frequency(slip =1 ).
+Fig. 21. (Gray) Measured versus modeled CM impedance (phase angle) of
+the 100-hp motor (Y-connection) versus frequency(slip =1 ).
+In Figs. 18–21, the measured and calculated CM impedance
+magnitudes and phase angles of a 100-hp induction motor
+for both Δ - and Y-connections are demonstrated. Again, the
+calculated values are in good agreement with the measurements
+particularly at low- and high-frequency domains. In the CM
+impedance measurements shown in Figs. 18–20, the decrease
+in the permeability can be observed where the motor capac-
+itive impedance increases rapidly in the frequency range of
+10–30 kHz. This phenomenon is due to the very low magnetiz-
+ing inductance of the motor in CM due to magnetic coupling be-
+tween the phases. To conﬁrm this, the CM impedance response
+of the model are shown for a CM magnetizing inductance equal
+to 1% of the corresponding DM magnetizing inductance, for
+Δ - and Y-connections, in Figs. 18–21. As can be seen, this
+shows a very close match between the measured data and model
+response even in the midfrequency range.
+B. Parameter Identiﬁcation Approach to Obtain
+High-Frequency Model Parameters
+An alternative method to obtain the high-frequency model
+parameters is to use a parameter identiﬁcation procedure using
+the known circuit topology of Fig. 13 and the measured DM
+and CM impedances. The high-frequency model parameters of
+
+## PAGE 10
+150 IEEE TRANSACTIONS ON INDUSTRY APPLICATIONS, VOL. 45, NO. 1, JANUARY/FEBRUARY 2009
+TABLE VII
+PARAMETERS OF 100-hp INDUCTION MOTOR OBTAINED FROM AN LSE
+Fig. 22. (Gray) Measured versus (dashed) modeled DM impedance (magni-
+tude) of the 100-hp motor (Δ -connection) versus frequency(slip =1 )—using
+LSE-based parameter identiﬁcation.
+Fig. 13, namely, ηLls, Rsw, Csw, Csf , Csf-0, Rsf , Rf , and Lf ,
+can be determined using a least square error (LSE) approach
+to best ﬁt both the model DM and CM impedances to measured
+data. It must be noted that the magnetizing inductance and core-
+loss resistance in CM are different from their corresponding
+values for DM.
+The high-frequency parameters determined using LSE-based
+parameter identiﬁcation are shown in Table VII. The parameters
+obtained using this approach closely matches the Table VI
+values determined by analytical equations and based on the res-
+onant points in the measured impedance data. This also shows
+that the circuit model derived for the motor accurately repre-
+sents the physical characteristics over a wide frequency range.
+The measured DM and CM impedances for theΔ -connected
+100-hp motor and the corresponding model values with param-
+eters estimated using the two different approaches are shown
+in Figs. 22–25. It is clear that the model accurately represents
+the characteristics of the motor up to 10 MHz.
+V. C
+ONCLUSION
+The following conclusions can be inferred from this paper.
+1) A simple electromagnetic inductor was shown to have
+a low- to high-frequency response and model similar
+to a motor stator winding and was used as a basis for
+Fig. 23. (Gray) Measured versus (dashed) modeled DM impedance (phase an-
+gle) of the 100-hp motor (Δ -connection) versus frequency (slip =1 )—using
+LSE-based parameter identiﬁcation.
+Fig. 24. (Gray) Measured versus (dashed) modeled CM impedance (magni-
+tude) of the 100-hp motor (Δ -connection) versus frequency(slip =1 )—using
+LSE-based parameter identiﬁcation.
+Fig. 25. (Gray) Measured versus (dashed) modeled CM impedance (phase an-
+gle) of the 100-hp motor (Δ -connection) versus frequency (slip =1 )—using
+LSE-based parameter identiﬁcation.
+analyzing and modeling the proposed universal model of
+an induction motor.
+2) The proposed universal model of an induction motor
+consists of adding several new parameter elements to
+
+## PAGE 11
+MIRAFZAL et al.: DETERMINATION OF PARAMETERS IN UNIVERSAL INDUCTION MOTOR MODEL 151
+the IEEE Standard 112 equivalent circuit low-frequency
+model.
+3) An analysis of motor high-frequency behavior with re-
+gard to the impact of magnetic core selection, parasitic in-
+terturn and winding-to-frame capacitors, and skin effects
+of windings was investigated in detail for the proposed
+added parameters in the universal model of an induction
+motor. Discussion on how the new added parameters may
+change for Δ - and Y-stator connection windings was also
+provided.
+4) Two new systematic procedures for determining the
+added model parameter elements were demonstrated.
+a) Analytical equations and resonance points in a mea-
+sured CM/DM impedance versus frequency test are
+used, as well as only R
+core and Lm from the
+T-equivalent circuit.
+b) The LSE-based parameter estimation approach ﬁts
+the measured CM/DM impedance response to the
+proposed model using all known T-equivalent circuit
+parameters.
+5) The experimental results presented show that the ana-
+lytical and parameter estimation approaches result in a
+universal model whose impedance response at low to high
+frequencies up to 10 MHz closely matches the measured
+values, for both DM and CM. This veriﬁes that the motor
+model order and element connection format assumption
+are correct.
+6) This model can be used for a complete three-phase system
+simulation of the reﬂected-wave phenomenon, CM cur-
+rents and EMI analysis, and bearing-current issues in ac
+motor-drive systems, including the effects of load level.
+R
+EFERENCES
+[1] E. Zhong, A. Lipo, and S. Rossiter, “Transient modeling and analysis of
+motor terminal voltage on PWM inverter-fed AC motor drives,” in Conf.
+Rec. 33rd IEEE IAS Annu. Meeting , Oct. 1998, pp. 773–780.
+[2] A. F. Moreira, T. A. Lipo, G. Venkataramanan, and S. Bernet, “High-
+frequency modeling for cable and induction motor overvoltage studies in
+long cable drives,” IEEE Trans. Ind. Appl., vol. 38, no. 5, pp. 1297–1306,
+Sep./Oct. 2002.
+[3] G. Suresh, A. Toliyat, A. Rendusara, and N. Enjeti, “Predicting the tran-
+sient effects of PWM voltage waveform on the stator windings of random
+wound induction motors,” IEEE Trans. Power Electron. , vol. 14, no. 1,
+pp. 23–30, Jan. 1999.
+[4] B. Mirafzal, G. Skibinski, R. Tallam, D. Schlegel, and R. Lukaszewski,
+“Universal induction motor model with low-to-high frequency response
+characteristics,” IEEE Trans. Ind. Appl. , vol. 43, no. 5, pp. 1233–1246,
+Sep./Oct. 2007.
+[5] A. Boglietti and E. Carpaneto, “Induction motor high frequency model,”
+in Conf. Rec. 34th IEEE IAS Annu. Meeting , Phoenix, AZ, Oct. 1999,
+pp. 1551–1558.
+[6] A. Boglietti, A. Cavagnino, and M. Lazzari, “Experimental high-
+frequency parameter identiﬁcation of AC electrical motors,” IEEE Trans.
+Ind. Appl., vol. 43, no. 1, pp. 23–29, Jan./Feb. 2007.
+[7] M. Schinkel, S. Weber, S. Guttowski, W. John, and H. Reichl, “Efﬁcient
+HF modeling and model parameterization of induction machines for time
+and frequency domain simulations,” in Proc. IEEE Appl. Power Electron.
+Conf., Mar. 2006, pp. 1181–1186.
+[8] R. Kerkman, D. Leggate, and G. Skibinski, “Interaction of drive modula-
+tion and cable parameters on ac motor transients,” inConf. Rec. 31st IEEE
+IAS Annu. Meeting, Oct. 1996, pp. 143–152.
+[9] L. Ran, S. Gokani, J. Clare, K. J. Bradley, and C. Christopoulos, “Con-
+ducted electromagnetic emissions in induction motor drive systems.
+I. Time domain analysis and identiﬁcation of dominant modes,” IEEE
+Trans. Power Electron., vol. 13, no. 4, pp. 757–767, Jul. 1998.
+[10] A. deBroe, A. Julian, and T. Lipo, “Neutral-to-ground voltage minimiza-
+tion in a PWM rectiﬁer/inverter conﬁguration,” WEMPEC, Madison, WI,
+pp. 12–96, Res. Rep.
+[11] IEEE Standard 112 Test Methods F or AC Induction Motors.
+[12] A. E. Fitzgerald, C. Kingsley, and S. D. Umans, Electric Machinery ,
+6th ed. New York: McGraw-Hill, 2003.
+Behrooz Mirafzal(S’01–M’05–SM’07) received the
+B.Sc. degree from Isfahan University of Technology,
+Isfahan, Iran, in 1994, the M.Sc. degree (with ﬁrst-
+class honors) from the University of Mazandaran,
+Mazandaran, Iran, in 1997, and the Ph.D. degree
+from Marquette University, Milwaukee, WI, in 2005,
+all in electrical engineering.
+From 1997 to 2000, he was a Research Engi-
+neer, as well as a Lecturer, with several academic
+institutions in Isfahan, Iran. From 2005 to 2008,
+he was a Senior Development/Project Engineer with
+Allen-Bradley Drives Division, Rockwell Automation, Mequon, WI. Since
+August 2008, he has been an Assistant Professor with the Department of Elec-
+trical and Computer Engineering, Florida International University, Miami. His
+current research interests include power electronic applications in renewable
+energy conversion systems and motor drives. He is the author or a coauthor of
+more than 20 conference and journal papers. He is the holder of one U.S. patent,
+with two others pending.
+Gary L. Skibinski received the B.S.E.E. and
+M.S.E.E. degrees from the University of Wisconsin,
+Milwaukee, and the Ph.D. degree from the University
+of Wisconsin, Madison, in 1976, 1980, and 1992,
+respectively.
+From 1976 to 1980, he was an Electrical Engi-
+neer working on naval nuclear power with Eaton
+Corporation, Cleveland, OH. From 1981 to 1985, he
+was a Senior Project Engineer with Allen-Bradley
+Company, Inc., where his work concerned servo
+controllers. During the Ph.D. program, he was a
+Consultant for uninterruptible power system and switch-mode power supply
+products with R.T.E. Corporation. He is currently an Engineering Consultant
+with Allen-Bradley Drives Division, Rockwell Automation, Mequon, WI. His
+current interests include power semiconductors, power electronic applications,
+and high-frequency high-power converter circuits for ac drives. He has pub-
+lished over 80 articles in professional journals and conferences with 18 winning
+prize awards. He holds 19 U.S. patents.
+Rangarajan M. Tallam (S’97–M’01–SM’07) re-
+ceived the B.Tech. degree in electrical engineering
+from the Indian Institute of Technology, Madras,
+India, and the M.S.E.E. and Ph.D. degrees in elec-
+trical engineering from the Georgia Institute of
+Technology, Atlanta, in 1997, 1999, and 2001,
+respectively.
+From 2001 to 2005, he was a Senior Research
+Engineer with the Advanced Technology Division,
+Rockwell Automation, Milwaukee, WI, where he
+conducted research on active rectiﬁers and multilevel
+converters. He is currently a Senior Project Engineer with Allen-Bradley Drives
+Division, Rockwell Automation, Mequon, WI. His research interests are in
+switching power converter technology, motor control, and alternating current
+drive systems. He holds four U.S. patents.
+View publication stats
